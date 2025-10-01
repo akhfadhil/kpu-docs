@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('kpps_member', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('jabatan')->nullable();
+            $table->string('name');
+            $table->string('job_title')->nullable();
             $table->foreignId('tps_id')->constrained('tps')->cascadeOnDelete();
             $table->timestamps();
         });

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class TPS extends Model {
+
+    protected $table = 'tps';
+
     public function desa() { 
         return $this->belongsTo(Desa::class); 
     }
@@ -12,6 +15,6 @@ class TPS extends Model {
         return $this->hasMany(KPPSMember::class); 
     }
     public function document() { 
-        return $this->morphMany(Document::class, 'dokumenable'); 
+        return $this->morphMany(Document::class, 'documentable'); 
     }
 }

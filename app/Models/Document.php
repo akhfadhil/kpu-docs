@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model 
 {
-    public function dokumenable() 
+    protected $table = 'documents';
+
+    public function documentable() 
     { 
         return $this->morphTo(); 
     }

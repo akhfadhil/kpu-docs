@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class KPPSMember extends Model {
+
+    protected $table = 'kpps_member';
+
     public function tps() { 
         return $this->belongsTo(TPS::class); 
     }

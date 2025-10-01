@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Desa extends Model {
+
+    protected $table = 'desa';
+
     public function kecamatan() { 
         return $this->belongsTo(Kecamatan::class); 
     }
@@ -15,6 +18,6 @@ class Desa extends Model {
         return $this->hasMany(PPSMember::class); 
     }
     public function document() { 
-        return $this->morphMany(Document::class, 'dokumenable'); 
+        return $this->morphMany(Document::class, 'documentable'); 
     } // if desa can upload
 }
