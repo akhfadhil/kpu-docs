@@ -8,3 +8,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [SessionController::class, 'index']);
+Route::post('/', [SessionController::class, 'login']);
