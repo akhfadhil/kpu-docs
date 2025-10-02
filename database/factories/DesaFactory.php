@@ -14,4 +14,26 @@ class DesaFactory extends Factory
             'kecamatan_id' => Kecamatan::factory(),
         ];
     }
+    // database/factories/DesaFactory.php
+
+    public function configure()
+    {
+        return $this->afterCreating(function (\App\Models\Desa $desa) {
+            $pps = \App\Models\PPSMember::create([
+                'name' => 'PPS Desa ' . $desa->id,
+                'job_title' => 'Ketua PPS',
+                'desa_id' => $desa->id,
+            ]);
+
+            $pps->user()->create([
+                'name' => $pps->name,
+                'email' => 'pps' . $desa->id . '@example.com',
+                'password' => bcrypt('password'),
+                'role_id' => 3, // role 'pps'
+                // 'userable_id' => $pps->id,
+                // 'userable_type' => \App\Models\PPSMember::class,
+            ]);
+        });
+    }
+
 }

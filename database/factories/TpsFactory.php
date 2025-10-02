@@ -16,4 +16,28 @@ class TpsFactory extends Factory
             'desa_id' => Desa::factory(),
         ];
     }
+
+    // database/factories/TpsFactory.php
+
+    public function configure()
+    {
+        return $this->afterCreating(function (\App\Models\Tps $tps) {
+            // Buat anggota KPPS terlebih dahulu
+            $kpps = \App\Models\KPPSMember::create([
+                'name' => 'Anggota KPPS TPS ' . $tps->id,
+                'job_title' => 'Anggota',
+                'tps_id' => $tps->id,
+            ]);
+
+            // Buat user yang morph ke KPPSMember
+            $kpps->user()->create([
+                'name' => $kpps->name,
+                'email' => 'kpps' . $kpps->id . '@example.com',
+                'password' => bcrypt('password'),
+                'role_id' => 4,
+            ]);
+        });
+    }
+
+
 }

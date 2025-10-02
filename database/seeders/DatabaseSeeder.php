@@ -12,15 +12,7 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-    {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        // $this->call(DummySeeder::class);
-        
+    {        
         // buat role (pakai firstOrCreate biar tidak double)
         $roles = ['admin', 'ppk', 'pps', 'kpps'];
         foreach ($roles as $role) {
@@ -30,16 +22,14 @@ class DatabaseSeeder extends Seeder
         // buat kecamatan dengan desa & tps (lebih sedikit)
         \App\Models\Kecamatan::factory()
             ->count(2)
-            ->has(\App\Models\Desa::factory()
-                ->count(2)
-                ->has(\App\Models\Tps::factory()->count(1))
+            ->has(
+                \App\Models\Desa::factory()
+                    ->count(2)
+                    ->has(
+                        \App\Models\Tps::factory()->count(1)
+                    )
             )
             ->create();
-
-        // buat anggota PPK, PPS, KPPS lebih sedikit
-        \App\Models\PPKMember::factory()->count(2)->create();
-        \App\Models\PPSMember::factory()->count(3)->create();
-        \App\Models\KPPSMember::factory()->count(5)->create();
 
         // buat user admin (pakai firstOrCreate biar kalau sudah ada, dipakai lagi)
         $adminRole = \App\Models\Role::where('role','admin')->first();
@@ -51,10 +41,6 @@ class DatabaseSeeder extends Seeder
                 'role_id' => $adminRole->id,
             ]
         );
-
-        // contoh buat dokumen random (lebih sedikit)
-        \App\Models\Document::factory()->count(3)->create();
-
     }
 
 }

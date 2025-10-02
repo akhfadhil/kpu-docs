@@ -9,6 +9,11 @@ class KPPSMember extends Model {
 
     use HasFactory;
     protected $table = 'kpps_member';
+    protected $fillable = [
+        'name',
+        'job_title',
+        'tps_id'
+    ];
 
     public function tps() { 
         return $this->belongsTo(TPS::class); 
