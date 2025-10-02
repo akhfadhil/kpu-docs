@@ -14,7 +14,7 @@ class TPS extends Model {
         return $this->belongsTo(Desa::class); 
     }
     public function kpps_member() { 
-        return $this->hasMany(KPPSMember::class); 
+        return $this->hasMany(KPPSMember::class, 'tps_id'); 
     }
     public function document() { 
         return $this->morphMany(Document::class, 'documentable'); 

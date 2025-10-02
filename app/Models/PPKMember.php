@@ -9,6 +9,11 @@ class PPKMember extends Model {
 
     use HasFactory;
     protected $table = 'ppk_member';
+    protected $fillable = [
+        'name',
+        'job_title',
+        'kecamatan_id'
+    ];
     // protected $fillable = ['nama', 'desa_id', ...];
 
     public function kecamatan() { 

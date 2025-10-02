@@ -29,10 +29,10 @@ class DatabaseSeeder extends Seeder
 
         // buat kecamatan dengan desa & tps (lebih sedikit)
         \App\Models\Kecamatan::factory()
-            ->count(2) // hanya 2 kecamatan
+            ->count(2)
             ->has(\App\Models\Desa::factory()
-                ->count(2) // tiap kecamatan punya 2 desa
-                ->has(\App\Models\Tps::factory()->count(1)) // tiap desa 1 TPS
+                ->count(2)
+                ->has(\App\Models\Tps::factory()->count(1))
             )
             ->create();
 
