@@ -23,7 +23,6 @@
                         @endforeach
                     </ul>
                 </div>
-                
             @endif
             <form action="/" method="POST" class="space-y-6">
             @csrf
