@@ -14,7 +14,6 @@ class PPKMember extends Model {
         'job_title',
         'kecamatan_id'
     ];
-    // protected $fillable = ['nama', 'desa_id', ...];
 
     public function kecamatan() { 
         return $this->belongsTo(Kecamatan::class); 
