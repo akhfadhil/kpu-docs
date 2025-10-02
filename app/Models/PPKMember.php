@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class PPKMember extends Model {
 
     use HasFactory;
-
     protected $table = 'ppk_member';
     // protected $fillable = ['nama', 'desa_id', ...];
 

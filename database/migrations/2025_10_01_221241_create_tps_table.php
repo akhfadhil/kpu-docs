@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tps', function (Blueprint $table) {
             $table->id();
-            $table->string('tps_code')->unique();
+            $table->string('tps_code'); // ->unique() !!!!!
             $table->string('address')->nullable();
             $table->unsignedBigInteger('number_of_voters')->default(0);
             $table->foreignId('desa_id')->constrained('desa')->cascadeOnDelete();
