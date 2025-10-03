@@ -10,7 +10,7 @@
 <body class="h-full">
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img src="{{ asset('storage/logo.png') }}" alt="Komisi Pemilihan Umum" class="mx-auto h-16 w-auto" />
+            <img src="{{ asset('img/logo.png') }}" alt="Komisi Pemilihan Umum" class="mx-auto h-16 w-auto" />
             <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">Sign in to your account</h2>
         </div>
 
