@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::firstOrCreate(
             ['email' => 'admin@demo.com'],
             [
-                'name' => 'SuperAdmin',
+                'name' => 'Super Admin',
+                'username' => 'superadmin',
                 'password' => bcrypt('password'),
                 'role_id' => $adminRole->id,
             ]
