@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [SessionController::class, 'index']);
 Route::post('/', [SessionController::class, 'login']);
 
-Route::get('/admin', [AdminController::class, 'index']);
-
-
-Route::middleware('auth.custom')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
+// Route yang dilindungi middleware
+Route::middleware(['check.login'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->middleware('check.role:admin')->name('admin');
+    
+    Route::get('/ppk', [AdminController::class, 'index'])->middleware('check.role:ppk')->name('ppk');
+    Route::get('/pps', [AdminController::class, 'index'])->middleware('check.role:pps')->name('pps');
+    Route::get('/kpps', [AdminController::class, 'index'])->middleware('check.role:kpps')->name('kpps');
+    
+    Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
 });

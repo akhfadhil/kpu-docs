@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     function index () {
-        echo "Welcome";
-        echo "<h1>" . Auth::user()->name . "</h1>";
+        $user = Auth::user();
+        $role = $user->role->role;
+
+        // Tampilkan view sesuai role
+        return view("dashboard.$role");
     }
 }

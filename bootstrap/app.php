@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'auth.custom' => \App\Http\Middleware\AuthMiddleware::class,
+            // 'auth.custom' => \App\Http\Middleware\AuthMiddleware::class,
+            'check.login' => \App\Http\Middleware\AuthMiddleware::class,
+            'check.role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

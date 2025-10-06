@@ -25,11 +25,31 @@ class SessionController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // penting untuk keamanan session fixation
-            return redirect()->intended('admin'); // atau route sesuai role nanti
-        } else {
-            return back()->withErrors([
-                'username' => 'Username atau password salah.',
-            ])->withInput();
-        }
+            $user = Auth::user();
+            $role = $user->role->role;
+
+            switch ($role) {
+                case 'admin':
+                    return redirect()->intended('/admin');
+                case 'ppk':
+                    return redirect()->intended('/ppk');
+                case 'pps':
+                    return redirect()->intended('/pps');
+                case 'kpps':
+                    return redirect()->intended('/kpps');
+                default:
+                    return redirect()->intended('/dashboard');
+            }
+        } 
+        return back()->withErrors([
+            'username' => 'Username atau password salah.',
+        ])->withInput();
+    }
+
+    function logout () {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect('/');
     }
 }
