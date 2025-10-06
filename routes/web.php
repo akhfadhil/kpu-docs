@@ -12,3 +12,10 @@ Route::get('/', [SessionController::class, 'index']);
 Route::post('/', [SessionController::class, 'login']);
 
 Route::get('/admin', [AdminController::class, 'index']);
+
+
+Route::middleware('auth.custom')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+});
