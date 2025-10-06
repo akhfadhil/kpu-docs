@@ -25,6 +25,7 @@ class KecamatanFactory extends Factory
             // Buat User yang morph ke PPKMember
             $ppk->user()->create([
                 'name' => $ppk->name,
+                'username' => 'ppk' . $kecamatan->id,
                 'email' => 'ppk' . $ppk->id . '@example.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2, // Role PPK

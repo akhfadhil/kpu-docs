@@ -14,19 +14,22 @@ class SessionController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
         $credentials = [
-            'email' => $request->email,
+            'username' => $request->username,
             'password' => $request->password,
         ];
 
         if (Auth::attempt($credentials)) {
-            echo "Sukses";
+            $request->session()->regenerate(); // penting untuk keamanan session fixation
+            return redirect()->intended('admin'); // atau route sesuai role nanti
         } else {
-            return redirect('/')->withErrors('Invalid email or password')->withInput();
+            return back()->withErrors([
+                'username' => 'Username atau password salah.',
+            ])->withInput();
         }
     }
 }

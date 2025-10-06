@@ -27,6 +27,7 @@ class DesaFactory extends Factory
 
             $pps->user()->create([
                 'name' => $pps->name,
+                'username' => 'pps' . $desa->id,
                 'email' => 'pps' . $desa->id . '@example.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3, // role 'pps'

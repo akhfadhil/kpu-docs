@@ -32,6 +32,7 @@ class TpsFactory extends Factory
             // Buat user yang morph ke KPPSMember
             $kpps->user()->create([
                 'name' => $kpps->name,
+                'username' => 'kpps' . $tps->id,
                 'email' => 'kpps' . $kpps->id . '@example.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
