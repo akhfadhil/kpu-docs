@@ -23,14 +23,18 @@ class RoleMiddleware
     {
         $user = Auth::user();
 
+        // Jika belum login, arahkan ke halaman login
         if (!$user) {
-            return redirect('/');
+            return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Ambil hierarchy dari config
         $hierarchy = config('roles.hierarchy');
-
         $userRole = $user->role->role ?? null;
+
+        // Jika role tidak dikenali
+        if (!$userRole) {
+            return redirect('/')->with('error', 'Role pengguna tidak dikenali.');
+        }
 
         // Role user harus sama atau lebih tinggi dari role target
         if (
@@ -40,7 +44,10 @@ class RoleMiddleware
             return $next($request);
         }
 
-        abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        // 🚫 Jika tidak diizinkan, redirect ke dashboard sesuai rolenya
+        return redirect("/{$userRole}")
+            ->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
     }
+
 
 }

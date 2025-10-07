@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\KecamatanController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -14,12 +15,23 @@ Route::post('/', [SessionController::class, 'login']);
 
 // Route yang dilindungi middleware
 Route::middleware(['check.login'])->group(function () {
+    // Admin
     Route::get('/admin', [AdminController::class, 'index'])->middleware('check.role:admin')->name('admin');    
-    Route::get('/ppk', [AdminController::class, 'index'])->middleware('check.role:ppk')->name('ppk');
+
+    // Kecamatan
+    Route::get('/kecamatan/{id}', [KecamatanController::class, 'index'])
+        ->middleware('check.role:ppk')
+        ->name('kecamatan.index');
+
+
     Route::get('/pps', [AdminController::class, 'index'])->middleware('check.role:pps')->name('pps');
     Route::get('/kpps', [AdminController::class, 'index'])->middleware('check.role:kpps')->name('kpps');
     
+
+
+    // Logout
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
 });
 
 Route::get('/get-desa-by-kecamatan/{id}', [LocationController::class, 'getDesaByKecamatan']);
+

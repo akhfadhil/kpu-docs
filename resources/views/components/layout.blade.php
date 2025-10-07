@@ -11,6 +11,14 @@
       <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
    </head>
    <body class="h-full">
+      @if (session('error'))
+         <div class="mx-auto max-w-lg mt-4">
+            <div class="bg-red-100 text-red-800 border border-red-300 rounded-lg p-3 text-sm shadow">
+                  {{ session('error') }}
+            </div>
+         </div>
+      @endif
+
       <div class="min-h-full">
          <x-navbar></x-navbar>
          <x-header>{{ $title }}</x-header>
