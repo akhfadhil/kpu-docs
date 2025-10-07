@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -20,3 +21,5 @@ Route::middleware(['check.login'])->group(function () {
     
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
 });
+
+Route::get('/get-desa-by-kecamatan/{id}', [LocationController::class, 'getDesaByKecamatan']);

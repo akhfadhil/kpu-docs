@@ -95,7 +95,7 @@
                      data.forEach(desa => {
                            const option = document.createElement('option');
                            option.value = desa.id; // Assuming your desa table has id_desa
-                           option.textContent = desa.nama_desa; // Assuming your desa table has nama_desa
+                           option.textContent = desa.name; // Assuming your desa table has nama_desa
                            desaDropdown.appendChild(option);
                      });
                   })
