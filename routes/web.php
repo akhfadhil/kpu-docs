@@ -30,7 +30,7 @@ Route::middleware(['check.login'])->group(function () {
         ->name('desa.index');
 
 
-    Route::get('/pps', [AdminController::class, 'index'])->middleware('check.role:pps')->name('pps');
+
     Route::get('/kpps', [AdminController::class, 'index'])->middleware('check.role:kpps')->name('kpps');
 
     // Logout
