@@ -5,11 +5,9 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\TPSController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', [SessionController::class, 'index']);
 Route::post('/', [SessionController::class, 'login']);
@@ -17,7 +15,9 @@ Route::post('/', [SessionController::class, 'login']);
 // Route yang dilindungi middleware
 Route::middleware(['check.login'])->group(function () {
     // Admin
-    Route::get('/admin', [AdminController::class, 'index'])->middleware('check.role:admin')->name('admin');    
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->middleware('check.role:admin')
+        ->name('admin');    
 
     // Kecamatan
     Route::get('/kecamatan/{id}', [KecamatanController::class, 'index'])
@@ -29,13 +29,16 @@ Route::middleware(['check.login'])->group(function () {
         ->middleware('check.role:pps')
         ->name('desa.index');
 
-
-
-    Route::get('/kpps', [AdminController::class, 'index'])->middleware('check.role:kpps')->name('kpps');
+    // TPS
+    Route::get('/tps/{TPSId}', [TPSController::class, 'index'])
+        ->middleware('check.role:kpps')
+        ->name('tps.index');
 
     // Logout
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
-});
 
-Route::get('/get-desa-by-kecamatan/{id}', [LocationController::class, 'getDesaByKecamatan']);
+
+    // Else
+    Route::get('/get-desa-by-kecamatan/{id}', [LocationController::class, 'getDesaByKecamatan']);
+});
 

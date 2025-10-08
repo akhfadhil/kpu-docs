@@ -20,20 +20,6 @@ class AdminController extends Controller
                 ];
                 return view('dashboard.admin', $data);
 
-            case 'pps':
-                $desaId = $user->desa_id ?? $user->desa->id ?? null;
-                if ($desaId) {
-                    return redirect()->route('desa.show', ['desaId' => $desaId]);
-                }
-                return redirect('/')->with('error', 'Desa belum terhubung dengan akun Anda.');
-
-            case 'kpps':
-                $tpsId = $user->tps_id ?? $user->tps->id ?? null;
-                if ($tpsId) {
-                    return redirect()->route('tps.show', ['tpsId' => $tpsId]);
-                }
-                return redirect('/')->with('error', 'TPS belum terhubung dengan akun Anda.');
-
             default:
                 abort(403, 'Role tidak dikenali.');
         }

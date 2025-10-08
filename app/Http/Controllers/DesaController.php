@@ -13,7 +13,7 @@ class DesaController extends Controller
 
         $user = Auth::user();
 
-        // Cegah PPK mengakses kecamatan lain
+        // Cegah PPS mengakses kecamatan lain
         if ($user->role->role === 'pps') {
             $userDesaId = $user->userable->desa_id ?? null;
             if ($userDesaId !== (int) $desaId) {

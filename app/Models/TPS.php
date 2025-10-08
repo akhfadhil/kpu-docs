@@ -34,6 +34,11 @@ class TPS extends Model {
         return $this->belongsTo(Desa::class); 
     }
 
+    public function ketua_kpps()
+    {
+        return $this->hasOne(KPPSMember::class, 'tps_id')->where('job_title', 'Ketua KPPS');
+    }
+
     public function kpps_member() { 
         return $this->hasMany(KPPSMember::class, 'tps_id'); 
     }

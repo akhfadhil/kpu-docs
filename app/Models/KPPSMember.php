@@ -16,7 +16,7 @@ class KPPSMember extends Model {
     ];
 
     public function tps() { 
-        return $this->belongsTo(TPS::class); 
+        return $this->belongsTo(TPS::class, 'tps_id'); 
     }
     public function user() { 
         return $this->morphOne(User::class, 'userable'); 
