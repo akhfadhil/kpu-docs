@@ -10,10 +10,22 @@
                   <!-- Current: "bg-gray-900 dark:bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
                   <!-- <x-nav-link href="/admin" :active="request()->is('/admin')">Dashboard</x-nav-link>
                   <x-nav-link href="/upload" :active="request()->is('upload')">Upload</x-nav-link> -->
-                  <x-nav-link href="{{ routeDashboard() }}" :active="request()->is(Auth::user()->role->role ?? '')">
+                  @php
+                     $user = Auth::user();
+                     $role = $user->role->role ?? 'guest';
+
+                     $activePatterns = [
+                        'admin' => 'admin*',
+                        'ppk'   => 'kecamatan*',
+                        'pps'   => 'desa*',
+                        'kpps'  => 'tps*',
+                     ];
+
+                     $activePattern = $activePatterns[$role] ?? 'dashboard*';
+                  @endphp
+                  <x-nav-link href="{{ routeDashboard() }}" :active="request()->is($activePattern)">
                      Dashboard
                   </x-nav-link>
-
                   <x-nav-link href="/upload" :active="request()->is('upload')">
                      Upload
                   </x-nav-link>
