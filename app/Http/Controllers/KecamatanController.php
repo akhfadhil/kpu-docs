@@ -11,7 +11,6 @@ class KecamatanController extends Controller
     public function index($id)
     {
 
-
         $user = Auth::user();
 
         // Cegah PPK mengakses kecamatan lain

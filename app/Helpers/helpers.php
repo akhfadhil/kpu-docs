@@ -13,8 +13,7 @@ if (! function_exists('routeDashboard')) {
             case 'ppk':
                 return route('kecamatan.index', ['id' => $user->userable->kecamatan_id]);
             case 'pps':
-                return url('/pps');
-                // atau: return route('desa.index', ['id' => $user->userable->desa_id]);
+                return route('desa.index', ['desaId' => $user->userable->desa_id]);
             case 'kpps':
                 return url('/kpps');
             default:

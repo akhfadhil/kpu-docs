@@ -34,8 +34,7 @@ class SessionController extends Controller
                 case 'ppk':
                     return redirect()->route('kecamatan.index', ['id' => $user->userable->kecamatan_id]);
                 case 'pps':
-                    return redirect()->intended('/pps');
-                    // return redirect()->route('desa.index', ['id' => $user->userable->desa_id]);
+                    return redirect()->route('desa.index', ['desaId' => $user->userable->desa_id]);
                 case 'kpps':
                     return redirect()->intended('/kpps');
                     // return redirect()->route('kpps');

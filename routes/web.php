@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\DesaController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -23,11 +24,14 @@ Route::middleware(['check.login'])->group(function () {
         ->middleware('check.role:ppk')
         ->name('kecamatan.index');
 
+    // Desa
+    Route::get('/desa/{desaId}', [DesaController::class, 'index'])
+        ->middleware('check.role:pps')
+        ->name('desa.index');
+
 
     Route::get('/pps', [AdminController::class, 'index'])->middleware('check.role:pps')->name('pps');
     Route::get('/kpps', [AdminController::class, 'index'])->middleware('check.role:kpps')->name('kpps');
-    
-
 
     // Logout
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
