@@ -16,10 +16,11 @@ class TPSController extends Controller
         $user = Auth::user();
 
         // Cegah KPPS mengakses kecamatan lain
-        if ($user->role->role === 'pps') {
+        if ($user->role->role === 'kpps') {
             $userTPSId = $user->userable->tps_id ?? null;
             if ($userTPSId !== (int) $tpsId) {
-                return redirect()->route('tps.index', ['TPSId' => $userTPSId])
+                // dd($userTPSId);
+                return redirect()->route('tps.index', ['tpsId' => $userTPSId])
                     ->with('error', 'Anda tidak memiliki akses ke tps lain.');
             }
         }

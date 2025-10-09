@@ -17,7 +17,7 @@ if (! function_exists('routeDashboard')) {
             case 'kpps':
                 return route('tps.index', ['tpsId' => $user->userable->tps_id]);
             default:
-                return route('tps.index', ['TPSId' => $user->userable->tps_id]);
+                return route('tps.index', ['tpsId' => $user->userable->tps_id]);
         }
     }
 }

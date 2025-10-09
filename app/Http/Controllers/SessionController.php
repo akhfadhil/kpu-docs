@@ -36,7 +36,7 @@ class SessionController extends Controller
                 case 'pps':
                     return redirect()->route('desa.index', ['desaId' => $user->userable->desa_id]);
                 case 'kpps':
-                    return redirect()->route('tps.index', ['TPSId' => $user->userable->tps_id]);
+                    return redirect()->route('tps.index', ['tpsId' => $user->userable->tps_id]);
 
                 default:
                     return redirect()->intended('/dashboard');
