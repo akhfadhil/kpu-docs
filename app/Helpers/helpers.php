@@ -15,9 +15,9 @@ if (! function_exists('routeDashboard')) {
             case 'pps':
                 return route('desa.index', ['desaId' => $user->userable->desa_id]);
             case 'kpps':
-                return url('/kpps');
+                return route('tps.index', ['tpsId' => $user->userable->tps_id]);
             default:
-                return url('/dashboard');
+                return route('tps.index', ['TPSId' => $user->userable->tps_id]);
         }
     }
 }

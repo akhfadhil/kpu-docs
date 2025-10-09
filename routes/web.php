@@ -6,6 +6,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\TPSController;
+use App\Http\Controllers\KPPSAnggotaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,13 +31,15 @@ Route::middleware(['check.login'])->group(function () {
         ->name('desa.index');
 
     // TPS
-    Route::get('/tps/{TPSId}', [TPSController::class, 'index'])
-        ->middleware('check.role:kpps')
-        ->name('tps.index');
+    Route::middleware(['check.role:kpps'])->group(function () {
+        Route::get('/tps/{tpsId}', [TPSController::class, 'index'])
+            ->name('tps.index');
+        Route::post('/tps/{tpsId}/anggota', [KPPSAnggotaController::class, 'store'])
+            ->name('kpps.anggota.store');
+    });
 
     // Logout
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
-
 
     // Else
     Route::get('/get-desa-by-kecamatan/{id}', [LocationController::class, 'getDesaByKecamatan']);

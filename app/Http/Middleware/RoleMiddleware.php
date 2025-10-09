@@ -44,7 +44,7 @@ class RoleMiddleware
             return $next($request);
         }
 
-        // 🚫 Kalau tidak berhak, arahkan ke dashboard-nya sendiri
+        // Kalau tidak berhak, arahkan ke dashboard-nya sendiri
         return redirect(routeDashboard())
             ->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
