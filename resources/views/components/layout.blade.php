@@ -1,46 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100 dark:bg-gray-500">
+<html lang="en">
    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Manajemen Arsip Penyelenggara Pemilu</title>
-      @vite('resources/css/app.css')
-      @vite('resources/js/app.js')
+      <meta charset="utf-8" />
+      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+      <title>Manajemen Aplikasi Penyelenggara Pemilu</title>
+      {{-- Tailwind + Flowbite --}}
+      @vite(['resources/css/app.css', 'resources/js/app.js'])
+      <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+      <script src="https://unpkg.com/flowbite@2.5.2/dist/flowbite.min.js"></script>
       <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
       <script src="//unpkg.com/alpinejs" defer></script>
-      <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon-32x32.png') }}">
+      <script>
+         tailwind.config = {
+           darkMode: "class",
+           theme: {
+             extend: {
+               colors: {
+                 primary: "#4F46E5",
+                 "background-light": "#F3F4F6",
+                 "background-dark": "#1F2937",
+                 "card-light": "#FFFFFF",
+                 "card-dark": "#374151",
+                 "text-light": "#111827",
+                 "text-dark": "#F9FAFB",
+                 "text-secondary-light": "#6B7280",
+                 "text-secondary-dark": "#D1D5DB",
+                 "border-light": "#E5E7EB",
+                 "border-dark": "#4B5563",
+               },
+               fontFamily: {
+                 display: ["Inter", "sans-serif"],
+               },
+               borderRadius: {
+                 DEFAULT: "0.5rem",
+               },
+             },
+           },
+         };
+      </script>
    </head>
-   <body class="h-full">
-      @if(session('error'))
-      <div 
-         x-data="{ show: true }" 
-         x-show="show"
-         x-transition.duration.500ms
-         x-init="setTimeout(() => show = false, 3000)"
-         class="fixed top-6 left-1/2 transform -translate-x-1/2 
-               bg-red-600 text-white px-5 py-3 rounded-xl shadow-lg 
-               flex items-center space-x-2 z-50"
-      >
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-               stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 9v3.75m0 3.75h.007M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-         </svg>
-         <span>{{ session('error') }}</span>
-      </div>
-      @endif
-
-
-      <div class="min-h-full">
-         <x-navbar></x-navbar>
-         <x-header>{{ $title }}</x-header>
-         <main>
-            <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-               {{$slot}}
-            </div>
-         </main>
-      </div>
+   <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+      <div class="min-h-screen flex flex-col">
+      {{-- HEADER --}}
+      <x-header></x-header>
+      {{-- MAIN --}}
+      <main class="flex-grow">
+         {{ $slot }}
+      </main>
+      {{-- FOOTER --}}
+      <footer class="bg-card-light dark:bg-card-dark mt-12">
+         <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
+               © 2023 PemiluApp. All rights reserved.
+            </p>
+         </div>
+      </footer>
+         <script src="https://unpkg.com/flowbite@2.4.1/dist/flowbite.min.js"></script>
    </body>
+
+
 </html>

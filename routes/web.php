@@ -15,6 +15,7 @@ Route::post('/', [SessionController::class, 'login']);
 
 // Route yang dilindungi middleware
 Route::middleware(['check.login'])->group(function () {
+
     // Admin
     Route::get('/admin', [AdminController::class, 'index'])
         ->middleware('check.role:admin')
@@ -37,6 +38,11 @@ Route::middleware(['check.login'])->group(function () {
         Route::post('/tps/{tpsId}/anggota', [KPPSAnggotaController::class, 'store'])
             ->name('kpps.anggota.store');
     });
+
+    // Upload
+    Route::get('/upload', function () {
+        return view('dashboard.upload');
+    })->name('upload');
 
     // Logout
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');
