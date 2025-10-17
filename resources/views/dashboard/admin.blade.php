@@ -2,6 +2,11 @@
    
    <!-- Title header -->
    <x-slot:title>{{ $title }}</x-slot:title>
+   <div class="bg-gray-800 dark:bg-gray-900 shadow-inner">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+         <h1 class="text-3xl font-bold text-white">Dashboard Admin</h1>
+      </div>
+   </div>
    <!-- Bagian Pencarian -->
    <section class="container mx-auto p-6" x-show="show" x-transition.duration.700ms>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

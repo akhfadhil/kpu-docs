@@ -83,7 +83,7 @@
    <!-- Burger dropdown (mobile menu) -->
    <div
       id="mobileMenu"
-      class="hidden md:hidden absolute top-16 inset-x-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg z-40">
+      class="transition-all hidden md:hidden absolute top-16 inset-x-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg z-40">
       <div class="px-4 py-3 space-y-2">
          <a href="{{ routeDashboard() }}" :active="request()->is($activePattern)"
             class="flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-3 py-2">
