@@ -214,7 +214,7 @@
       </div>
    </div>
    <!-- Script dropdown & burger -->
-   <script>
+   {{-- <script>
       const userMenuBtn = document.getElementById("userMenuButton");
       const userDropdown = document.getElementById("profileDropdown");
       const burgerBtn = document.getElementById("burgerButton");
@@ -235,5 +235,5 @@
       burgerBtn.addEventListener("click", () => {
       mobileMenu.classList.toggle("hidden");
       });
-   </script>
+   </script> --}}
 </x-layout>

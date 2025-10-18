@@ -13,6 +13,16 @@
          <!-- Bagian Pencarian -->
          <section id="search-section" 
             class="bg-white shadow-lg rounded-2xl p-6 col-span-2 transform transition duration-500 hover:scale-[1.02] hover:shadow-xl">
+            {{-- dokumen --}}
+            <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Dokumen C Hasil</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+               <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
+                  <span class="material-icons text-4xl text-primary mb-2">description</span>
+                  <h4 class="font-semibold text-text-light dark:text-text-dark">PPWP</h4>
+                  <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen PPWP</p>
+                  <button class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat Dokumen</button>
+               </div>
+            </div>
             <h2 class="text-xl font-semibold mb-4">Pencarian Berdasarkan Wilayah</h2>
             <form action="/hasil" method="get" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                <!-- Provinsi -->
