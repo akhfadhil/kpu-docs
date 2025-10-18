@@ -7,6 +7,7 @@ use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\TPSController;
 use App\Http\Controllers\KPPSAnggotaController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,12 +38,10 @@ Route::middleware(['check.login'])->group(function () {
             ->name('tps.index');
         Route::post('/tps/{tpsId}/anggota', [KPPSAnggotaController::class, 'store'])
             ->name('kpps.anggota.store');
-    });
+        Route::get('/upload', [UploadController::class, 'index'])->name('upload.index');
+        Route::post('/upload', [UploadController::class, 'store'])->name('upload.store');
 
-    // Upload
-    Route::get('/upload', function () {
-        return view('dashboard.upload');
-    })->name('upload');
+    });
 
     // Logout
     Route::get('/logout', [SessionController::class, 'logout'])->name('logout');

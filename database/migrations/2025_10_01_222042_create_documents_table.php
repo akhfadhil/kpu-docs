@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->enum('doc_type', ['d_hasil_kec', 'd_hasil_desa', 'c_hasil_ppwp', 'c_hasil_dpr_ri', 'c_hasil_dpd', 'c_hasil_dprd_prov', 'c_hasil_dprdp_kab'])->nullable(); // atau enum sesuai kebutuhan
+            $table->string('doc_type'); // hapus ->check()
             $table->string('path'); // path file di storage
             $table->nullableMorphs('documentable'); // dokumenable_id, dokumenable_type
             $table->foreignId('uploaded_by')->nullable()->constrained('users')->nullOnDelete();

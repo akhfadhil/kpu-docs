@@ -10,6 +10,8 @@ class Document extends Model
 
     use HasFactory;
     protected $table = 'documents';
+    protected $fillable = ['doc_type', 'path', 'uploaded_by'];
+
 
     public function documentable() 
     { 

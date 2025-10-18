@@ -61,41 +61,127 @@
             </div>
          </div>
          {{-- dokumen --}}
-         <div class="mb-8">
-            <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Dokumen C Hasil</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-               <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
-                  <span class="material-icons text-4xl text-primary mb-2">description</span>
-                  <h4 class="font-semibold text-text-light dark:text-text-dark">PPWP</h4>
-                  <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen PPWP</p>
-                  <button class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat Dokumen</button>
-               </div>
-               <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
-                  <span class="material-icons text-4xl text-primary mb-2">description</span>
-                  <h4 class="font-semibold text-text-light dark:text-text-dark">DPR RI</h4>
-                  <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen DPR RI</p>
-                  <button class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat Dokumen</button>
-               </div>
-               <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
-                  <span class="material-icons text-4xl text-primary mb-2">description</span>
-                  <h4 class="font-semibold text-text-light dark:text-text-dark">DPD</h4>
-                  <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen DPD</p>
-                  <button class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat Dokumen</button>
-               </div>
-               <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
-                  <span class="material-icons text-4xl text-primary mb-2">description</span>
-                  <h4 class="font-semibold text-text-light dark:text-text-dark">DPRD Prov</h4>
-                  <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen DPRD Prov</p>
-                  <button class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat Dokumen</button>
-               </div>
-               <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
-                  <span class="material-icons text-4xl text-primary mb-2">description</span>
-                  <h4 class="font-semibold text-text-light dark:text-text-dark">DPRD Kab</h4>
-                  <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen DPRD Kab</p>
-                  <button class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat Dokumen</button>
-               </div>
+<div class="mb-8">
+    <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Dokumen C Hasil</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        @php
+            $docs = [
+                'PPWP' => 'ppwp.pdf',
+                'DPR RI' => 'dpr_ri.pdf',
+                'DPD' => 'dpd.pdf',
+                'DPRD Prov' => 'dprd_prov.pdf',
+                'DPRD Kab' => 'dprd_kab.pdf',
+            ];
+
+            $kecamatan = Str::slug($tps->desa->kecamatan->name ?? 'kecamatan');
+            $desa = Str::slug($tps->desa->name ?? 'desa');
+            $tps_folder = 'tps ' . $tps->tps_code;
+        @endphp
+
+        @foreach ($docs as $title => $filename)
+            @php
+               // dd($docs);
+                $path = "documents/$kecamatan/$desa/$tps_folder/$filename";
+               //  PATH IMPORTANT
+               // dd($path);
+                $exists = file_exists(public_path($path));
+            @endphp
+
+            <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
+                <span class="material-icons text-4xl text-primary mb-2">description</span>
+                <h4 class="font-semibold text-text-light dark:text-text-dark">{{ $title }}</h4>
+                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">Dokumen {{ $title }}</p>
+
+                @if ($exists)
+                    <button data-modal-target="pdfModal"
+                            data-modal-toggle="pdfModal"
+                            data-pdf="{{ asset($path) }}"
+                            class="pdf-view-btn w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">
+                        Lihat Dokumen
+                    </button>
+                @else
+                    <button disabled
+                            class="w-full bg-gray-200 dark:bg-gray-600 text-gray-400 cursor-not-allowed font-medium py-2 px-4 rounded-lg text-sm">
+                        Tidak Ada File
+                    </button>
+                @endif
             </div>
-         </div>
+        @endforeach
+    </div>
+</div>
+
+<!-- Modal PDF Elegan -->
+<div id="pdfModal" tabindex="-1" aria-hidden="true"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40 transition-opacity duration-300">
+    <div class="relative w-full max-w-5xl mx-4 sm:mx-auto transform transition-all scale-95 opacity-0"
+        id="pdfModalContainer">
+        <!-- Kontainer Modal -->
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-4 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
+                    <span class="material-icons text-primary">picture_as_pdf</span>
+                    <span>Pratinjau Dokumen C Hasil</span>
+                </h3>
+                <button type="button" data-modal-hide="pdfModal"
+                    class="text-gray-500 hover:text-red-500 transition-colors duration-150 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <span class="material-icons text-lg">close</span>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="bg-gray-50 dark:bg-gray-800">
+                <iframe id="pdfFrame" src="" class="w-full h-[80vh] sm:h-[75vh] border-0 rounded-b-2xl"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.pdf-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const pdfUrl = btn.getAttribute('data-pdf');
+        const modal = document.getElementById('pdfModal');
+        const container = document.getElementById('pdfModalContainer');
+        const frame = document.getElementById('pdfFrame');
+
+        // Set source PDF
+        frame.src = pdfUrl;
+
+        // Tampilkan modal dengan animasi fade-in
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            container.classList.remove('opacity-0', 'scale-95');
+            container.classList.add('opacity-100', 'scale-100');
+        }, 10);
+    });
+});
+
+// Tutup modal saat klik luar atau tombol close
+document.querySelectorAll('[data-modal-hide="pdfModal"]').forEach(btn => {
+    btn.addEventListener('click', closeModal);
+});
+
+function closeModal() {
+    const modal = document.getElementById('pdfModal');
+    const container = document.getElementById('pdfModalContainer');
+    const frame = document.getElementById('pdfFrame');
+
+    container.classList.add('opacity-0', 'scale-95');
+    container.classList.remove('opacity-100', 'scale-100');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        frame.src = ''; // kosongkan agar tidak tetap memuat
+    }, 200);
+}
+
+// Tutup modal saat klik di luar konten
+document.getElementById('pdfModal').addEventListener('click', (e) => {
+    if (e.target.id === 'pdfModal') closeModal();
+});
+</script>
+
          {{-- anggota kpps --}}
          <div>
             <div class="flex justify-between items-center mb-4">

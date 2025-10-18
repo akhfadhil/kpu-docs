@@ -60,7 +60,7 @@
          </div>
       </footer>
       <script src="https://unpkg.com/flowbite@2.4.1/dist/flowbite.min.js"></script>
-      <script>
+      {{-- <script>
          document.addEventListener("DOMContentLoaded", function () {
             const burgerButton = document.getElementById("burgerButton");
             const mobileMenu = document.getElementById("mobileMenu");
@@ -84,7 +84,69 @@
                }
             });
          });
-         </script>
+      </script> --}}
+      <script>
+         document.addEventListener("DOMContentLoaded", function () {
+         // === MOBILE BURGER MENU ===
+         const burgerButton = document.getElementById("burgerButton");
+         const mobileMenu = document.getElementById("mobileMenu");
+
+         if (burgerButton && mobileMenu) {
+            burgerButton.addEventListener("click", (e) => {
+               e.stopPropagation();
+               mobileMenu.classList.toggle("hidden");
+
+               if (!mobileMenu.classList.contains("hidden")) {
+               mobileMenu.classList.add("animate-slide-down");
+               } else {
+               mobileMenu.classList.remove("animate-slide-down");
+               }
+            });
+
+            // Klik di luar menu burger
+            document.addEventListener("click", (e) => {
+               if (!burgerButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+               mobileMenu.classList.add("hidden");
+               }
+            });
+         }
+
+         // === DESKTOP USER DROPDOWN ===
+         const userMenuButton = document.getElementById("userMenuButton");
+         const profileDropdown = document.getElementById("profileDropdown");
+
+         if (userMenuButton && profileDropdown) {
+            userMenuButton.addEventListener("click", (e) => {
+               e.stopPropagation();
+               const isHidden = profileDropdown.classList.contains("hidden");
+
+               // Tutup dulu biar reset animasinya
+               profileDropdown.classList.add("hidden");
+               profileDropdown.classList.remove("scale-100", "opacity-100");
+
+               if (isHidden) {
+               profileDropdown.classList.remove("hidden");
+               setTimeout(() => {
+                  profileDropdown.classList.remove("scale-95", "opacity-0");
+                  profileDropdown.classList.add("scale-100", "opacity-100");
+               }, 10);
+               }
+            });
+
+            // Klik di luar dropdown user
+            document.addEventListener("click", (e) => {
+               if (
+               !userMenuButton.contains(e.target) &&
+               !profileDropdown.contains(e.target)
+               ) {
+               profileDropdown.classList.add("scale-95", "opacity-0");
+               setTimeout(() => profileDropdown.classList.add("hidden"), 150);
+               }
+            });
+         }
+         });
+      </script>
+
 
    </body>
 
