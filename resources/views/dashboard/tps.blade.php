@@ -74,8 +74,12 @@
                 'DPRD Kab' => 'dprd_kab.pdf',
             ];
 
-            $kecamatan = Str::slug($tps->desa->kecamatan->name ?? 'kecamatan');
-            $desa = Str::slug($tps->desa->name ?? 'desa');
+            // $kecamatan = Str::slug($tps->desa->kecamatan->name ?? 'kecamatan');
+            // $desa = Str::slug($tps->desa->name ?? 'desa');
+            // $tps_folder = 'tps ' . $tps->tps_code;
+
+            $kecamatan = $tps->desa->kecamatan->name ?? 'kecamatan';
+            $desa = $tps->desa->name ?? 'desa';
             $tps_folder = 'tps ' . $tps->tps_code;
         @endphp
 

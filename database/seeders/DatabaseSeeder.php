@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     //             \App\Models\Desa::factory()
     //                 ->count(2)
     //                 ->has(
-    //                     \App\Models\Tps::factory()->count(1)
+    //                     \App\Models\TPS::factory()->count(1)
     //                 )
     //         )
     //         ->create();
@@ -337,7 +337,7 @@ class DatabaseSeeder extends Seeder
 
                 // Tambahkan 10 TPS untuk setiap desa
                 for ($i = 1; $i <= 10; $i++) {
-                    \App\Models\Tps::firstOrCreate([
+                    \App\Models\TPS::firstOrCreate([
                         'desa_id' => $desa->id,
                         'tps_code' => "TPS-{$i}-{$desaNama}",
                     ], [

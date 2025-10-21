@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Tps;
+use App\Models\TPS;
 use App\Models\Document;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +16,7 @@ class UploadController extends Controller
         $role = $user->role->role ?? 'guest';
 
         // Ambil TPS yang dimiliki user
-        $tps = Tps::with('document')
+        $tps = TPS::with('document')
             ->where('id', $user->userable->tps_id)
             ->firstOrFail();
 
@@ -69,7 +69,7 @@ class UploadController extends Controller
         $user = Auth::user();
 
         // Ambil TPS milik user
-        $tps = Tps::where('id', $user->userable->tps_id)->firstOrFail();
+        $tps = TPS::where('id', $user->userable->tps_id)->firstOrFail();
 
         // Validasi input
         $request->validate([
@@ -83,7 +83,8 @@ class UploadController extends Controller
         // Tentukan path penyimpanan
         $path = 'documents/' .
             $tps->desa->kecamatan->name . '/' .
-            $tps->desa->name . '/tps ' . $tps->tps_code;
+            $tps->desa->name . 
+            '/tps ' . $tps->tps_code;
 
         $filename = $docType . '.pdf';
         $file->move(public_path($path), $filename);
