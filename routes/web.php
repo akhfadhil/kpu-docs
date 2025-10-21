@@ -10,7 +10,6 @@ use App\Http\Controllers\KPPSMemberController;
 use App\Http\Controllers\PPSMemberController;
 use App\Http\Controllers\PPKMemberController;
 use App\Http\Controllers\UploadController;
-use App\Models\PPSMember;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", [SessionController::class, "index"]);
@@ -24,7 +23,7 @@ Route::middleware(["check.login"])->group(function () {
         ->name("admin");
 
     // Kecamatan
-    Route::middleware(["check.role:pps"])->group(function () {
+    Route::middleware(["check.role:ppk"])->group(function () {
         Route::get("/kecamatan/{id}", [
             KecamatanController::class,
             "index",
@@ -37,10 +36,6 @@ Route::middleware(["check.login"])->group(function () {
 
     // Desa
     Route::middleware(["check.role:pps"])->group(function () {
-        // Route::get('/desa/{desaId}/tps/create', [TPSController::class, 'create'])
-        //     ->name('tps.create');
-        // Route::post('/desa/{desaId}/tps', [TPSController::class, 'store'])
-        //     ->name('tps.store');
         Route::get("/desa/{desaId}", [DesaController::class, "index"])->name(
             "desa.index",
         );

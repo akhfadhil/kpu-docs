@@ -23,7 +23,6 @@ class UploadController extends Controller
         return match ($role) {
             "admin" => view("upload.admin"),
             "ppk" => view("upload.ppk"),
-            "pps" => view("upload.pps"),
             "kpps" => view("upload.tps", compact("tps")),
             default => abort(403),
         };
