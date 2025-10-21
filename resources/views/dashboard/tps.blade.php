@@ -58,10 +58,6 @@
                             'DPRD Kab' => 'dprd_kab.pdf',
                         ];
 
-                        // $kecamatan = Str::slug($tps->desa->kecamatan->name ?? 'kecamatan');
-                        // $desa = Str::slug($tps->desa->name ?? 'desa');
-                        // $tps_folder = 'tps ' . $tps->tps_code;
-
                         $kecamatan = $tps->desa->kecamatan->name ?? 'kecamatan';
                         $desa = $tps->desa->name ?? 'desa';
                         $tps_folder = 'tps ' . $tps->tps_code;
@@ -176,7 +172,7 @@
             </script>
 
             {{-- anggota kpps --}}
-            <div>
+            <div class="mb-8">
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <h3 class="text-xl font-bold text-text-light dark:text-text-dark">Anggota KPPS</h3>

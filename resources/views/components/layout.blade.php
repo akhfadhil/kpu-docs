@@ -60,31 +60,7 @@
          </div>
       </footer>
       <script src="https://unpkg.com/flowbite@2.4.1/dist/flowbite.min.js"></script>
-      {{-- <script>
-         document.addEventListener("DOMContentLoaded", function () {
-            const burgerButton = document.getElementById("burgerButton");
-            const mobileMenu = document.getElementById("mobileMenu");
 
-            // Klik tombol burger -> toggle tampil / sembunyi
-            burgerButton.addEventListener("click", () => {
-               mobileMenu.classList.toggle("hidden");
-
-               // Animasi turun ke bawah pas buka
-               if (!mobileMenu.classList.contains("hidden")) {
-                     mobileMenu.classList.add("animate-slide-down");
-               } else {
-                     mobileMenu.classList.remove("animate-slide-down");
-               }
-            });
-
-            // Klik di luar menu -> sembunyikan
-            document.addEventListener("click", (e) => {
-               if (!burgerButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-                     mobileMenu.classList.add("hidden");
-               }
-            });
-         });
-      </script> --}}
       <script>
          document.addEventListener("DOMContentLoaded", function () {
          // === MOBILE BURGER MENU ===
