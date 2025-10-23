@@ -1,0 +1,39 @@
+[33m500b4b4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix upload
+[33m9346181[m Fix upload
+[33m3c83576[m Redesign UI
+[33m70ba8ad[m Add tambah anggota
+[33mee1d447[m Redesign blade component
+[33m6d2ac6a[m Adjusting with linux mint
+[33m8c65076[m Adjusting with linux mint
+[33m9a9f317[m Add Upload for TPS
+[33ma811b55[m Redesign UI
+[33m4685444[m Redesign UI
+[33m50192ea[m Redesign UI TPS
+[33mbd3e6a7[m Fix title login
+[33m45a6040[m Fix adding KPPS member
+[33m88976d0[m Add KPPS member form
+[33md6dfa8d[m Add KPPS view
+[33mc0f15f9[m Fix manual seed
+[33ma278d0c[m Fix error message
+[33mb68945c[m Add PPS view
+[33mc35091b[m Add PPS view
+[33m52662c8[m Fix active dashboard
+[33mb8c323b[m Fix PPK limitation
+[33m7f07022[m Fix PPK view
+[33m534764e[m Fix dropdown desa
+[33ma9c66ff[m Admin dashboard
+[33mc64b7ee[m Add view per role, fix hierarchy
+[33m0e1e904[m Add middleware
+[33m01b9534[m Change to username & password
+[33m75814cb[m Change to username & password
+[33mf28dddc[m Pull di laptop mas eko
+[33md5f3de2[m Test login with email & password
+[33m3853368[m Test login with email & password
+[33mf876750[m Test homepage
+[33m11487e8[m Test push
+[33m972142c[m Fix user relation
+[33m3cc3824[m Fix PPKMember relation
+[33m9ef7b98[m Fix PPKMember relation
+[33mc4bf155[m Add factories
+[33mbce28be[m Add seeder 1 data
+[33m2c72a93[m first commit
