@@ -11,22 +11,68 @@ use Illuminate\Support\Facades\Log;
 
 class UploadController extends Controller
 {
+    // public function index()
+    // {
+    //     $user = Auth::user();
+    //     $role = $user->role->role ?? "guest";
+
+    //     // Ambil TPS yang dimiliki user
+    //     $tps = TPS::with("document")
+    //         ->where("id", $user->userable->tps_id)
+    //         ->firstOrFail();
+
+    //     return match ($role) {
+    //         "admin" => view("upload.admin"),
+    //         "ppk" => view("upload.ppk"),
+    //         "kpps" => view("upload.tps", compact("tps")),
+    //         default => abort(403),
+    //     };
+    // }
+
     public function index()
     {
         $user = Auth::user();
         $role = $user->role->role ?? "guest";
+        $userable = $user->userable;
 
-        // Ambil TPS yang dimiliki user
-        $tps = TPS::with("document")
-            ->where("id", $user->userable->tps_id)
-            ->firstOrFail();
+        // Siapkan variabel data sesuai role
+        $data = [];
 
-        return match ($role) {
-            "admin" => view("upload.admin"),
-            "ppk" => view("upload.ppk"),
-            "kpps" => view("upload.tps", compact("tps")),
-            default => abort(403),
-        };
+        switch ($role) {
+            case "admin":
+                return view("upload.admin");
+
+            case "ppk":
+                // Jika user PPK, ambil kecamatan terkait
+                $kecamatan = \App\Models\Kecamatan::with(
+                    "document",
+                )->findOrFail($userable->kecamatan_id ?? null);
+                $data["kecamatan"] = $kecamatan;
+                return view("upload.kecamatan", $data);
+
+            case "pps":
+                // Jika user PPS, ambil desa terkait
+                $desa = $userable->desa ?? null;
+                if (!$desa) {
+                    abort(403, "Data desa tidak ditemukan untuk akun ini.");
+                }
+                $data["desa"] = $desa;
+                return view("upload.pps", $data);
+
+            case "kpps":
+                // Jika user KPPS, ambil TPS terkait
+                $tps = \App\Models\TPS::with("document")->findOrFail(
+                    $userable->tps_id ?? null,
+                );
+                $data["tps"] = $tps;
+                return view("upload.tps", $data);
+
+            default:
+                abort(
+                    403,
+                    "Anda tidak memiliki izin untuk mengakses halaman ini.",
+                );
+        }
     }
 
     public function store(Request $request)
