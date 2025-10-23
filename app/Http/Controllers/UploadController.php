@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TPS;
 use App\Models\Document;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class UploadController extends Controller
 {
@@ -35,7 +36,7 @@ class UploadController extends Controller
         // Ambil TPS milik user
         $tps = TPS::where("id", $user->userable->tps_id)->firstOrFail();
 
-        // Validasi input
+        // // Validasi input
         $request->validate([
             "doc_type" => "required|string",
             "file" => "required|file|mimes:pdf|max:20480", // max 20MB
@@ -53,9 +54,15 @@ class UploadController extends Controller
             "/tps " .
             $tps->tps_code;
 
+        // Buat direktori jika belum ada
+        if (!file_exists(public_path($path))) {
+            mkdir(public_path($path), 0777, true);
+        }
+
         $filename = $docType . ".pdf";
         $file->move(public_path($path), $filename);
 
+        //
         // === Cek apakah dokumen dengan tipe sama sudah ada ===
         $existingDocument = $tps
             ->document()
