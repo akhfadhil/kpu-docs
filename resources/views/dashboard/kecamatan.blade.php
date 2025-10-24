@@ -91,7 +91,6 @@
                     </div>
                 </div>
             </div>
-
             <script>
                 document.querySelectorAll('.pdf-view-btn').forEach(btn => {
                     btn.addEventListener('click', () => {

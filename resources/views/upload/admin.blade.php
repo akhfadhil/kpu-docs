@@ -20,9 +20,8 @@
 
             @foreach ($docs as $doc)
             @php
-
-            $existing = $kecamatan->document->firstWhere('doc_type', $doc['name']) ?? null;
-            $existing = "";
+                $path = public_path("documents/D Hasil Kabupaten/" . strtolower($doc['name']) . ".pdf");
+                $existing = file_exists($path);
             @endphp
             <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 flex flex-col items-center text-center hover:border-primary/50 transition">
                 <span class="material-icons text-4xl text-primary mb-2">description</span>
@@ -37,10 +36,11 @@
                 </button>
 
                 @if ($existing)
-                <p class="mt-2 text-xs text-green-600 dark:text-green-400">
-                    Sudah diupload
-                </p>
+                    <p class="mt-2 text-xs text-green-600 dark:text-green-400">
+                        Sudah diupload
+                    </p>
                 @endif
+
             </div>
 
             <!-- Modal Upload -->
@@ -74,7 +74,10 @@
 
                         @if ($existing)
                             <p class="text-xs text-gray-500 dark:text-gray-400">
-                            File sebelumnya: <span class="text-blue-600 dark:text-blue-400">{{ basename($existing->path) }}</span>
+                                File sebelumnya:
+                                <span class="text-blue-600 dark:text-blue-400">
+                                    {{ basename($path) }}
+                                </span>
                             </p>
                         @endif
 
