@@ -22,18 +22,18 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     @php
                         $docs = [
-                            'PPWP' => 'd_hasil_kec_ppwp.pdf',
-                            'DPR RI' => 'd_hasil_kec_dpr_ri.pdf',
-                            'DPD' => 'd_hasil_kec_dpd.pdf',
-                            'DPRD Prov' => 'd_hasil_kec_dprd_prov.pdf',
-                            'DPRD Kab' => 'd_hasil_kec_dprd_kab.pdf',
+                            'PPWP' => 'ppwp.pdf',
+                            'DPR RI' => 'dpr_ri.pdf',
+                            'DPD' => 'dpd.pdf',
+                            'DPRD Prov' => 'dprd_prov.pdf',
+                            'DPRD Kab' => 'dprd_kab.pdf',
                         ];
                         $kecamatan_name = $kecamatan->name ?? 'kecamatan';
                     @endphp
 
                     @foreach ($docs as $title => $filename)
                         @php
-                            $path = "documents/$kecamatan_name/$filename";
+                            $path = "documents/$kecamatan_name/D Hasil {$kecamatan_name}/$filename";
                             $exists = file_exists(public_path($path));
                         @endphp
 

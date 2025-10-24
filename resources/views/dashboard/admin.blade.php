@@ -12,16 +12,44 @@
                 class="bg-white shadow-lg rounded-2xl p-6 col-span-2 transform transition duration-500 hover:scale-[1.02] hover:shadow-xl">
                 {{-- dokumen --}}
                 <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Dokumen D Hasil Kabupaten</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
-                    <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg flex flex-col items-center text-center">
-                        <span class="material-icons text-4xl text-primary mb-2">description</span>
-                        <h4 class="font-semibold text-text-light dark:text-text-dark">PPWP</h4>
-                        <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">D Hasil
-                            Kabupaten</p>
-                        <button
-                            class="w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">Lihat
-                            Dokumen</button>
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    @php
+                        $docs = [
+                            'PPWP' => 'ppwp.pdf',
+                            'DPR RI' => 'dpr_ri.pdf',
+                            'DPD' => 'dpd.pdf',
+                            'DPRD Prov' => 'dprd_prov.pdf',
+                            'DPRD Kab' => 'dprd_kab.pdf',
+                        ];
+                        // $kecamatan_name = $kecamatan->name ?? 'kecamatan';
+                    @endphp
+
+                    @foreach ($docs as $title => $filename)
+                        @php
+                            // $path = "documents/$kecamatan_name/D Hasil {$kecamatan_name}/$filename";
+                            // $exists = file_exists(public_path($path));
+                            $exists = "";
+                        @endphp
+
+                        <div
+                            class="bg-gray-50 dark:bg-gray-700/40 rounded-xl p-5 flex flex-col items-center text-center shadow-sm hover:shadow-md transition">
+                            <span class="material-icons text-4xl text-primary mb-2">description</span>
+                            <h4 class="font-semibold text-text-light dark:text-text-dark">{{ $title }}</h4>
+
+                            @if ($exists)
+                                <button data-modal-target="pdfModal" data-modal-toggle="pdfModal"
+                                    data-pdf="{{ asset($path) }}"
+                                    class="pdf-view-btn w-full bg-primary/10 text-primary hover:bg-primary/20 font-medium py-2 px-4 rounded-lg text-sm transition">
+                                    Lihat Dokumen
+                                </button>
+                            @else
+                                <button disabled
+                                    class="w-full bg-gray-200 dark:bg-gray-600 text-gray-400 cursor-not-allowed font-medium py-2 px-4 rounded-lg text-sm">
+                                    Tidak Ada File
+                                </button>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
                 <h2 class="text-xl font-semibold mb-4">Pencarian Berdasarkan Wilayah</h2>
                 <form action="/hasil" method="get" class="grid grid-cols-1 md:grid-cols-2 gap-4">

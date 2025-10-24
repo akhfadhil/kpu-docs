@@ -50,15 +50,6 @@ class UploadController extends Controller
                 $data["kecamatan"] = $kecamatan;
                 return view("upload.kecamatan", $data);
 
-            case "pps":
-                // Jika user PPS, ambil desa terkait
-                $desa = $userable->desa ?? null;
-                if (!$desa) {
-                    abort(403, "Data desa tidak ditemukan untuk akun ini.");
-                }
-                $data["desa"] = $desa;
-                return view("upload.pps", $data);
-
             case "kpps":
                 // Jika user KPPS, ambil TPS terkait
                 $tps = \App\Models\TPS::with("document")->findOrFail(
@@ -75,62 +66,144 @@ class UploadController extends Controller
         }
     }
 
+    // public function store(Request $request)
+    // {
+    //     $user = Auth::user();
+
+    //     // Ambil TPS milik user
+    //     $tps = TPS::where("id", $user->userable->tps_id)->firstOrFail();
+
+    //     // // Validasi input
+    //     $request->validate([
+    //         "doc_type" => "required|string",
+    //         "file" => "required|file|mimes:pdf|max:20480", // max 20MB
+    //     ]);
+
+    //     $file = $request->file("file");
+    //     $docType = strtolower($request->doc_type);
+
+    //     // Tentukan path penyimpanan
+    //     $path =
+    //         "documents/" .
+    //         $tps->desa->kecamatan->name .
+    //         "/" .
+    //         $tps->desa->name .
+    //         "/tps " .
+    //         $tps->tps_code;
+
+    //     // Buat direktori jika belum ada
+    //     if (!file_exists(public_path($path))) {
+    //         mkdir(public_path($path), 0777, true);
+    //     }
+
+    //     $filename = $docType . ".pdf";
+    //     $file->move(public_path($path), $filename);
+
+    //     //
+    //     // === Cek apakah dokumen dengan tipe sama sudah ada ===
+    //     $existingDocument = $tps
+    //         ->document()
+    //         ->where("doc_type", strtoupper($docType))
+    //         ->first();
+
+    //     if ($existingDocument) {
+    //         // Jika ada → update record lama
+    //         $existingDocument->update([
+    //             "path" => "$path/$filename",
+    //             "uploaded_by" => $user->id,
+    //             "updated_at" => now(),
+    //         ]);
+    //     } else {
+    //         // Jika belum ada → buat record baru
+    //         $tps->document()->create([
+    //             "doc_type" => strtoupper($docType),
+    //             "path" => "$path/$filename",
+    //             "uploaded_by" => $user->id,
+    //             "created_at" => now(),
+    //             "updated_at" => now(),
+    //         ]);
+    //     }
+
+    //     return redirect()
+    //         ->back()
+    //         ->with("success", "Dokumen berhasil diupload!");
+    // }
+
     public function store(Request $request)
     {
         $user = Auth::user();
+        $role = $user->role->role ?? "guest";
+        $userable = $user->userable;
 
-        // Ambil TPS milik user
-        $tps = TPS::where("id", $user->userable->tps_id)->firstOrFail();
-
-        // // Validasi input
+        // Validasi file upload
         $request->validate([
             "doc_type" => "required|string",
-            "file" => "required|file|mimes:pdf|max:20480", // max 20MB
+            "file" => "required|file|mimes:pdf|max:20480", // max 20 MB
         ]);
 
         $file = $request->file("file");
         $docType = strtolower($request->doc_type);
 
-        // Tentukan path penyimpanan
-        $path =
-            "documents/" .
-            $tps->desa->kecamatan->name .
-            "/" .
-            $tps->desa->name .
-            "/tps " .
-            $tps->tps_code;
+        $path = "";
+        $documentable = null;
 
-        // Buat direktori jika belum ada
+        // === Tentukan lokasi dan relasi penyimpanan berdasarkan role ===
+        if ($role === "kpps") {
+            // Upload untuk TPS
+            $tps = \App\Models\TPS::with("desa.kecamatan")->findOrFail(
+                $userable->tps_id,
+            );
+            $path = "documents/{$tps->desa->kecamatan->name}/{$tps->desa->name}/tps {$tps->tps_code}";
+            $documentable = $tps;
+        } elseif ($role === "ppk") {
+            // Upload untuk Kecamatan
+            $kecamatan = \App\Models\Kecamatan::findOrFail(
+                $userable->kecamatan_id,
+            );
+            $path = "documents/{$kecamatan->name}/D Hasil {$kecamatan->name}";
+            $documentable = $kecamatan;
+        } elseif ($role === "admin") {
+            // Upload untuk kabupaten (tanpa relasi morph)
+            $path = "documents/D Hasil Kabupaten";
+        } else {
+            abort(403, "Role Anda tidak memiliki izin untuk upload dokumen.");
+        }
+
+        // === Pastikan folder tujuan ada ===
         if (!file_exists(public_path($path))) {
             mkdir(public_path($path), 0777, true);
         }
 
-        $filename = $docType . ".pdf";
+        $filename = "{$docType}.pdf";
+        $fullPath = "{$path}/{$filename}";
+
+        // === Simpan file fisik ===
         $file->move(public_path($path), $filename);
 
-        //
-        // === Cek apakah dokumen dengan tipe sama sudah ada ===
-        $existingDocument = $tps
-            ->document()
-            ->where("doc_type", strtoupper($docType))
-            ->first();
+        // === Simpan ke database jika ada relasi morph ===
+        if ($documentable) {
+            $existing = $documentable
+                ->document()
+                ->where("doc_type", strtoupper($docType))
+                ->first();
 
-        if ($existingDocument) {
-            // Jika ada → update record lama
-            $existingDocument->update([
-                "path" => "$path/$filename",
-                "uploaded_by" => $user->id,
-                "updated_at" => now(),
-            ]);
-        } else {
-            // Jika belum ada → buat record baru
-            $tps->document()->create([
-                "doc_type" => strtoupper($docType),
-                "path" => "$path/$filename",
-                "uploaded_by" => $user->id,
-                "created_at" => now(),
-                "updated_at" => now(),
-            ]);
+            if ($existing) {
+                // Update record lama
+                $existing->update([
+                    "path" => $fullPath,
+                    "uploaded_by" => $user->id,
+                    "updated_at" => now(),
+                ]);
+            } else {
+                // Buat record baru
+                $documentable->document()->create([
+                    "doc_type" => strtoupper($docType),
+                    "path" => $fullPath,
+                    "uploaded_by" => $user->id,
+                    "created_at" => now(),
+                    "updated_at" => now(),
+                ]);
+            }
         }
 
         return redirect()

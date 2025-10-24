@@ -13,8 +13,8 @@
                 ['name' => 'PPWP', 'desc' => 'Presidential Election'],
                 ['name' => 'DPR_RI', 'desc' => 'National Parliament'],
                 ['name' => 'DPD', 'desc' => 'Regional Council'],
-                ['name' => 'DPRD_Prov', 'desc' => 'Provincial Parliament'],
-                ['name' => 'DPRD_Kab', 'desc' => 'Regency Parliament'],
+                ['name' => 'DPRD_PROV', 'desc' => 'Provincial Parliament'],
+                ['name' => 'DPRD_KAB', 'desc' => 'Regency Parliament'],
             ];
             @endphp
 
