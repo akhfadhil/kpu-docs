@@ -53,6 +53,10 @@ Route::middleware(["check.login"])->group(function () {
             PPSMemberController::class,
             "store",
         ])->name("pps.store");
+        // Update data
+        Route::put("/pps/{id}", [PPSMemberController::class, "update"])->name(
+            "pps.anggota.update",
+        );
         // Delete KPPS member
         Route::delete("/pps/{id}", [
             PPSMemberController::class,
