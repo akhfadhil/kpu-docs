@@ -230,22 +230,77 @@
                                     <td class="px-6 py-4 text-sm">{{ $p->name }}</td>
                                     <td class="px-6 py-4 text-sm">{{ $p->job_title }}</td>
                                     <td class="px-6 py-4 text-sm">
-                                        {{-- <a class="font-medium text-primary hover:text-indigo-700 transition-colors" href="#">Edit</a> --}}
-                                        <button data-modal-target="editModal-{{ $p->id }}" data-modal-toggle="editModal-{{ $p->id }}"
-                                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
-                                            Edit
-                                        </button>
-                                        <!-- Modal Edit -->
-                                        @include('partials.edit-modal', ['member' => $p])
-                                        
-                                        {{-- <a class="font-medium text-red-500 hover:text-red-700 transition-colors" href="#">Delete</a> --}}
-                                        <form action="{{ route('kpps.anggota.destroy', $p->id) }}" method="POST" data-confirm>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800 font-semibold">
-                                                Hapus
+                                        <div class="flex gap-2">
+                                            <!-- Tombol Edit -->
+                                            <button
+                                                class="edit-btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm"
+                                                data-id="{{ $p->id }}" data-name="{{ $p->name }}"
+                                                data-job="{{ $p->job_title }}" data-modal-target="editKPPSModal"
+                                                data-modal-toggle="editKPPSModal">
+                                                Edit
                                             </button>
-                                        </form>
+
+
+                                            <!-- Tombol Hapus -->
+                                            <form action="{{ route('kpps.anggota.destroy', $p->id) }}" data-confirm
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-medium transition duration-150">
+                                                    <i class="fa-solid fa-trash text-xs"></i>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Modal Edit KPPS -->
+                                        <div id="editKPPSModal" tabindex="-1" aria-hidden="true"
+                                            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                                            <div
+                                                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6">
+                                                <h3
+                                                    class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                                                    Edit Anggota KPPS</h3>
+
+                                                <form id="editKPPSForm" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="mb-4">
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama</label>
+                                                        <input type="text" name="name" id="editName"
+                                                            class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-primary focus:border-primary">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jabatan</label>
+                                                        <select name="job_title" id="editJobTitle"
+                                                            class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-primary focus:border-primary">
+                                                            <option value="">-- Pilih Jabatan --</option>
+                                                            @for ($i = 2; $i <= 7; $i++)
+                                                                <option value="KPPS {{ $i }}">KPPS
+                                                                    {{ $i }}</option>
+                                                            @endfor
+                                                            <option value="Keamanan">Keamanan</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="flex justify-end space-x-2">
+                                                        <button type="button" data-modal-hide="editKPPSModal"
+                                                            class="px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600">
+                                                            Batal
+                                                        </button>
+                                                        <button type="submit"
+                                                            class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/80">
+                                                            Simpan
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -264,22 +319,48 @@
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- EDIT MODAL & ACTION FORM --}}
     <script>
-        document.querySelectorAll('form[data-confirm]').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            Swal.fire({
-            title: 'Hapus anggota?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const editButtons = document.querySelectorAll('.edit-btn');
+            const form = document.getElementById('editKPPSForm');
+            const nameInput = document.getElementById('editName');
+            const jobInput = document.getElementById('editJobTitle');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = button.dataset.id;
+                    const name = button.dataset.name;
+                    const job = button.dataset.job;
+
+                    // Isi data ke modal
+                    nameInput.value = name;
+                    jobInput.value = job;
+
+                    // Ganti action form ke route update
+                    form.action = `/kpps/${id}`;
+                });
             });
         });
+    </script>
+
+    {{-- DELETE CONFIRM --}}
+    <script>
+        document.querySelectorAll('form[data-confirm]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Hapus anggota?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 

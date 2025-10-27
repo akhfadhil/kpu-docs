@@ -18,10 +18,10 @@ Route::post("/", [SessionController::class, "login"]);
 // Route yang dilindungi middleware
 Route::middleware(["check.login"])->group(function () {
     // Admin
-        // Dashboard
-        Route::get("/admin", [AdminController::class, "index"])
-            ->middleware("check.role:admin")
-            ->name("admin");
+    // Dashboard
+    Route::get("/admin", [AdminController::class, "index"])
+        ->middleware("check.role:admin")
+        ->name("admin");
 
     // Kecamatan
     Route::middleware(["check.role:ppk"])->group(function () {
@@ -36,10 +36,10 @@ Route::middleware(["check.login"])->group(function () {
             "store",
         ])->name("ppk.store");
         // Delete PPK member
-        Route::delete('/ppk/{id}', [
-            PPKMemberController::class, 
+        Route::delete("/ppk/{id}", [
+            PPKMemberController::class,
             "destroy",
-            ])->name('ppk.anggota.destroy');
+        ])->name("ppk.anggota.destroy");
     });
 
     // Desa
@@ -54,10 +54,10 @@ Route::middleware(["check.login"])->group(function () {
             "store",
         ])->name("pps.store");
         // Delete KPPS member
-        Route::delete('/pps/{id}', [
-            PPSMemberController::class, 
+        Route::delete("/pps/{id}", [
+            PPSMemberController::class,
             "destroy",
-            ])->name('pps.anggota.destroy');
+        ])->name("pps.anggota.destroy");
     });
 
     // TPS
@@ -71,21 +71,15 @@ Route::middleware(["check.login"])->group(function () {
             KPPSMemberController::class,
             "store",
         ])->name("kpps.anggota.store");
-        // Edit form
-        Route::get('/kpps/{id}/edit', [
-            KPPSMemberController::class,
-            'edit'
-        ])->name('kpps.anggota.edit');
         // Update data
-        Route::put('/kpps/{id}', [
-            KPPSMemberController::class,
-            'update'
-        ])->name('kpps.anggota.update');
+        Route::put("/kpps/{id}", [KPPSMemberController::class, "update"])->name(
+            "kpps.anggota.update",
+        );
         // Delete KPPS member
-        Route::delete('/kpps/{id}', [
-            KPPSMemberController::class, 
+        Route::delete("/kpps/{id}", [
+            KPPSMemberController::class,
             "destroy",
-            ])->name('kpps.anggota.destroy');
+        ])->name("kpps.anggota.destroy");
     });
 
     // Upload
@@ -110,12 +104,10 @@ Route::middleware(["check.login"])->group(function () {
     // Note:
     // Link breadcrumb
     // Edit anggota
-    // Delete anggota
     // add anggota ppk
     // add desa
     // add tps
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
-
 });

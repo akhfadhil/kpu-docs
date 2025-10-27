@@ -74,49 +74,23 @@ class KPPSMemberController extends Controller
             ->with("success", "Anggota KPPS berhasil ditambahkan!");
     }
 
-    public function edit($id)
-    {
-        $user = Auth::user();
-        $member = \App\Models\KPPSMember::with('tps.desa.kecamatan')->findOrFail($id);
-
-        // 🔒 Role-based access control
-        if ($user->role->role === 'admin') {
-            // ok
-        } elseif ($user->role->role === 'ppk') {
-            $userKecId = $user->userable->kecamatan_id ?? null;
-            $memberKecId = $member->tps->desa->kecamatan->id ?? null;
-            if ($userKecId !== $memberKecId) abort(403, 'Anda tidak memiliki izin untuk anggota ini.');
-        } elseif ($user->role->role === 'pps') {
-            $userDesaId = $user->userable->desa_id ?? null;
-            $memberDesaId = $member->tps->desa->id ?? null;
-            if ($userDesaId !== $memberDesaId) abort(403, 'Anda tidak memiliki izin untuk anggota ini.');
-        } elseif ($user->role->role === 'kpps') {
-            $userTpsId = $user->userable->tps_id ?? null;
-            if ($userTpsId !== $member->tps_id) abort(403, 'Anda tidak memiliki izin untuk anggota TPS ini.');
-        } else {
-            abort(403, 'Akses ditolak.');
-        }
-
-        return view('kpps.edit', compact('member'));
-    }
-
     public function update(Request $request, $id)
     {
         $member = \App\Models\KPPSMember::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'job_title' => 'required|string|max:255',
+            "name" => "required|string|max:255",
+            "job_title" => "required|string|max:255",
         ]);
 
         $member->update([
-            'name' => $request->name,
-            'job_title' => $request->job_title,
+            "name" => $request->name,
+            "job_title" => $request->job_title,
         ]);
 
         return redirect()
             ->back()
-            ->with('success', 'Data anggota KPPS berhasil diperbarui.');
+            ->with("success", "Data anggota KPPS berhasil diperbarui.");
     }
 
     public function destroy($id)
@@ -125,34 +99,39 @@ class KPPSMemberController extends Controller
 
         // Otorisasi: Pastikan hanya role yang berhak bisa hapus
         $user = Auth::user();
-        $role = $user->role->role ?? 'guest';
+        $role = $user->role->role ?? "guest";
         $userable = $user->userable;
 
-        if ($role === 'admin') {
+        if ($role === "admin") {
             // admin bebas hapus
-        } elseif ($role === 'ppk') {
+        } elseif ($role === "ppk") {
             if ($userable->kecamatan_id !== $member->tps->desa->kecamatan_id) {
-                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.');
+                abort(
+                    403,
+                    "Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.",
+                );
             }
-        } elseif ($role === 'pps') {
+        } elseif ($role === "pps") {
             if ($userable->desa_id !== $member->tps->desa_id) {
-                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari desa ini.');
+                abort(
+                    403,
+                    "Anda tidak memiliki izin untuk menghapus anggota dari desa ini.",
+                );
             }
-            
-        } elseif ($role === 'kpps') {
+        } elseif ($role === "kpps") {
             if ($userable->tps_id !== $member->tps_id) {
-                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari tps ini.');
+                abort(
+                    403,
+                    "Anda tidak memiliki izin untuk menghapus anggota dari tps ini.",
+                );
             }
         } else {
-            abort(403, 'Anda tidak memiliki izin untuk menghapus anggota PPS.');
+            abort(403, "Anda tidak memiliki izin untuk menghapus anggota PPS.");
         }
 
         // Hapus data
         $member->delete();
 
-        return redirect()
-            ->back()
-            ->with('success', 'Anggota berhasil dihapus!');
+        return redirect()->back()->with("success", "Anggota berhasil dihapus!");
     }
-
 }
