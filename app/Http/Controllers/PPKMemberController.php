@@ -62,28 +62,48 @@ class PPKMemberController extends Controller
             ->with("success", "Anggota PPK berhasil ditambahkan!");
     }
 
+    public function update(Request $request, $id)
+    {
+        $member = \App\Models\PPKMember::findOrFail($id);
+
+        $request->validate([
+            "name" => "required|string|max:255",
+            "job_title" => "required|string|max:255",
+        ]);
+
+        $member->update([
+            "name" => $request->name,
+            "job_title" => $request->job_title,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with("success", "Data anggota PPK berhasil diperbarui.");
+    }
+
     public function destroy($id)
     {
         $member = \App\Models\PPKMember::findOrFail($id);
 
         // Otorisasi: Pastikan hanya role yang berhak bisa hapus
         $user = Auth::user();
-        $role = $user->role->role ?? 'guest';
+        $role = $user->role->role ?? "guest";
         $userable = $user->userable;
 
-        if ($role === 'admin') {
+        if ($role === "admin") {
             // admin bebas hapus
-        } elseif ($role === 'ppk') {
+        } elseif ($role === "ppk") {
             if ($userable->kecamatan_id !== $member->kecamatan_id) {
-                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.');
+                abort(
+                    403,
+                    "Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.",
+                );
             }
         }
 
         // Hapus data
         $member->delete();
 
-        return redirect()
-            ->back()
-            ->with('success', 'Anggota berhasil dihapus!');
+        return redirect()->back()->with("success", "Anggota berhasil dihapus!");
     }
 }

@@ -35,6 +35,10 @@ Route::middleware(["check.login"])->group(function () {
             PPKMemberController::class,
             "store",
         ])->name("ppk.store");
+        // Update data
+        Route::put("/ppk/{id}", [PPKMemberController::class, "update"])->name(
+            "ppk.anggota.update",
+        );
         // Delete PPK member
         Route::delete("/ppk/{id}", [
             PPKMemberController::class,
