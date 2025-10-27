@@ -111,7 +111,6 @@ Route::middleware(["check.login"])->group(function () {
 
     // Note:
     // Link breadcrumb
-    // Edit anggota
     // add anggota ppk
     // add desa
     // add tps
