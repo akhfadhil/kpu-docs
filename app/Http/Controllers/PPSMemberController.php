@@ -34,8 +34,7 @@ class PPSMemberController extends Controller
         // 3️⃣ Jika PPS, pastikan desa sama (boleh menambah anggota di desanya sendiri)
         elseif ($user->role->role === "pps") {
             $userDesaId = $userable->desa_id ?? null;
-
-            if ($userDesaId !== $desaId) {
+            if ((int) $userDesaId !== (int) $desaId) {
                 abort(403, "Anda tidak memiliki izin untuk desa ini.");
             }
         }
@@ -67,5 +66,35 @@ class PPSMemberController extends Controller
         return redirect()
             ->route("desa.index", $desaId)
             ->with("success", "Anggota PPS berhasil ditambahkan!");
+    }
+
+    public function destroy($id)
+    {
+        $member = \App\Models\PPSMember::findOrFail($id);
+
+        // Otorisasi: Pastikan hanya role yang berhak bisa hapus
+        $user = Auth::user();
+        $role = $user->role->role ?? 'guest';
+        $userable = $user->userable;
+
+        if ($role === 'admin') {
+            // admin bebas hapus
+        } elseif ($role === 'ppk') {
+            if ($userable->kecamatan_id !== $member->desa->kecamatan_id) {
+                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.');
+            }
+        } elseif ($role === 'pps') {
+            if ($userable->desa_id !== $member->desa_id) {
+                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari desa ini.');
+            }
+            
+        }
+
+        // Hapus data
+        $member->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Anggota berhasil dihapus!');
     }
 }

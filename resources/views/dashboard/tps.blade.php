@@ -230,7 +230,15 @@
                                     <td class="px-6 py-4 text-sm">{{ $p->name }}</td>
                                     <td class="px-6 py-4 text-sm">{{ $p->job_title }}</td>
                                     <td class="px-6 py-4 text-sm">
-                                        <a href="#" class="text-primary hover:underline">Edit</a>
+                                        <a class="font-medium text-primary hover:text-indigo-700 transition-colors" href="#">Edit</a>
+                                        {{-- <a class="font-medium text-red-500 hover:text-red-700 transition-colors" href="#">Delete</a> --}}
+                                        <form action="{{ route('kpps.anggota.destroy', $p->id) }}" method="POST" data-confirm>
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-800 font-semibold">
+                                                Hapus
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
@@ -248,5 +256,24 @@
 
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('form[data-confirm]').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+            title: 'Hapus anggota?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+            });
+        });
+        });
+    </script>
 
 </x-layout>

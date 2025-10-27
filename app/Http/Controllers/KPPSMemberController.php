@@ -73,4 +73,41 @@ class KPPSMemberController extends Controller
             ->route("tps.index", $tpsId)
             ->with("success", "Anggota KPPS berhasil ditambahkan!");
     }
+
+    public function destroy($id)
+    {
+        $member = \App\Models\KPPSMember::findOrFail($id);
+
+        // Otorisasi: Pastikan hanya role yang berhak bisa hapus
+        $user = Auth::user();
+        $role = $user->role->role ?? 'guest';
+        $userable = $user->userable;
+
+        if ($role === 'admin') {
+            // admin bebas hapus
+        } elseif ($role === 'ppk') {
+            if ($userable->kecamatan_id !== $member->tps->desa->kecamatan_id) {
+                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.');
+            }
+        } elseif ($role === 'pps') {
+            if ($userable->desa_id !== $member->tps->desa_id) {
+                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari desa ini.');
+            }
+            
+        } elseif ($role === 'kpps') {
+            if ($userable->tps_id !== $member->tps_id) {
+                abort(403, 'Anda tidak memiliki izin untuk menghapus anggota dari tps ini.');
+            }
+        } else {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus anggota PPS.');
+        }
+
+        // Hapus data
+        $member->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Anggota berhasil dihapus!');
+    }
+
 }

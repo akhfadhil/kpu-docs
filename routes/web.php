@@ -18,48 +18,72 @@ Route::post("/", [SessionController::class, "login"]);
 // Route yang dilindungi middleware
 Route::middleware(["check.login"])->group(function () {
     // Admin
-    Route::get("/admin", [AdminController::class, "index"])
-        ->middleware("check.role:admin")
-        ->name("admin");
+        // Dashboard
+        Route::get("/admin", [AdminController::class, "index"])
+            ->middleware("check.role:admin")
+            ->name("admin");
 
     // Kecamatan
     Route::middleware(["check.role:ppk"])->group(function () {
+        // Dashboard
         Route::get("/kecamatan/{id}", [
             KecamatanController::class,
             "index",
         ])->name("kecamatan.index");
+        // Add PPK member
         Route::post("/kecamatan/{id}/ppk", [
             PPKMemberController::class,
             "store",
         ])->name("ppk.store");
+        // Delete PPK member
+        Route::delete('/ppk/{id}', [
+            PPKMemberController::class, 
+            "destroy",
+            ])->name('ppk.anggota.destroy');
     });
 
     // Desa
     Route::middleware(["check.role:pps"])->group(function () {
+        // Dashboard
         Route::get("/desa/{desaId}", [DesaController::class, "index"])->name(
             "desa.index",
         );
+        // Add PPS member
         Route::post("/desa/{desaId}/pps", [
             PPSMemberController::class,
             "store",
         ])->name("pps.store");
+        // Delete KPPS member
+        Route::delete('/pps/{id}', [
+            PPSMemberController::class, 
+            "destroy",
+            ])->name('pps.anggota.destroy');
     });
 
     // TPS
     Route::middleware(["check.role:kpps"])->group(function () {
+        // Dashboard
         Route::get("/tps/{tpsId}", [TPSController::class, "index"])->name(
             "tps.index",
         );
+        // Add KPPS member
         Route::post("/tps/{tpsId}/anggota", [
             KPPSMemberController::class,
             "store",
         ])->name("kpps.anggota.store");
+        // Delete KPPS member
+        Route::delete('/kpps/{id}', [
+            KPPSMemberController::class, 
+            "destroy",
+            ])->name('kpps.anggota.destroy');
     });
 
     // Upload
+    // Dashboard upload
     Route::get("/upload", [UploadController::class, "index"])->name(
         "upload.index",
     );
+    // Add/Upload docs
     Route::post("/upload", [UploadController::class, "store"])->name(
         "upload.store",
     );
@@ -72,4 +96,16 @@ Route::middleware(["check.login"])->group(function () {
         LocationController::class,
         "getDesaByKecamatan",
     ]);
+
+    // Note:
+    // Link breadcrumb
+    // Edit anggota
+    // Delete anggota
+    // add anggota ppk
+    // add desa
+    // add tps
+    // modal modal confirm / error page /
+    // toast succes / failed
+    // check clean code
+
 });
