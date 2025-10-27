@@ -67,10 +67,20 @@ Route::middleware(["check.login"])->group(function () {
             "tps.index",
         );
         // Add KPPS member
-        Route::post("/tps/{tpsId}/anggota", [
+        Route::post("/kpps/{tpsId}/anggota", [
             KPPSMemberController::class,
             "store",
         ])->name("kpps.anggota.store");
+        // Edit form
+        Route::get('/kpps/{id}/edit', [
+            KPPSMemberController::class,
+            'edit'
+        ])->name('kpps.anggota.edit');
+        // Update data
+        Route::put('/kpps/{id}', [
+            KPPSMemberController::class,
+            'update'
+        ])->name('kpps.anggota.update');
         // Delete KPPS member
         Route::delete('/kpps/{id}', [
             KPPSMemberController::class, 

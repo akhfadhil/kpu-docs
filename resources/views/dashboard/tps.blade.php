@@ -230,7 +230,14 @@
                                     <td class="px-6 py-4 text-sm">{{ $p->name }}</td>
                                     <td class="px-6 py-4 text-sm">{{ $p->job_title }}</td>
                                     <td class="px-6 py-4 text-sm">
-                                        <a class="font-medium text-primary hover:text-indigo-700 transition-colors" href="#">Edit</a>
+                                        {{-- <a class="font-medium text-primary hover:text-indigo-700 transition-colors" href="#">Edit</a> --}}
+                                        <button data-modal-target="editModal-{{ $p->id }}" data-modal-toggle="editModal-{{ $p->id }}"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
+                                            Edit
+                                        </button>
+                                        <!-- Modal Edit -->
+                                        @include('partials.edit-modal', ['member' => $p])
+                                        
                                         {{-- <a class="font-medium text-red-500 hover:text-red-700 transition-colors" href="#">Delete</a> --}}
                                         <form action="{{ route('kpps.anggota.destroy', $p->id) }}" method="POST" data-confirm>
                                             @csrf
