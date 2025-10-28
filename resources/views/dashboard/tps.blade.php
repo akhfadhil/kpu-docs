@@ -280,7 +280,7 @@
                                                         <select name="job_title" id="editJobTitle"
                                                             class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-primary focus:border-primary">
                                                             <option value="">-- Pilih Jabatan --</option>
-                                                            @for ($i = 2; $i <= 7; $i++)
+                                                            @for ($i = 1; $i <= 7; $i++)
                                                                 <option value="KPPS {{ $i }}">KPPS
                                                                     {{ $i }}</option>
                                                             @endfor

@@ -278,6 +278,7 @@
                                                         <select name="job_title" id="editJobTitle"
                                                             class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-primary focus:border-primary">
                                                             <option value="">-- Pilih --</option>
+                                                            <option value="PPK 1">PPK 1</option>
                                                             <option value="PPK 2">PPK 2</option>
                                                             <option value="PPK 3">PPK 3</option>
                                                             <option value="PPK 4">PPK 4</option>

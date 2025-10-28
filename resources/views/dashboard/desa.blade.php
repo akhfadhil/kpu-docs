@@ -158,6 +158,7 @@
                                                         <select name="job_title" id="editJobTitle"
                                                             class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-primary focus:border-primary">
                                                             <option value="">-- Pilih --</option>
+                                                            <option value="PPS 1">PPS 1</option>
                                                             <option value="PPS 2">PPS 2</option>
                                                             <option value="PPS 3">PPS 3</option>
                                                         </select>

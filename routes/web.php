@@ -10,6 +10,7 @@ use App\Http\Controllers\KPPSMemberController;
 use App\Http\Controllers\PPSMemberController;
 use App\Http\Controllers\PPKMemberController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", [SessionController::class, "index"]);
@@ -22,6 +23,9 @@ Route::middleware(["check.login"])->group(function () {
     Route::get("/admin", [AdminController::class, "index"])
         ->middleware("check.role:admin")
         ->name("admin");
+    Route::put("/users/{id}", [UserController::class, "update"])->name(
+        "users.update",
+    );
 
     // Kecamatan
     Route::middleware(["check.role:ppk"])->group(function () {
@@ -111,10 +115,10 @@ Route::middleware(["check.login"])->group(function () {
 
     // Note:
     // Link breadcrumb
-    // add anggota ppk
-    // add desa
     // add tps
+    // add pengumuman
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
+    // fix password
 });
