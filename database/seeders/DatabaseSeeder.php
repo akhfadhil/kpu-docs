@@ -332,14 +332,12 @@ class DatabaseSeeder extends Seeder
 
         // 4️⃣ Buat user admin
         $adminRole = \App\Models\Role::where("role", "admin")->first();
-        \App\Models\User::firstOrCreate(
-            ["email" => "admin@demo.com"],
-            [
-                "name" => "Super Admin",
-                "username" => "superadmin",
-                "password" => bcrypt("password"),
-                "role_id" => $adminRole->id,
-            ],
-        );
+        \App\Models\User::firstOrCreate([
+            "name" => "Super Admin",
+            "username" => "superadmin",
+            "password" => bcrypt("password"),
+            "temporary_password" => "password",
+            "role_id" => $adminRole->id,
+        ]);
     }
 }

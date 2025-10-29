@@ -18,22 +18,20 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role_id'
+        "name",
+        "username",
+        "password",
+        "temporary_password",
+        "role_id",
+        "userable_id",
+        "userable_type",
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
+    protected $hidden = ["password", "remember_token", "temporary_password"];
     /**
      * Get the attributes that should be cast.
      *
@@ -42,28 +40,27 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            "password" => "hashed",
         ];
     }
 
-    public function role() 
-    { 
-        return $this->belongsTo(Role::class); 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
-    public function userable() 
-    { 
-        return $this->morphTo(); 
+    public function userable()
+    {
+        return $this->morphTo();
     } // anggota_ppk/pps/kpps
 
-    public function uploadedDokumen() 
-    { 
-        return $this->hasMany(Document::class, 'uploaded_by'); 
+    public function uploadedDokumen()
+    {
+        return $this->hasMany(Document::class, "uploaded_by");
     }
 
-    public function isRole($roleName) {
+    public function isRole($roleName)
+    {
         return $this->role && $this->role->role === $roleName;
     }
-
 }

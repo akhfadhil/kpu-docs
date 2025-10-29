@@ -231,7 +231,7 @@
                                 <td class="px-4 py-2 border-b">{{ $index + 1 }}</td>
                                 <td class="px-4 py-2 border-b">{{ $u->name }}</td>
                                 <td class="px-4 py-2 border-b">{{ $u->username }}</td>
-                                <td class="px-4 py-2">
+                                <td class="px-4 py-2 border-b">
                                     @if ($u->role->role === 'ppk' && $u->userable)
                                         {{ $u->userable->kecamatan->name }}
                                     @elseif ($u->role->role === 'pps' && $u->userable)
@@ -245,7 +245,7 @@
                                         {{ strtoupper($u->role->role) }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-2 text-center">
+                                <td class="px-4 py-2 border-b text-center">
                                     <!-- Tombol Edit -->
                                     <button data-modal-target="editModal-{{ $u->id }}"
                                         data-modal-toggle="editModal-{{ $u->id }}"

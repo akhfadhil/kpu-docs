@@ -7,20 +7,21 @@ use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
-    function index () {
-        return view('login');
+    function index()
+    {
+        return view("login");
     }
 
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required',
-            'password' => 'required',
+            "username" => "required",
+            "password" => "required",
         ]);
 
         $credentials = [
-            'username' => $request->username,
-            'password' => $request->password,
+            "username" => $request->username,
+            "password" => $request->password,
         ];
 
         if (Auth::attempt($credentials)) {
@@ -28,29 +29,44 @@ class SessionController extends Controller
             $user = Auth::user();
             $role = $user->role->role;
 
+            if (!empty($user->temporary_password)) {
+                // Arahkan user ke halaman ganti password
+                return redirect()->route("password.force_change");
+                // return "Hallo";
+            }
+
             switch ($role) {
-                case 'admin':
-                    return redirect()->intended('/admin');
-                case 'ppk':
-                    return redirect()->route('kecamatan.index', ['id' => $user->userable->kecamatan_id]);
-                case 'pps':
-                    return redirect()->route('desa.index', ['desaId' => $user->userable->desa_id]);
-                case 'kpps':
-                    return redirect()->route('tps.index', ['tpsId' => $user->userable->tps_id]);
+                case "admin":
+                    return redirect()->intended("/admin");
+                case "ppk":
+                    return redirect()->route("kecamatan.index", [
+                        "id" => $user->userable->kecamatan_id,
+                    ]);
+                case "pps":
+                    return redirect()->route("desa.index", [
+                        "desaId" => $user->userable->desa_id,
+                    ]);
+                case "kpps":
+                    return redirect()->route("tps.index", [
+                        "tpsId" => $user->userable->tps_id,
+                    ]);
 
                 default:
-                    return redirect()->intended('/dashboard');
+                    return redirect()->intended("/dashboard");
             }
-        } 
-        return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->withInput();
+        }
+        return back()
+            ->withErrors([
+                "username" => "Username atau password salah.",
+            ])
+            ->withInput();
     }
 
-    function logout () {
+    function logout()
+    {
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
-        return redirect('/');
+        return redirect("/");
     }
 }

@@ -11,10 +11,20 @@ use App\Http\Controllers\PPSMemberController;
 use App\Http\Controllers\PPKMemberController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ForcePasswordController;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/", [SessionController::class, "index"]);
+Route::get("/", [SessionController::class, "index"])->name("login");
 Route::post("/", [SessionController::class, "login"]);
+
+Route::get("/force-change-password", [
+    ForcePasswordController::class,
+    "showForm",
+])->name("password.force_change");
+Route::post("/force-change-password", [
+    ForcePasswordController::class,
+    "update",
+])->name("password.force_change.update");
 
 // Route yang dilindungi middleware
 Route::middleware(["check.login"])->group(function () {
@@ -65,11 +75,16 @@ Route::middleware(["check.login"])->group(function () {
         Route::put("/pps/{id}", [PPSMemberController::class, "update"])->name(
             "pps.anggota.update",
         );
-        // Delete KPPS member
+        // Delete PPS member
         Route::delete("/pps/{id}", [
             PPSMemberController::class,
             "destroy",
         ])->name("pps.anggota.destroy");
+
+        // Add TPS
+        Route::post("/desa/{desa}/tps", [TPSController::class, "store"])->name(
+            "desa.tps.store",
+        );
     });
 
     // TPS
@@ -121,4 +136,5 @@ Route::middleware(["check.login"])->group(function () {
     // toast succes / failed
     // check clean code
     // fix password
+    // fix pps 1 ppk 1 kpps 1
 });
