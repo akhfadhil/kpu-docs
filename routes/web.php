@@ -130,11 +130,13 @@ Route::middleware(["check.login"])->group(function () {
 
     // Note:
     // Link breadcrumb
-    // add tps
     // add pengumuman
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
-    // fix password
-    // fix pps 1 ppk 1 kpps 1
+    // fix upload nama dokumen tiap role
+    // fix form add tps (username dan pass)
+    // add download daftar user
+    // fix jabatan ppk1 pps1 kpps1
+    // fix view force change password
 });
