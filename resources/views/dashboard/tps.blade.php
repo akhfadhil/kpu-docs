@@ -20,19 +20,51 @@
                 <h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Detail TPS {{ $tps->tps_code }}
                 </h2>
                 <div class="overflow-hidden rounded-xl border border-border-light dark:border-border-dark">
-                    <table class="w-full text-sm">
-                        <tbody class="divide-y divide-border-light dark:divide-border-dark">
-                            <tr>
-                                <td class="w-1/3 px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Alamat</td>
-                                <td class="px-4 py-3 text-gray-900 dark:text-gray-100">{{ $tps->address }}</td>
+                    @if (session('success'))
+                        <div
+                            class="mb-4 rounded-md bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <table class="w-full text-sm border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                <td class="w-1/3 px-6 py-4 font-medium text-gray-600 dark:text-gray-400">Alamat</td>
+                                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                    {{ $tps->address }}
+                                </td>
                             </tr>
-                            <tr>
-                                <td class="px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Jumlah Pemilih</td>
-                                <td class="px-4 py-3 text-gray-900 dark:text-gray-100">{{ $tps->number_of_voters }}</td>
+
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                <td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-400">Jumlah Pemilih</td>
+                                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                    <form action="{{ route('tps.update_voters', $tps->id) }}" method="POST"
+                                        class="flex items-center gap-3">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="relative">
+                                            <input type="number" name="number_of_voters"
+                                                value="{{ $tps->number_of_voters }}"
+                                                class="w-28 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/5 text-gray-900 dark:text-gray-100 px-3 py-1.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" />
+                                        </div>
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-1 px-4 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <span>Simpan</span>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
-                            <tr>
-                                <td class="px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Ketua KPPS</td>
-                                <td class="px-4 py-3 text-gray-900 dark:text-gray-100">{{ $tps->ketua_kpps->name }}</td>
+
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                <td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-400">Ketua KPPS</td>
+                                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                    {{ $tps->ketua_kpps->name }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>

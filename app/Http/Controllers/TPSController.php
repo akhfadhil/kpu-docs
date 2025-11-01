@@ -99,6 +99,19 @@ class TPSController extends Controller
             return back()->withErrors(["error" => $e->getMessage()]);
         }
     }
+
+    public function updateVoters(Request $request, $id)
+    {
+        $request->validate([
+            "number_of_voters" => "required|integer|min:0",
+        ]);
+
+        $tps = \App\Models\TPS::findOrFail($id);
+        $tps->update(["number_of_voters" => $request->number_of_voters]);
+
+        return back()->with("success", "Jumlah pemilih berhasil diperbarui.");
+    }
+
     // public function store(Request $request, Desa $desa)
     // {
     //     try {

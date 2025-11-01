@@ -98,7 +98,7 @@ Route::middleware(["check.login"])->group(function () {
             KPPSMemberController::class,
             "store",
         ])->name("kpps.anggota.store");
-        // Update data
+        // Update data anggota
         Route::put("/kpps/{id}", [KPPSMemberController::class, "update"])->name(
             "kpps.anggota.update",
         );
@@ -107,6 +107,11 @@ Route::middleware(["check.login"])->group(function () {
             KPPSMemberController::class,
             "destroy",
         ])->name("kpps.anggota.destroy");
+        // Update number of voters
+        Route::put("/tps/{id}/update-voters", [
+            TPSController::class,
+            "updateVoters",
+        ])->name("tps.update_voters");
     });
 
     // Upload
@@ -138,5 +143,4 @@ Route::middleware(["check.login"])->group(function () {
     // fix form add tps (username dan pass)
     // add download daftar user
     // fix jabatan ppk1 pps1 kpps1
-    // fix form number of voters
 });
