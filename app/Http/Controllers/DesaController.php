@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Desa;
 use App\Models\PPSMember;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Announcement;
 
 class DesaController extends Controller
 {
@@ -26,6 +26,7 @@ class DesaController extends Controller
         // $desa = Desa::find($desaId);
         $desa = Desa::with("tps")->find($desaId);
         $anggota = PPSMember::where("desa_id", $desa->id)->get();
+        $announcement = Announcement::where("role", "pps")->latest()->first();
 
         if (!$desa) {
             abort(404);
@@ -35,6 +36,7 @@ class DesaController extends Controller
             "title" => $desa->name,
             "desa" => $desa,
             "anggota" => $anggota,
+            "announcement" => $announcement,
         ]);
     }
 }

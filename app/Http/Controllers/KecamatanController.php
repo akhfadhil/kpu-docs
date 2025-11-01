@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Kecamatan;
 use App\Models\PPKMember;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Announcement;
 
 class KecamatanController extends Controller
 {
@@ -29,11 +29,13 @@ class KecamatanController extends Controller
 
         $kecamatan = Kecamatan::with("desa")->findOrFail($id);
         $anggota = PPKMember::where("kecamatan_id", $kecamatan->id)->get();
+        $announcement = Announcement::where("role", "ppk")->latest()->first();
 
         return view("dashboard.kecamatan", [
             "title" => $kecamatan->name,
             "kecamatan" => $kecamatan,
             "anggota" => $anggota,
+            "announcement" => $announcement,
         ]);
     }
 }

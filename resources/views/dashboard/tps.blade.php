@@ -1,6 +1,6 @@
 <x-layout>
 
-    <x-page-header :title="'TPS ' . $tps->tps_code" />
+    <x-page-header :title="$tps->tps_code . ' ' .$tps->desa->name" />
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-4">
         {{-- breadcrumb --}}
@@ -14,6 +14,47 @@
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8 space-y-10">
+
+                        {{-- Pengumuman Terbaru --}}
+@if($announcement)
+<section id="announcement-section" class="flex justify-center items-center mt-10">
+    <div class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
+                rounded-2xl p-8 w-full max-w-2xl text-center">
+
+        <!-- 🔔 Label di tengah -->
+        <div class="absolute -top-4 inset-x-0 flex justify-center">
+            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
+                🔔 PENGUMUMAN TERBARU
+            </div>
+        </div>
+
+        <!-- Kontainer isi pengumuman -->
+        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
+            <!-- Judul -->
+            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
+                {{ $announcement->title }}
+            </h2>
+
+            <!-- Isi pengumuman -->
+            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
+                {{ $announcement->content }}
+            </p>
+
+            <!-- Tanggal -->
+            <p class="text-xs text-gray-500 italic">
+                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
+            </p>
+        </div>
+    </div>
+</section>
+@else
+<section id="announcement-section" class="flex justify-center items-center mt-10">
+    <div class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
+        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
+    </div>
+</section>
+@endif
+
 
             {{-- DETAIL TPS --}}
             <section>

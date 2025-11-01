@@ -12,6 +12,7 @@ use App\Http\Controllers\PPKMemberController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForcePasswordController;
+use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", [SessionController::class, "index"])->name("login");
@@ -29,19 +30,26 @@ Route::post("/force-change-password", [
 // Route yang dilindungi middleware
 Route::middleware(["check.login"])->group(function () {
     // Admin
-    // Dashboard
-    Route::get("/admin", [AdminController::class, "index"])
-        ->middleware("check.role:admin")
-        ->name("admin");
-    // User update
-    Route::put("/users/{id}", [UserController::class, "update"])->name(
-        "users.update",
-    );
-    // Download daftar user
-    Route::get("/users/download/pdf", [
-        UserController::class,
-        "downloadPdf",
-    ])->name("users.download.pdf");
+    Route::middleware(["check.role:admin"])->group(function () {
+        // Dashboard
+        Route::get("/admin", [AdminController::class, "index"])
+            ->middleware("check.role:admin")
+            ->name("admin");
+        // User update
+        Route::put("/users/{id}", [UserController::class, "update"])->name(
+            "users.update",
+        );
+        // Download daftar user
+        Route::get("/users/download/pdf", [
+            UserController::class,
+            "downloadPdf",
+        ])->name("users.download.pdf");
+        // Announcement
+        Route::post("/admin/announcements/store", [
+            AnnouncementController::class,
+            "store",
+        ])->name("admin.announcements.store");
+    });
 
     // Kecamatan
     Route::middleware(["check.role:ppk"])->group(function () {
@@ -146,8 +154,8 @@ Route::middleware(["check.login"])->group(function () {
 
     // Note:
     // Link breadcrumb
-    // add pengumuman & fix banner
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
+    // Fix informasi singkat di dashboard admin
 });

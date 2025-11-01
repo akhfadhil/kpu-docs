@@ -11,6 +11,7 @@ use App\Models\KPPSMember;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Models\Announcement;
 
 class TPSController extends Controller
 {
@@ -31,12 +32,14 @@ class TPSController extends Controller
 
         $tps = TPS::with("desa.kecamatan")->findOrFail($tpsId);
         $anggota = KPPSMember::where("tps_id", $tpsId)->get();
+        $announcement = Announcement::where("role", "kpps")->latest()->first();
 
         return view("dashboard.tps", [
             "title" => $tps->tps_code,
             "tps" => $tps,
             "tpsId" => $tps->id,
             "anggota" => $anggota,
+            "announcement" => $announcement,
         ]);
     }
 

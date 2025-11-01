@@ -164,6 +164,107 @@
             </form>
         </section>
 
+<!-- === BAGIAN PENGUMUMAN === -->
+<section id="info-announcement" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl">
+    <div class="flex flex-col md:flex-row md:space-x-6">
+        <!-- Form Pengumuman (50%) -->
+        <div class="md:w-1/2 flex flex-col">
+            <h2 class="text-lg font-semibold mb-2">Buat Pengumuman</h2>
+
+            @if (session('success'))
+                <div class="text-green-600 mb-2">{{ session('success') }}</div>
+            @endif
+
+            <form action="{{ route('admin.announcements.store') }}" method="POST" class="flex flex-col gap-3">
+                @csrf
+                <div>
+                    <label class="block text-sm font-medium">Judul</label>
+                    <input type="text" name="title" required class="w-full border p-2 rounded">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium">Isi Pengumuman</label>
+                    <textarea name="content" rows="3" required class="w-full border p-2 rounded"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium">Role Target</label>
+                    <select name="role" required class="w-full border p-2 rounded">
+                        <option value="ppk">PPK</option>
+                        <option value="pps">PPS</option>
+                        <option value="kpps">KPPS</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full md:w-auto">Simpan</button>
+            </form>
+        </div>
+
+        <!-- Tabel Pengumuman (50%) -->
+        <div class="md:w-1/2 mt-6 md:mt-0 flex flex-col">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-semibold">Daftar Pengumuman</h2>
+                <!-- Filter Role -->
+                <select id="announcementRoleFilter" class="border p-1 rounded text-sm">
+                    <option value="">Semua Role</option>
+                    <option value="ppk">PPK</option>
+                    <option value="pps">PPS</option>
+                    <option value="kpps">KPPS</option>
+                </select>
+            </div>
+
+            <!-- Container flex untuk stretch tabel -->
+            <div class="flex-1 overflow-y-auto border rounded p-2">
+                <table class="w-full text-sm text-left text-gray-600 border-collapse" id="announcementTable">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="border px-2 py-1">Judul</th>
+                            <th class="border px-2 py-1">Isi</th>
+                            <th class="border px-2 py-1">Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($announcements as $a)
+                            <tr data-role="{{ $a->role }}">
+                                <td class="border px-2 py-1">{{ $a->title }}</td>
+                                <td class="border px-2 py-1">{{ $a->content }}</td>
+                                <td class="border px-2 py-1">{{ strtoupper($a->role) }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-2 text-gray-400">Belum ada pengumuman.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const roleFilter = document.getElementById('announcementRoleFilter');
+    const tableRows = document.querySelectorAll('#announcementTable tbody tr');
+
+    roleFilter.addEventListener('change', function() {
+        const selectedRole = this.value;
+        tableRows.forEach(row => {
+            const rowRole = row.getAttribute('data-role');
+            if (!selectedRole || rowRole === selectedRole) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+
         <!-- === BAGIAN INFORMASI SINGKAT === -->
         <section id="info-section" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl">
             <h2 class="text-xl font-semibold mb-4">Informasi Singkat</h2>
@@ -247,6 +348,7 @@
                             <th class="px-4 py-2 border-b">Username</th>
                             <th class="px-4 py-2 border-b">Kecamatan</th>
                             <th class="px-4 py-2 border-b">Role</th>
+                            <th class="px-4 py-2 border-b">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
@@ -267,17 +369,57 @@
                                 <td class="px-4 py-2 border-b">{{ $u->username }}</td>
                                 <td class="px-4 py-2 border-b">{{ $kecamatan }}</td>
                                 <td class="px-4 py-2 border-b">{{ strtoupper($u->role->role) }}</td>
+                                <td class="px-4 py-2 border-b">
+                                    <button 
+                                        data-modal-target="editUserModal" 
+                                        data-modal-toggle="editUserModal"
+                                        class="bg-yellow-500 text-white px-3 py-1 rounded editUserBtn" 
+                                        data-id="{{ $u->id }}" 
+                                        data-name="{{ $u->name }}">
+                                        Edit
+                                    </button>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+            <!-- Flowbite Modal Edit Name Responsive -->
+            <div id="editUserModal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full inset-0 h-modal h-full flex items-center justify-center px-4">
+                <div class="relative w-full max-w-md md:max-w-lg h-full md:h-auto mx-auto">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-full h-full md:h-auto">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
+                            <h3 class="text-xl font-medium text-gray-900 dark:text-white">Edit Nama User</h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="editUserModal">
+                                ✕
+                            </button>
+                        </div>
+
+                        <!-- Form -->
+                        <form id="editUserForm" method="POST" class="p-6 h-full md:h-auto flex flex-col justify-between">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="id" id="editUserId">
+
+                            <div class="mb-4 flex-1 overflow-auto">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama</label>
+                                <input type="text" name="name" id="editUserName" class="w-full p-2 border rounded dark:bg-gray-600 dark:text-white" required>
+                            </div>
+
+                            <div class="flex justify-end mt-2">
+                                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full md:w-auto">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <!-- JS untuk Filter dan Download PDF -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
-
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const roleFilter = document.getElementById('filterRole');
@@ -319,6 +461,22 @@
                 window.location.href = url;
             });
         </script>
+
+{{-- JS EDIT NAMA --}}
+        <script>
+            document.querySelectorAll('.editUserBtn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+                    document.getElementById('editUserId').value = id;
+                    document.getElementById('editUserName').value = name;
+
+                    // Update form action
+                    const form = document.getElementById('editUserForm');
+                    form.action = `/users/${id}`;
+                });
+            });
+            </script>
 
 
 

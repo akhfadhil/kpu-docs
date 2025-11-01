@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Kecamatan;
+use App\Models\Announcement;
 
 class AdminController extends Controller
 {
@@ -36,6 +37,7 @@ class AdminController extends Controller
                     "title" => "Dashboard Admin",
                     "kecamatan" => Kecamatan::all(["id", "name"]),
                     "users" => \App\Models\User::with("role")->get(), // ✅ kirim data user lengkap dengan relasi role
+                    "announcements" => Announcement::latest()->get(), // ✅ tambahkan pengumuman
                 ];
                 return view("dashboard.admin", $data);
 
