@@ -134,9 +134,9 @@ Route::middleware(["check.login"])->group(function () {
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
-    // fix upload nama dokumen tiap role
+    // fix upload nama dokumen tiap role dan nama folder
     // fix form add tps (username dan pass)
     // add download daftar user
     // fix jabatan ppk1 pps1 kpps1
-    // fix view force change password
+    // fix form number of voters
 });

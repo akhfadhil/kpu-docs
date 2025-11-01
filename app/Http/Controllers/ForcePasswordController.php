@@ -12,7 +12,7 @@ class ForcePasswordController extends Controller
 {
     public function showForm()
     {
-        return view("auth.force-change-password");
+        return view("force-change-password");
     }
 
     public function update(Request $request)
