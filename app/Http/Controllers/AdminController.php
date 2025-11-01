@@ -38,6 +38,8 @@ class AdminController extends Controller
                     "kecamatan" => Kecamatan::all(["id", "name"]),
                     "users" => \App\Models\User::with("role")->get(), // ✅ kirim data user lengkap dengan relasi role
                     "announcements" => Announcement::latest()->get(), // ✅ tambahkan pengumuman
+                    "jumlahTPS" => \App\Models\TPS::count(),
+                    "jumlahDokumen" => \App\Models\Document::count(),
                 ];
                 return view("dashboard.admin", $data);
 

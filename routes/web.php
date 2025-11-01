@@ -157,5 +157,4 @@ Route::middleware(["check.login"])->group(function () {
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
-    // Fix informasi singkat di dashboard admin
 });

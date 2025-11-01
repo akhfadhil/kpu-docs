@@ -271,15 +271,11 @@ document.addEventListener('DOMContentLoaded', function() {
             <ul class="space-y-2">
                 <li class="flex justify-between border-b pb-2">
                     <span>Total TPS</span>
-                    <strong>12.345</strong>
+                    <strong>{{ $jumlahTPS }}</strong>
                 </li>
                 <li class="flex justify-between border-b pb-2">
                     <span>Jumlah Dokumen</span>
-                    <strong>8.765</strong>
-                </li>
-                <li class="flex justify-between">
-                    <span>Pengumuman</span>
-                    <strong class="text-blue-600">Pengumpulan dokumen C1 berakhir 20 Agustus</strong>
+                    <strong>{{ $jumlahDokumen }}</strong>
                 </li>
             </ul>
         </section>

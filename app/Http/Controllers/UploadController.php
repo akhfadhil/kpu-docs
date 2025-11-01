@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AdminUpload;
 
 class UploadController extends Controller
 {
@@ -80,6 +81,9 @@ class UploadController extends Controller
         } elseif ($role === "admin") {
             // Upload untuk kabupaten (tanpa relasi morph)
             $path = "documents/D Hasil Kabupaten";
+            $documentable = AdminUpload::firstOrCreate([
+                "name" => "Banyuwangi",
+            ]);
         } else {
             abort(403, "Role Anda tidak memiliki izin untuk upload dokumen.");
         }
@@ -101,7 +105,6 @@ class UploadController extends Controller
                 ->document()
                 ->where("doc_type", strtoupper($docType))
                 ->first();
-
             if ($existing) {
                 // Update record lama
                 $existing->update([
