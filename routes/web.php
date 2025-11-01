@@ -150,5 +150,4 @@ Route::middleware(["check.login"])->group(function () {
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code
-    // fix upload nama dokumen tiap role dan nama folder
 });
