@@ -140,7 +140,7 @@ Route::middleware(["check.login"])->group(function () {
     // toast succes / failed
     // check clean code
     // fix upload nama dokumen tiap role dan nama folder
-    // fix form add tps (username dan pass)
     // add download daftar user
-    // fix jabatan ppk1 pps1 kpps1
+    // fix form add tps (username dan pass)
+    // fix jabatan kpps1
 });

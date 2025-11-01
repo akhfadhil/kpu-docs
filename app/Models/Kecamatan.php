@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Kecamatan extends Model
 {
@@ -17,14 +18,14 @@ class Kecamatan extends Model
             // Buat anggota PPK
             $ppk = \App\Models\PPKMember::create([
                 "name" => "PPK " . $kecamatan->name,
-                "job_title" => "Ketua PPK",
+                "job_title" => "PPK 1",
                 "kecamatan_id" => $kecamatan->id,
             ]);
 
             // Buat user untuk PPK
             $ppk->user()->create([
                 "name" => $ppk->name,
-                "username" => "ppk" . $kecamatan->id,
+                "username" => "ppk-" . Str::slug($kecamatan->name),
                 "password" => bcrypt("password"),
                 "temporary_password" => "password",
                 "role_id" => \App\Models\Role::where("role", "ppk")->first()

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Desa extends Model
 {
@@ -16,13 +17,13 @@ class Desa extends Model
         static::created(function ($desa) {
             $pps = \App\Models\PPSMember::create([
                 "name" => "PPS " . $desa->name,
-                "job_title" => "Ketua PPS",
+                "job_title" => "PPS 1",
                 "desa_id" => $desa->id,
             ]);
 
             $pps->user()->create([
                 "name" => $pps->name,
-                "username" => "pps" . $desa->id,
+                "username" => "pps-" . Str::slug($desa->name),
                 "password" => bcrypt("password"),
                 "temporary_password" => "password",
                 "role_id" => \App\Models\Role::where("role", "pps")->first()
