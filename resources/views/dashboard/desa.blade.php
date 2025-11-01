@@ -19,21 +19,31 @@
 
             {{-- Daftar TPS --}}
             <section class="border-b pb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-text-light dark:text-text-dark">
-                            Daftar TPS di Desa {{ $desa->name }}
-                        </h2>
-                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">
-                            Daftar seluruh Tempat Pemungutan Suara (TPS) di desa ini.
-                        </p>
-                    </div>
-                    <button data-modal-target="tambah-tps-modal" data-modal-toggle="tambah-tps-modal"
-                        class="flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
-                        <span class="material-icons text-base">add</span>
-                        <span>Tambah TPS</span>
-                    </button>
-                </div>
+<div class="flex justify-between items-center mb-4">
+    <div>
+        <h2 class="text-xl font-bold text-text-light dark:text-text-dark">
+            Daftar TPS di Desa {{ $desa->name }}
+        </h2>
+        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">
+            Daftar seluruh Tempat Pemungutan Suara (TPS) di desa ini.
+        </p>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <a href="{{ route('desa.tps.download', $desa->id) }}"
+            class="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
+            <span class="material-icons text-base">download</span>
+            <span>Download Daftar TPS</span>
+        </a>
+
+        <button data-modal-target="tambah-tps-modal" data-modal-toggle="tambah-tps-modal"
+            class="flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
+            <span class="material-icons text-base">add</span>
+            <span>Tambah TPS</span>
+        </button>
+    </div>
+</div>
+
 
                 @if ($desa->tps->isEmpty())
                     <div
@@ -74,67 +84,70 @@
                                 class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-300">✕</button>
                         </div>
 
-<form action="{{ route('desa.tps.store', $desa->id) }}" method="POST" class="p-5 space-y-4">
-    @csrf
+                        <form action="{{ route('desa.tps.store', $desa->id) }}" method="POST" class="p-5 space-y-4">
+                            @csrf
 
-    <!-- Data TPS -->
-    <div>
-        <h4 class="font-semibold mb-3 text-gray-800 dark:text-gray-200 border-b pb-2">Data TPS</h4>
+                            <!-- Data TPS -->
+                            <div>
+                                <h4 class="font-semibold mb-3 text-gray-800 dark:text-gray-200 border-b pb-2">Data TPS
+                                </h4>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Kode TPS -->
-            <div>
-                <label for="tps_code" class="block mb-2 text-sm font-medium">Kode TPS</label>
-                <select name="tps_code" id="tps_code"
-                    class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
-                    required>
-                    <option value="">-- Pilih Kode TPS --</option>
-                    @for ($i = 1; $i <= 100; $i++)
-                        <option value="TPS-{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}">
-                            TPS-{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}
-                        </option>
-                    @endfor
-                </select>
-            </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Kode TPS -->
+                                    <div>
+                                        <label for="tps_code" class="block mb-2 text-sm font-medium">Kode TPS</label>
+                                        <select name="tps_code" id="tps_code"
+                                            class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
+                                            required>
+                                            <option value="">-- Pilih Kode TPS --</option>
+                                            @for ($i = 1; $i <= 100; $i++)
+                                                <option value="TPS-{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}">
+                                                    TPS-{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </div>
 
-            <!-- Alamat TPS -->
-            <div>
-                <label for="address" class="block mb-2 text-sm font-medium">Alamat TPS</label>
-                <input type="text" name="address" id="address"
-                    class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
-                    placeholder="Contoh: Balai Desa Bangorejo" required>
-            </div>
-        </div>
-    </div>
+                                    <!-- Alamat TPS -->
+                                    <div>
+                                        <label for="address" class="block mb-2 text-sm font-medium">Alamat TPS</label>
+                                        <input type="text" name="address" id="address"
+                                            class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
+                                            placeholder="Contoh: Balai Desa Bangorejo" required>
+                                    </div>
+                                </div>
+                            </div>
 
-    <!-- Ketua KPPS -->
-    <div class="border-t pt-4">
-        <h4 class="font-semibold mb-3 text-gray-800 dark:text-gray-200">Ketua KPPS</h4>
+                            <!-- Ketua KPPS -->
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold mb-3 text-gray-800 dark:text-gray-200">Ketua KPPS</h4>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label for="kpps_name" class="block mb-2 text-sm font-medium">Nama Ketua</label>
-                <input type="text" name="kpps_name" id="kpps_name"
-                    class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
-                    placeholder="Nama Ketua KPPS" required>
-            </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="kpps_name" class="block mb-2 text-sm font-medium">Nama Ketua</label>
+                                        <input type="text" name="kpps_name" id="kpps_name"
+                                            class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
+                                            placeholder="Nama Ketua KPPS" required>
+                                    </div>
 
-            <div>
-                <label for="kpps_job_title" class="block mb-2 text-sm font-medium">Jabatan</label>
-                <input type="text" id="kpps_job_title" name="kpps_job_title" value="KPPS 1" readonly
-                    class="w-full p-2 border rounded-lg bg-gray-100 text-gray-600 dark:bg-gray-600 dark:text-gray-300 cursor-not-allowed">
-            </div>
-        </div>
-    </div>
+                                    <div>
+                                        <label for="kpps_job_title"
+                                            class="block mb-2 text-sm font-medium">Jabatan</label>
+                                        <input type="text" id="kpps_job_title" name="kpps_job_title" value="KPPS 1"
+                                            readonly
+                                            class="w-full p-2 border rounded-lg bg-gray-100 text-gray-600 dark:bg-gray-600 dark:text-gray-300 cursor-not-allowed">
+                                    </div>
+                                </div>
+                            </div>
 
-    <!-- Tombol Simpan -->
-    <div class="pt-4 text-right">
-        <button type="submit"
-            class="bg-primary hover:bg-primary/90 active:scale-95 transform transition duration-200 text-white font-medium px-4 py-2 rounded-lg shadow">
-            Simpan
-        </button>
-    </div>
-</form>
+                            <!-- Tombol Simpan -->
+                            <div class="pt-4 text-right">
+                                <button type="submit"
+                                    class="bg-primary hover:bg-primary/90 active:scale-95 transform transition duration-200 text-white font-medium px-4 py-2 rounded-lg shadow">
+                                    Simpan
+                                </button>
+                            </div>
+                        </form>
 
 
                     </div>

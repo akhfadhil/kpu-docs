@@ -33,9 +33,15 @@ Route::middleware(["check.login"])->group(function () {
     Route::get("/admin", [AdminController::class, "index"])
         ->middleware("check.role:admin")
         ->name("admin");
+    // User update
     Route::put("/users/{id}", [UserController::class, "update"])->name(
         "users.update",
     );
+    // Download daftar user
+    Route::get("/users/download/pdf", [
+        UserController::class,
+        "downloadPdf",
+    ])->name("users.download.pdf");
 
     // Kecamatan
     Route::middleware(["check.role:ppk"])->group(function () {
@@ -85,6 +91,11 @@ Route::middleware(["check.login"])->group(function () {
         Route::post("/desa/{desa}/tps", [TPSController::class, "store"])->name(
             "desa.tps.store",
         );
+        // Download daftar TPS
+        Route::get("/desa/{desa}/tps/download", [
+            TpsController::class,
+            "download",
+        ])->name("desa.tps.download");
     });
 
     // TPS
@@ -135,7 +146,7 @@ Route::middleware(["check.login"])->group(function () {
 
     // Note:
     // Link breadcrumb
-    // add pengumuman
+    // add pengumuman & fix banner
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code

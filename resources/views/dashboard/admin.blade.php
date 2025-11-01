@@ -183,108 +183,142 @@
             </ul>
         </section>
 
-        <!-- === SECTION USER TABLE === -->
+        <!-- === BAGIAN INFORMASI USER === -->
         <section id="user-section"
             class="bg-white shadow-lg rounded-2xl p-6 mt-6 transition duration-500 hover:shadow-xl">
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 space-y-2 md:space-y-0">
                 <h2 class="text-xl font-semibold">Daftar Pengguna</h2>
 
-                <!-- Filter Dropdown -->
-                <div class="flex items-center space-x-2">
-                    <label for="filterRole" class="text-sm font-medium text-gray-600">Filter Role:</label>
-                    <select id="filterRole"
-                        class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua</option>
-                        <option value="admin">Admin</option>
-                        <option value="ppk">PPK</option>
-                        <option value="pps">PPS</option>
-                    </select>
+                <div class="flex flex-wrap items-center gap-2">
+                    <!-- Filter Role -->
+                    <div class="flex items-center space-x-2">
+                        <label for="filterRole" class="text-sm font-medium text-gray-600">Filter Role:</label>
+                        <select id="filterRole"
+                            class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua</option>
+                            <option value="admin">Admin</option>
+                            <option value="ppk">PPK</option>
+                            <option value="pps">PPS</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Kecamatan -->
+                    <div class="flex items-center space-x-2">
+                        <label for="filterWilayah" class="text-sm font-medium text-gray-600">Filter Kecamatan:</label>
+                        <select id="filterWilayah"
+                            class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-green-500">
+                            <option value="">Semua Kecamatan</option>
+                            @php
+                                $kecamatanList = collect($users)
+                                    ->map(function ($u) {
+                                        if ($u->role->role === 'ppk' && $u->userable) {
+                                            return $u->userable->kecamatan->name;
+                                        } elseif ($u->role->role === 'pps' && $u->userable) {
+                                            return $u->userable->desa->kecamatan->name;
+                                        }
+                                        return null;
+                                    })
+                                    ->filter()
+                                    ->unique()
+                                    ->sort();
+                            @endphp
+
+                            @foreach ($kecamatanList as $kec)
+                                <option value="{{ strtolower($kec) }}">{{ $kec }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Tombol Download PDF -->
+                    <button id="downloadPdfBtn"
+                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">
+                        Download PDF
+                    </button>
                 </div>
             </div>
 
-            <!-- Tabel User -->
             <div class="overflow-x-auto">
-                <table id="userTable" class="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-lg">
+                <table id="userTable"
+                    class="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-lg">
                     <thead class="text-gray-700 bg-gray-100">
                         <tr>
                             <th class="px-4 py-2 border-b">No</th>
                             <th class="px-4 py-2 border-b">Nama</th>
                             <th class="px-4 py-2 border-b">Username</th>
-                            <th class="px-4 py-2 border-b">Wilayah</th>
+                            <th class="px-4 py-2 border-b">Kecamatan</th>
                             <th class="px-4 py-2 border-b">Role</th>
-                            <th class="px-4 py-2 border-b">Aksi</th>
-
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
                         @foreach ($users as $index => $u)
                             @php
                                 $role = strtolower($u->role->role);
-                                $roleColor = match ($role) {
-                                    'admin' => 'text-red-600 bg-red-100',
-                                    'ppk' => 'text-blue-600 bg-blue-100',
-                                    'pps' => 'text-green-600 bg-green-100',
-                                    default => 'text-gray-600 bg-gray-100',
-                                };
+                                $kecamatan = '-';
+                                if ($u->role->role === 'ppk' && $u->userable) {
+                                    $kecamatan = $u->userable->kecamatan->name;
+                                } elseif ($u->role->role === 'pps' && $u->userable) {
+                                    $kecamatan = $u->userable->desa->kecamatan->name;
+                                }
                             @endphp
-                            <tr class="hover:bg-gray-50" data-role="{{ $role }}">
-                                <td class="px-4 py-2 border-b">{{ $index + 1 }}</td>
+                            <tr data-role="{{ $role }}" data-wilayah="{{ strtolower($kecamatan) }}"
+                                data-temp="{{ $u->temporary_password ?? '-' }}">
+                                <td class="px-4 py-2 border-b text-center">{{ $index + 1 }}</td>
                                 <td class="px-4 py-2 border-b">{{ $u->name }}</td>
                                 <td class="px-4 py-2 border-b">{{ $u->username }}</td>
-                                <td class="px-4 py-2 border-b">
-                                    @if ($u->role->role === 'ppk' && $u->userable)
-                                        {{ $u->userable->kecamatan->name }}
-                                    @elseif ($u->role->role === 'pps' && $u->userable)
-                                        {{ $u->userable->desa->name }} ({{ $u->userable->desa->kecamatan->name }})
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td class="px-4 py-2 border-b">
-                                    <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $roleColor }}">
-                                        {{ strtoupper($u->role->role) }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-2 border-b text-center">
-                                    <!-- Tombol Edit -->
-                                    <button data-modal-target="editModal-{{ $u->id }}"
-                                        data-modal-toggle="editModal-{{ $u->id }}"
-                                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
-                                        Edit
-                                    </button>
-                                </td>
+                                <td class="px-4 py-2 border-b">{{ $kecamatan }}</td>
+                                <td class="px-4 py-2 border-b">{{ strtoupper($u->role->role) }}</td>
                             </tr>
-                            <!-- Modal Edit -->
-                            <div id="editModal-{{ $u->id }}" tabindex="-1"
-                                class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-                                <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
-                                    <h3 class="text-lg font-semibold mb-4">Edit Nama User</h3>
-                                    <form action="{{ route('users.update', $u->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="mb-4">
-                                            <label for="name"
-                                                class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                                            <input type="text" name="name" value="{{ $u->name }}"
-                                                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200 focus:outline-none">
-                                        </div>
-                                        <div class="flex justify-end space-x-2">
-                                            <button type="button" data-modal-hide="editModal-{{ $u->id }}"
-                                                class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700">Batal</button>
-                                            <button type="submit"
-                                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">Simpan</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
-            <div class="flex justify-center items-center mt-4 space-x-2" id="pagination"></div>
         </section>
+
+        <!-- JS untuk Filter dan Download PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const roleFilter = document.getElementById('filterRole');
+                const wilayahFilter = document.getElementById('filterWilayah');
+                const rows = document.querySelectorAll('#userTableBody tr');
+
+                function applyFilters() {
+                    const selectedRole = roleFilter.value.toLowerCase();
+                    const selectedWilayah = wilayahFilter.value.toLowerCase();
+
+                    let visibleCount = 0;
+                    rows.forEach(row => {
+                        const rowRole = row.getAttribute('data-role');
+                        const rowWilayah = row.getAttribute('data-wilayah');
+
+                        const matchRole = !selectedRole || rowRole === selectedRole;
+                        const matchWilayah = !selectedWilayah || rowWilayah.includes(selectedWilayah);
+
+                        if (matchRole && matchWilayah) {
+                            row.style.display = '';
+                            visibleCount++;
+                            row.querySelector('td').textContent = visibleCount; // update nomor urut
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+
+                roleFilter.addEventListener('change', applyFilters);
+                wilayahFilter.addEventListener('change', applyFilters);
+            });
+        </script>
+        <script>
+            document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+                const role = document.getElementById('filterRole').value;
+                const kecamatan = document.getElementById('filterWilayah') ? document.getElementById('filterWilayah')
+                    .value : '';
+                let url = `{{ route('users.download.pdf') }}?role=${role}&kecamatan=${kecamatan}`;
+                window.location.href = url;
+            });
+        </script>
 
 
 

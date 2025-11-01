@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Desa;
@@ -113,6 +114,24 @@ class TPSController extends Controller
         $tps->update(["number_of_voters" => $request->number_of_voters]);
 
         return back()->with("success", "Jumlah pemilih berhasil diperbarui.");
+    }
+
+    public function download($desa_id)
+    {
+        // Ambil data desa + tps + user terkait
+        $desa = Desa::with(["tps.kpps_member.user"])->findOrFail($desa_id);
+
+        // Generate PDF
+        $pdf = Pdf::loadView("pdf.daftar_tps", ["desa" => $desa])->setPaper(
+            "a4",
+            "portrait",
+        );
+
+        // Nama file sesuai desa
+        $filename =
+            "Daftar_TPS_Desa_" . str_replace(" ", "_", $desa->name) . ".pdf";
+
+        return $pdf->download($filename);
     }
 
     // public function store(Request $request, Desa $desa)
