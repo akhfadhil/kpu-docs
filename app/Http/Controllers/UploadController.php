@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UploadController extends Controller
 {
-
     public function index()
     {
         $user = Auth::user();
@@ -69,7 +68,7 @@ class UploadController extends Controller
             $tps = \App\Models\TPS::with("desa.kecamatan")->findOrFail(
                 $userable->tps_id,
             );
-            $path = "documents/{$tps->desa->kecamatan->name}/{$tps->desa->name}/tps {$tps->tps_code}";
+            $path = "documents/{$tps->desa->kecamatan->name}/{$tps->desa->name}/{$tps->tps_code}";
             $documentable = $tps;
         } elseif ($role === "ppk") {
             // Upload untuk Kecamatan
