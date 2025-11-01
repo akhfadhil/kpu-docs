@@ -52,8 +52,8 @@ class TPSController extends Controller
             ],
             "address" => "nullable|string|max:255",
             "kpps_name" => "required|string|max:255",
-            "kpps_username" => "required|string|max:255|unique:users,username",
         ]);
+
         DB::beginTransaction();
 
         try {
@@ -66,20 +66,23 @@ class TPSController extends Controller
             // 2️⃣ Buat anggota KPPS (Ketua)
             $kpps = \App\Models\KPPSMember::create([
                 "name" => $request->kpps_name,
-                "job_title" => "Ketua KPPS",
+                "job_title" => "KPPS 1",
                 "tps_id" => $tps->id,
             ]);
 
             // 3️⃣ Buat user login otomatis
             $role = \App\Models\Role::firstOrCreate(["role" => "kpps"]);
-            // $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
-            // dd($request->kpps_username);
+            $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
 
             $user = \App\Models\User::create([
                 "name" => $kpps->name,
-                "username" => $request->kpps_username,
-                "password" => bcrypt("password"),
-                "temporary_password" => "password",
+                "username" => strtolower(
+                    $request->tps_code .
+                        "-" .
+                        str_replace(" ", "-", $desa->name),
+                ),
+                "password" => bcrypt($randomPassword),
+                "temporary_password" => $randomPassword,
                 "role_id" => $role->id,
                 "userable_type" => \App\Models\KPPSMember::class,
                 "userable_id" => $kpps->id,

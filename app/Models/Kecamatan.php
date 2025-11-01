@@ -22,12 +22,14 @@ class Kecamatan extends Model
                 "kecamatan_id" => $kecamatan->id,
             ]);
 
+            $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
+
             // Buat user untuk PPK
             $ppk->user()->create([
                 "name" => $ppk->name,
                 "username" => "ppk-" . Str::slug($kecamatan->name),
-                "password" => bcrypt("password"),
-                "temporary_password" => "password",
+                "password" => bcrypt($randomPassword),
+                "temporary_password" => $randomPassword,
                 "role_id" => \App\Models\Role::where("role", "ppk")->first()
                     ->id,
             ]);

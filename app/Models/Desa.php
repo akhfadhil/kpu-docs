@@ -21,11 +21,13 @@ class Desa extends Model
                 "desa_id" => $desa->id,
             ]);
 
+            $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
+
             $pps->user()->create([
                 "name" => $pps->name,
                 "username" => "pps-" . Str::slug($desa->name),
-                "password" => bcrypt("password"),
-                "temporary_password" => "password",
+                "password" => bcrypt($randomPassword),
+                "temporary_password" => $randomPassword,
                 "role_id" => \App\Models\Role::where("role", "pps")->first()
                     ->id,
             ]);

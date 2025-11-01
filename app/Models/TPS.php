@@ -44,7 +44,7 @@ class TPS extends Model
     {
         return $this->hasOne(KPPSMember::class, "tps_id")->where(
             "job_title",
-            "Ketua KPPS",
+            "KPPS 1",
         );
     }
 

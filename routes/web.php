@@ -141,6 +141,4 @@ Route::middleware(["check.login"])->group(function () {
     // check clean code
     // fix upload nama dokumen tiap role dan nama folder
     // add download daftar user
-    // fix form add tps (username dan pass)
-    // fix jabatan kpps1
 });
