@@ -6,6 +6,7 @@ use App\Models\Desa;
 use App\Models\PPSMember;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Announcement;
+use App\Helpers\BreadcrumbHelper;
 
 class DesaController extends Controller
 {
@@ -27,6 +28,7 @@ class DesaController extends Controller
         $desa = Desa::with("tps")->find($desaId);
         $anggota = PPSMember::where("desa_id", $desa->id)->get();
         $announcement = Announcement::where("role", "pps")->latest()->first();
+        $breadcrumb = BreadcrumbHelper::build($desa);
 
         if (!$desa) {
             abort(404);
@@ -37,6 +39,7 @@ class DesaController extends Controller
             "desa" => $desa,
             "anggota" => $anggota,
             "announcement" => $announcement,
+            "breadcrumb" => $breadcrumb,
         ]);
     }
 }

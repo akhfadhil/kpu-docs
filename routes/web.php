@@ -153,7 +153,6 @@ Route::middleware(["check.login"])->group(function () {
     ]);
 
     // Note:
-    // Link breadcrumb
     // modal modal confirm / error page /
     // toast succes / failed
     // check clean code

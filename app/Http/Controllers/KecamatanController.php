@@ -6,6 +6,7 @@ use App\Models\Kecamatan;
 use App\Models\PPKMember;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Announcement;
+use App\Helpers\BreadcrumbHelper;
 
 class KecamatanController extends Controller
 {
@@ -30,12 +31,14 @@ class KecamatanController extends Controller
         $kecamatan = Kecamatan::with("desa")->findOrFail($id);
         $anggota = PPKMember::where("kecamatan_id", $kecamatan->id)->get();
         $announcement = Announcement::where("role", "ppk")->latest()->first();
+        $breadcrumb = BreadcrumbHelper::build($kecamatan);
 
         return view("dashboard.kecamatan", [
             "title" => $kecamatan->name,
             "kecamatan" => $kecamatan,
             "anggota" => $anggota,
             "announcement" => $announcement,
+            "breadcrumb" => $breadcrumb,
         ]);
     }
 }

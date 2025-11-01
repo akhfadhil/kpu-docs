@@ -6,11 +6,13 @@
 
     <section class="container mx-auto p-6">
         <!-- Breadcrumb -->
-        <x-breadcrumb :items="[
+        {{-- <x-breadcrumb :items="[
             ['label' => 'Provinsi Jawa Timur', 'url' => '/'],
             ['label' => 'Kabupaten Banyuwangi', 'url' => '#'],
-            ['label' => 'Kecamatan ' . $kecamatan->name, 'url' => '#'],
-        ]" />
+            ['label' => 'Kecamatan ' . $kecamatan->name, 'url' => '/kecamatan/' . $kecamatan->id],
+        ]" /> --}}
+<x-breadcrumb :items="$breadcrumb" />
+
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 space-y-8">

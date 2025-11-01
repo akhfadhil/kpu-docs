@@ -4,13 +4,14 @@
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-4">
         {{-- breadcrumb --}}
-        <x-breadcrumb :items="[
+        {{-- <x-breadcrumb :items="[
             ['label' => 'Provinsi Jawa Timur', 'url' => '#'],
             ['label' => 'Kabupaten Banyuwangi', 'url' => '#'],
             ['label' => 'Kecamatan ' . $tps->desa->kecamatan->name, 'url' => '#'],
             ['label' => 'Desa ' . $tps->desa->name, 'url' => '#'],
-            ['label' => 'TPS ' . $tps->tps_code, 'url' => null],
-        ]" />
+            ['label' => $tps->tps_code, 'url' => null],
+        ]" /> --}}
+<x-breadcrumb :items="$breadcrumb" />
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8 space-y-10">

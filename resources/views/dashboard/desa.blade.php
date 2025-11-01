@@ -7,12 +7,13 @@
     <!-- Konten Utama -->
     <section class="container mx-auto p-6" x-show="show" x-transition.duration.700ms>
         <!-- Breadcrumb -->
-        <x-breadcrumb :items="[
+        {{-- <x-breadcrumb :items="[
             ['label' => 'Provinsi Jawa Timur', 'url' => '/'],
             ['label' => 'Kabupaten Banyuwangi', 'url' => '#'],
-            ['label' => 'Kecamatan ' . $desa->kecamatan->name, 'url' => '#'],
+            ['label' => 'Kecamatan ' . $desa->kecamatan->name, 'url' => '/kecamatan/' . $desa->kecamatan->id],
             ['label' => 'Desa ' . $desa->name, 'url' => null],
-        ]" />
+        ]" /> --}}
+<x-breadcrumb :items="$breadcrumb" />
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 space-y-8">
