@@ -29,7 +29,9 @@ class UserController extends Controller
             $user->userable->update(["name" => $request->name]);
         }
 
-        return back()->with("success", "Nama berhasil diperbarui.");
+        return back()
+            ->with("success", "Nama berhasil diperbarui.")
+            ->with("toast", true);
     }
 
     public function downloadPdf(Request $request)

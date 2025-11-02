@@ -171,10 +171,6 @@
         <div class="md:w-1/2 flex flex-col">
             <h2 class="text-lg font-semibold mb-2">Buat Pengumuman</h2>
 
-            @if (session('success'))
-                <div class="text-green-600 mb-2">{{ session('success') }}</div>
-            @endif
-
             <form action="{{ route('admin.announcements.store') }}" method="POST" class="flex flex-col gap-3">
                 @csrf
                 <div>

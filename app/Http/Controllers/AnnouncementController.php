@@ -17,6 +17,8 @@ class AnnouncementController extends Controller
 
         Announcement::create($request->only("title", "content", "role"));
 
-        return back()->with("success", "Pengumuman berhasil dibuat!");
+        return back()
+            ->with("success", "Pengumuman berhasil dibuat!")
+            ->with("toast", true);
     }
 }

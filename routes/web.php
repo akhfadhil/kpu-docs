@@ -154,6 +154,5 @@ Route::middleware(["check.login"])->group(function () {
 
     // Note:
     // modal modal confirm / error page /
-    // toast succes / failed
     // check clean code
 });

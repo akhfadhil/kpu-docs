@@ -30,6 +30,7 @@ class ForcePasswordController extends Controller
 
         return redirect()
             ->route("login")
-            ->with("success", "Password berhasil diubah!");
+            ->with("success", "Password berhasil diubah!")
+            ->with("toast", true);
     }
 }

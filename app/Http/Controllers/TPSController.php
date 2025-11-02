@@ -102,7 +102,8 @@ class TPSController extends Controller
                 ->with(
                     "success",
                     "TPS & Ketua KPPS berhasil dibuat! Password sementara: <strong>password</strong>",
-                );
+                )
+                ->with("toast", true);
         } catch (\Exception $e) {
             DB::rollBack();
             // dd($e->getMessage(), $e->getTraceAsString());
@@ -119,7 +120,9 @@ class TPSController extends Controller
         $tps = \App\Models\TPS::findOrFail($id);
         $tps->update(["number_of_voters" => $request->number_of_voters]);
 
-        return back()->with("success", "Jumlah pemilih berhasil diperbarui.");
+        return back()
+            ->with("success", "Jumlah pemilih berhasil diperbarui.")
+            ->with("toast", true);
     }
 
     public function download($desa_id)

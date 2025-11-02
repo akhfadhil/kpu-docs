@@ -129,6 +129,7 @@ class UploadController extends Controller
 
         return redirect()
             ->back()
-            ->with("success", "Dokumen berhasil diupload!");
+            ->with("success", "Dokumen berhasil diupload!")
+            ->with("toast", true);
     }
 }

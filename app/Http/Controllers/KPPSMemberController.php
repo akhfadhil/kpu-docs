@@ -27,10 +27,12 @@ class KPPSMemberController extends Controller
             $tpsKecId = $tps->desa->kecamatan->id ?? null;
 
             if ($userKecId !== $tpsKecId) {
-                abort(
-                    403,
-                    "Anda tidak memiliki izin untuk TPS di kecamatan ini.",
-                );
+                return back()
+                    ->with(
+                        "error",
+                        "Anda tidak memiliki izin untuk TPS di kecamatan ini.",
+                    )
+                    ->with("toast", true);
             }
         }
         // 3️⃣ Jika PPS, pastikan desa sama
@@ -39,7 +41,12 @@ class KPPSMemberController extends Controller
             $tpsDesaId = $tps->desa->id ?? null;
 
             if ($userDesaId !== $tpsDesaId) {
-                abort(403, "Anda tidak memiliki izin untuk TPS di desa ini.");
+                return back()
+                    ->with(
+                        "error",
+                        "Anda tidak memiliki izin untuk TPS di desa ini.",
+                    )
+                    ->with("toast", true);
             }
         }
         // 4️⃣ Jika KPPS, pastikan TPS sama
@@ -47,15 +54,16 @@ class KPPSMemberController extends Controller
             $userTpsId = $userable->tps_id ?? null;
 
             if ((int) $userTpsId !== (int) $tpsId) {
-                abort(403, "Anda tidak memiliki izin untuk TPS ini.");
+                return back()
+                    ->with("error", "Anda tidak memiliki izin untuk TPS ini.")
+                    ->with("toast", true);
             }
         }
         // ❌ Selain role di atas, tolak akses
         else {
-            abort(
-                403,
-                "Role Anda tidak memiliki izin untuk menambah anggota KPPS.",
-            );
+            return back()
+                ->with("error", "Anda tidak memiliki izin untuk menambah TPS")
+                ->with("toast", true);
         }
 
         $request->validate([
@@ -71,7 +79,8 @@ class KPPSMemberController extends Controller
 
         return redirect()
             ->route("tps.index", $tpsId)
-            ->with("success", "Anggota KPPS berhasil ditambahkan!");
+            ->with("success", "Anggota KPPS berhasil ditambahkan!")
+            ->with("toast", true);
     }
 
     public function update(Request $request, $id)
@@ -90,7 +99,8 @@ class KPPSMemberController extends Controller
 
         return redirect()
             ->back()
-            ->with("success", "Data anggota KPPS berhasil diperbarui.");
+            ->with("success", "Data anggota KPPS berhasil diperbarui.")
+            ->with("toast", true);
     }
 
     public function destroy($id)
@@ -106,32 +116,46 @@ class KPPSMemberController extends Controller
             // admin bebas hapus
         } elseif ($role === "ppk") {
             if ($userable->kecamatan_id !== $member->tps->desa->kecamatan_id) {
-                abort(
-                    403,
-                    "Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.",
-                );
+                return back()
+                    ->with(
+                        "error",
+                        "Anda tidak memiliki izin untuk menghapus anggota dari kecamatan ini.",
+                    )
+                    ->with("toast", true);
             }
         } elseif ($role === "pps") {
             if ($userable->desa_id !== $member->tps->desa_id) {
-                abort(
-                    403,
-                    "Anda tidak memiliki izin untuk menghapus anggota dari desa ini.",
-                );
+                return back()
+                    ->with(
+                        "error",
+                        "Anda tidak memiliki izin untuk menghapus anggota dari desa ini.",
+                    )
+                    ->with("toast", true);
             }
         } elseif ($role === "kpps") {
             if ($userable->tps_id !== $member->tps_id) {
-                abort(
-                    403,
-                    "Anda tidak memiliki izin untuk menghapus anggota dari tps ini.",
-                );
+                return back()
+                    ->with(
+                        "error",
+                        "Anda tidak memiliki izin untuk menghapus anggota dari TPS ini.",
+                    )
+                    ->with("toast", true);
             }
         } else {
-            abort(403, "Anda tidak memiliki izin untuk menghapus anggota PPS.");
+            return back()
+                ->with(
+                    "error",
+                    "Anda tidak memiliki izin untuk menghapus anggota PPS.",
+                )
+                ->with("toast", true);
         }
 
         // Hapus data
         $member->delete();
 
-        return redirect()->back()->with("success", "Anggota berhasil dihapus!");
+        return redirect()
+            ->back()
+            ->with("success", "Anggota berhasil dihapus!")
+            ->with("toast", true);
     }
 }

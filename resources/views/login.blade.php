@@ -8,6 +8,7 @@
     @vite('resources/css/app.css')
     <title>Manajemen Arsip Penyelenggara Pemilu</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon-32x32.png') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="h-full">
@@ -105,6 +106,7 @@
 
         </div>
     </div>
+    @include('components.alert')
 </body>
 
 </html>

@@ -65,7 +65,8 @@ class PPSMemberController extends Controller
 
         return redirect()
             ->route("desa.index", $desaId)
-            ->with("success", "Anggota PPS berhasil ditambahkan!");
+            ->with("success", "Anggota PPS berhasil ditambahkan!")
+            ->with("toast", true);
     }
 
     public function update(Request $request, $id)
@@ -84,7 +85,8 @@ class PPSMemberController extends Controller
 
         return redirect()
             ->back()
-            ->with("success", "Data anggota PPS berhasil diperbarui.");
+            ->with("success", "Data anggota PPS berhasil diperbarui.")
+            ->with("toast", true);
     }
 
     public function destroy($id)
@@ -117,6 +119,9 @@ class PPSMemberController extends Controller
         // Hapus data
         $member->delete();
 
-        return redirect()->back()->with("success", "Anggota berhasil dihapus!");
+        return redirect()
+            ->back()
+            ->with("success", "Anggota berhasil dihapus!")
+            ->with("toast", true);
     }
 }

@@ -59,7 +59,8 @@ class PPKMemberController extends Controller
         // ✅ Redirect ke halaman kecamatan
         return redirect()
             ->route("kecamatan.index", $kecamatan->id)
-            ->with("success", "Anggota PPK berhasil ditambahkan!");
+            ->with("success", "Anggota PPK berhasil ditambahkan!")
+            ->with("toast", true);
     }
 
     public function update(Request $request, $id)
@@ -78,7 +79,8 @@ class PPKMemberController extends Controller
 
         return redirect()
             ->back()
-            ->with("success", "Data anggota PPK berhasil diperbarui.");
+            ->with("success", "Data anggota PPK berhasil diperbarui.")
+            ->with("toast", true);
     }
 
     public function destroy($id)
@@ -104,6 +106,9 @@ class PPKMemberController extends Controller
         // Hapus data
         $member->delete();
 
-        return redirect()->back()->with("success", "Anggota berhasil dihapus!");
+        return redirect()
+            ->back()
+            ->with("success", "Anggota berhasil dihapus!")
+            ->with("toast", true);
     }
 }
