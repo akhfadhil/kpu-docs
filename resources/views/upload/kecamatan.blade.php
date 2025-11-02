@@ -5,6 +5,32 @@
         Please upload the 5 required documents to proceed.
     </p>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if ($errors->any())
+<script>
+Swal.fire({
+  icon: 'error',
+  title: 'Upload gagal!',
+  text: '{{ $errors->first() }}',
+  timer: 3000,
+  showConfirmButton: false
+});
+</script>
+@endif
+
+@if (session('success'))
+<script>
+Swal.fire({
+  icon: 'success',
+  title: 'Berhasil!',
+  text: '{{ session('success') }}',
+  timer: 3000,
+  showConfirmButton: false
+});
+</script>
+@endif
+
     <!-- Grid Dokumen -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">

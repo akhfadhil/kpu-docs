@@ -4,6 +4,31 @@
     <p class="text-gray-500 dark:text-gray-400 mb-8">
         Please upload the 5 required documents to proceed.
     </p>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if ($errors->any())
+<script>
+Swal.fire({
+  icon: 'error',
+  title: 'Upload gagal!',
+  text: '{{ $errors->first() }}',
+  timer: 3000,
+  showConfirmButton: false
+});
+</script>
+@endif
+
+@if (session('success'))
+<script>
+Swal.fire({
+  icon: 'success',
+  title: 'Berhasil!',
+  text: '{{ session('success') }}',
+  timer: 3000,
+  showConfirmButton: false
+});
+</script>
+@endif
 
     <!-- Grid Dokumen -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
@@ -68,8 +93,8 @@
                             <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                             Pilih File PDF
                             </label>
-                            <input type="file" name="file" accept="application/pdf"
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary">
+                            <input type="file" id="file" name="file" accept="application/pdf"
+class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary">
                         </div>
 
                         @if ($existing)
@@ -100,4 +125,5 @@
         </p>
     </div>
     </div>
+
 </x-layout>

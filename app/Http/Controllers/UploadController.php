@@ -51,11 +51,18 @@ class UploadController extends Controller
         $role = $user->role->role ?? "guest";
         $userable = $user->userable;
 
-        // Validasi file upload
-        $request->validate([
-            "doc_type" => "required|string",
-            "file" => "required|file|mimes:pdf|max:20480", // max 20 MB
-        ]);
+        // 🧩 Validasi file upload (max 2 MB dan hanya PDF)
+        $request->validate(
+            [
+                "doc_type" => "required|string",
+                "file" => "required|file|mimes:pdf|max:2048", // 2048 KB = 2 MB
+            ],
+            [
+                "file.required" => "Silakan pilih file untuk diunggah.",
+                "file.mimes" => "Format file harus PDF.",
+                "file.max" => "Ukuran file maksimal 2 MB.",
+            ],
+        );
 
         $file = $request->file("file");
         $docType = strtolower($request->doc_type);
@@ -65,23 +72,20 @@ class UploadController extends Controller
 
         // === Tentukan lokasi dan relasi penyimpanan berdasarkan role ===
         if ($role === "kpps") {
-            // Upload untuk TPS
             $tps = \App\Models\TPS::with("desa.kecamatan")->findOrFail(
                 $userable->tps_id,
             );
             $path = "documents/{$tps->desa->kecamatan->name}/{$tps->desa->name}/{$tps->tps_code}";
             $documentable = $tps;
         } elseif ($role === "ppk") {
-            // Upload untuk Kecamatan
             $kecamatan = \App\Models\Kecamatan::findOrFail(
                 $userable->kecamatan_id,
             );
             $path = "documents/{$kecamatan->name}/D Hasil {$kecamatan->name}";
             $documentable = $kecamatan;
         } elseif ($role === "admin") {
-            // Upload untuk kabupaten (tanpa relasi morph)
             $path = "documents/D Hasil Kabupaten";
-            $documentable = AdminUpload::firstOrCreate([
+            $documentable = \App\Models\AdminUpload::firstOrCreate([
                 "name" => "Banyuwangi",
             ]);
         } else {
@@ -105,15 +109,14 @@ class UploadController extends Controller
                 ->document()
                 ->where("doc_type", strtoupper($docType))
                 ->first();
+
             if ($existing) {
-                // Update record lama
                 $existing->update([
                     "path" => $fullPath,
                     "uploaded_by" => $user->id,
                     "updated_at" => now(),
                 ]);
             } else {
-                // Buat record baru
                 $documentable->document()->create([
                     "doc_type" => strtoupper($docType),
                     "path" => $fullPath,
