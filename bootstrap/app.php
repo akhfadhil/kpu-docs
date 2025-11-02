@@ -18,6 +18,27 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (
+            \Symfony\Component\HttpKernel\Exception\HttpException $e,
+            $request,
+        ) {
+            if ($e->getStatusCode() === 403) {
+                return redirect()
+                    ->back()
+                    ->with(
+                        "error",
+                        "Anda tidak memiliki izin untuk mengakses halaman ini.",
+                    )
+                    ->with("toast", true);
+            }
+
+            if ($e->getStatusCode() === 404) {
+                return response()->view("errors.404", [], 404);
+            }
+        });
+        // Tangani error umum (500, runtime error, dll)
+        $exceptions->render(function (Throwable $e, $request) {
+            return response()->view("errors.500", [], 500);
+        });
     })
     ->create();

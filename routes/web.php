@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\LocationController;
@@ -13,8 +14,12 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForcePasswordController;
 use App\Http\Controllers\AnnouncementController;
-use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 Route::get("/", [SessionController::class, "index"])->name("login");
 Route::post("/", [SessionController::class, "login"]);
 
@@ -27,132 +32,355 @@ Route::post("/force-change-password", [
     "update",
 ])->name("password.force_change.update");
 
-// Route yang dilindungi middleware
+/*
+|--------------------------------------------------------------------------
+| Protected Routes (Requires Authentication)
+|--------------------------------------------------------------------------
+*/
 Route::middleware(["check.login"])->group(function () {
-    // Admin
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(["check.role:admin"])->group(function () {
         // Dashboard
-        Route::get("/admin", [AdminController::class, "index"])
-            ->middleware("check.role:admin")
-            ->name("admin");
-        // User update
+        Route::get("/admin", [AdminController::class, "index"])->name("admin");
+
+        // User management
         Route::put("/users/{id}", [UserController::class, "update"])->name(
             "users.update",
         );
-        // Download daftar user
         Route::get("/users/download/pdf", [
             UserController::class,
             "downloadPdf",
         ])->name("users.download.pdf");
-        // Announcement
+
+        // Announcements
         Route::post("/admin/announcements/store", [
             AnnouncementController::class,
             "store",
         ])->name("admin.announcements.store");
     });
 
-    // Kecamatan
+    /*
+    |--------------------------------------------------------------------------
+    | Kecamatan (PPK) Routes
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(["check.role:ppk"])->group(function () {
-        // Dashboard
         Route::get("/kecamatan/{id}", [
             KecamatanController::class,
             "index",
         ])->name("kecamatan.index");
-        // Add PPK member
+
+        // Anggota PPK
         Route::post("/kecamatan/{id}/ppk", [
             PPKMemberController::class,
             "store",
         ])->name("ppk.store");
-        // Update data
         Route::put("/ppk/{id}", [PPKMemberController::class, "update"])->name(
             "ppk.anggota.update",
         );
-        // Delete PPK member
         Route::delete("/ppk/{id}", [
             PPKMemberController::class,
             "destroy",
         ])->name("ppk.anggota.destroy");
     });
 
-    // Desa
+    /*
+    |--------------------------------------------------------------------------
+    | Desa (PPS) Routes
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(["check.role:pps"])->group(function () {
-        // Dashboard
         Route::get("/desa/{desaId}", [DesaController::class, "index"])->name(
             "desa.index",
         );
-        // Add PPS member
+
+        // Anggota PPS
         Route::post("/desa/{desaId}/pps", [
             PPSMemberController::class,
             "store",
         ])->name("pps.store");
-        // Update data
         Route::put("/pps/{id}", [PPSMemberController::class, "update"])->name(
             "pps.anggota.update",
         );
-        // Delete PPS member
         Route::delete("/pps/{id}", [
             PPSMemberController::class,
             "destroy",
         ])->name("pps.anggota.destroy");
 
-        // Add TPS
+        // TPS
         Route::post("/desa/{desa}/tps", [TPSController::class, "store"])->name(
             "desa.tps.store",
         );
-        // Download daftar TPS
         Route::get("/desa/{desa}/tps/download", [
-            TpsController::class,
+            TPSController::class,
             "download",
         ])->name("desa.tps.download");
     });
 
-    // TPS
+    /*
+    |--------------------------------------------------------------------------
+    | TPS (KPPS) Routes
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(["check.role:kpps"])->group(function () {
-        // Dashboard
         Route::get("/tps/{tpsId}", [TPSController::class, "index"])->name(
             "tps.index",
         );
-        // Add KPPS member
+
+        // Anggota KPPS
         Route::post("/kpps/{tpsId}/anggota", [
             KPPSMemberController::class,
             "store",
         ])->name("kpps.anggota.store");
-        // Update data anggota
         Route::put("/kpps/{id}", [KPPSMemberController::class, "update"])->name(
             "kpps.anggota.update",
         );
-        // Delete KPPS member
         Route::delete("/kpps/{id}", [
             KPPSMemberController::class,
             "destroy",
         ])->name("kpps.anggota.destroy");
-        // Update number of voters
+
+        // Jumlah pemilih
         Route::put("/tps/{id}/update-voters", [
             TPSController::class,
             "updateVoters",
         ])->name("tps.update_voters");
     });
 
-    // Upload
-    // Dashboard upload
+    /*
+    |--------------------------------------------------------------------------
+    | Upload Routes
+    |--------------------------------------------------------------------------
+    */
     Route::get("/upload", [UploadController::class, "index"])->name(
         "upload.index",
     );
-    // Add/Upload docs
     Route::post("/upload", [UploadController::class, "store"])->name(
         "upload.store",
     );
 
-    // Logout
+    /*
+    |--------------------------------------------------------------------------
+    | Utility Routes
+    |--------------------------------------------------------------------------
+    */
     Route::get("/logout", [SessionController::class, "logout"])->name("logout");
 
-    // Else
     Route::get("/get-desa-by-kecamatan/{id}", [
         LocationController::class,
         "getDesaByKecamatan",
     ]);
-
-    // Note:
-    // modal modal confirm / error page /
-    // check clean code
 });
+
+/*
+|--------------------------------------------------------------------------
+| Error Testing Routes
+|--------------------------------------------------------------------------
+*/
+Route::get("/test-403", function () {
+    abort(403, "Anda tidak memiliki izin untuk mengakses halaman ini.");
+});
+Route::get("/test-500", function () {
+    throw new Exception("Error testing 500");
+});
+
+// Note:
+// check clean code
+// dark/light mode
+
+// /*
+// |--------------------------------------------------------------------------
+// | Redirect root
+// |--------------------------------------------------------------------------
+// | Arahkan otomatis ke dashboard jika login, atau ke login jika belum.
+// */
+// Route::get("/", function () {
+//     return Auth::check()
+//         ? redirect()->route("dashboard.redirect") // route penentu dashboard sesuai role
+//         : redirect()->route("login");
+// });
+
+// /*
+// |--------------------------------------------------------------------------
+// | Login routes (guest only)
+// |--------------------------------------------------------------------------
+// */
+// Route::middleware("guest")->group(function () {
+//     Route::get("/login", [SessionController::class, "index"])->name("login");
+//     Route::post("/login", [SessionController::class, "login"]);
+// });
+
+// /*
+// |--------------------------------------------------------------------------
+// | Force change password
+// |--------------------------------------------------------------------------
+// */
+// Route::get("/force-change-password", [
+//     ForcePasswordController::class,
+//     "showForm",
+// ])->name("password.force_change");
+// Route::post("/force-change-password", [
+//     ForcePasswordController::class,
+//     "update",
+// ])->name("password.force_change.update");
+
+// /*
+// |--------------------------------------------------------------------------
+// | Protected routes (check.login)
+// |--------------------------------------------------------------------------
+// */
+// Route::middleware(["check.login"])->group(function () {
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Universal logout
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::get("/logout", [SessionController::class, "logout"])->name("logout");
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Dashboard redirector
+//     |--------------------------------------------------------------------------
+//     | Supaya semua user diarahkan ke dashboard sesuai role masing-masing.
+//     */
+//     Route::get("/dashboard", function () {
+//         $user = Auth::user();
+//         $role = $user->role->role ?? "guest";
+
+//         return match ($role) {
+//             // "admin" => redirect()->route("admin"),
+//             "admin" => "Hello",
+//             "ppk" => redirect()->route(
+//                 "kecamatan.index",
+//                 $user->userable->kecamatan_id,
+//             ),
+//             "pps" => redirect()->route("desa.index", $user->userable->desa_id),
+//             "kpps" => redirect()->route("tps.index", $user->userable->tps_id),
+//             default => abort(403, "Role tidak dikenali."),
+//         };
+//     })->name("dashboard.redirect");
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Admin routes
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::middleware(["check.role:admin"])->group(function () {
+//         Route::get("/admin", [AdminController::class, "index"])->name("admin");
+//         Route::put("/users/{id}", [UserController::class, "update"])->name(
+//             "users.update",
+//         );
+//         Route::get("/users/download/pdf", [
+//             UserController::class,
+//             "downloadPdf",
+//         ])->name("users.download.pdf");
+//         Route::post("/admin/announcements/store", [
+//             AnnouncementController::class,
+//             "store",
+//         ])->name("admin.announcements.store");
+//     });
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Kecamatan routes
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::middleware(["check.role:ppk"])->group(function () {
+//         Route::get("/kecamatan/{id}", [
+//             KecamatanController::class,
+//             "index",
+//         ])->name("kecamatan.index");
+//         Route::post("/kecamatan/{id}/ppk", [
+//             PPKMemberController::class,
+//             "store",
+//         ])->name("ppk.store");
+//         Route::put("/ppk/{id}", [PPKMemberController::class, "update"])->name(
+//             "ppk.anggota.update",
+//         );
+//         Route::delete("/ppk/{id}", [
+//             PPKMemberController::class,
+//             "destroy",
+//         ])->name("ppk.anggota.destroy");
+//     });
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Desa routes
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::middleware(["check.role:pps"])->group(function () {
+//         Route::get("/desa/{desaId}", [DesaController::class, "index"])->name(
+//             "desa.index",
+//         );
+//         Route::post("/desa/{desaId}/pps", [
+//             PPSMemberController::class,
+//             "store",
+//         ])->name("pps.store");
+//         Route::put("/pps/{id}", [PPSMemberController::class, "update"])->name(
+//             "pps.anggota.update",
+//         );
+//         Route::delete("/pps/{id}", [
+//             PPSMemberController::class,
+//             "destroy",
+//         ])->name("pps.anggota.destroy");
+//         Route::post("/desa/{desa}/tps", [TPSController::class, "store"])->name(
+//             "desa.tps.store",
+//         );
+//         Route::get("/desa/{desa}/tps/download", [
+//             TpsController::class,
+//             "download",
+//         ])->name("desa.tps.download");
+//     });
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | TPS routes
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::middleware(["check.role:kpps"])->group(function () {
+//         Route::get("/tps/{tpsId}", [TPSController::class, "index"])->name(
+//             "tps.index",
+//         );
+//         Route::post("/kpps/{tpsId}/anggota", [
+//             KPPSMemberController::class,
+//             "store",
+//         ])->name("kpps.anggota.store");
+//         Route::put("/kpps/{id}", [KPPSMemberController::class, "update"])->name(
+//             "kpps.anggota.update",
+//         );
+//         Route::delete("/kpps/{id}", [
+//             KPPSMemberController::class,
+//             "destroy",
+//         ])->name("kpps.anggota.destroy");
+//         Route::put("/tps/{id}/update-voters", [
+//             TPSController::class,
+//             "updateVoters",
+//         ])->name("tps.update_voters");
+//     });
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Upload routes
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::get("/upload", [UploadController::class, "index"])->name(
+//         "upload.index",
+//     );
+//     Route::post("/upload", [UploadController::class, "store"])->name(
+//         "upload.store",
+//     );
+
+//     /*
+//     |--------------------------------------------------------------------------
+//     | Helper routes
+//     |--------------------------------------------------------------------------
+//     */
+//     Route::get("/get-desa-by-kecamatan/{id}", [
+//         LocationController::class,
+//         "getDesaByKecamatan",
+//     ]);
+// });
