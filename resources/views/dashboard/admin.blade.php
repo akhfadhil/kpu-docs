@@ -8,7 +8,13 @@
     <section class="container mx-auto p-6 space-y-8" x-show="show" x-transition.duration.700ms>
 
         <!-- === BAGIAN DOKUMEN & PENCARIAN === -->
-        <section id="search-section" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl">
+        {{-- <section id="search-section" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl"> --}}
+            <section
+                id="search-section"
+                class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 
+                    shadow-lg rounded-2xl p-6 transition duration-500 
+                    hover:shadow-xl dark:hover:shadow-gray-900"
+            >
 
             <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">
                 Dokumen D Hasil Kabupaten
@@ -126,82 +132,196 @@
             </script>
 
             <!-- Form pencarian wilayah -->
-            <h2 class="text-xl font-semibold mb-4 mt-8">Pencarian Berdasarkan Wilayah</h2>
-            <form action="/hasil" method="get" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="provinsi" class="block text-sm font-medium mb-1">Provinsi</label>
-                    <input type="text" id="provinsi" name="provinsi" value="Jawa Timur" readonly
-                        class="w-full border rounded-lg p-2 bg-gray-100 text-gray-700 cursor-not-allowed">
-                </div>
-                <div>
-                    <label for="kabupaten" class="block text-sm font-medium mb-1">Kabupaten</label>
-                    <input type="text" id="kabupaten" name="kabupaten" value="Banyuwangi" readonly
-                        class="w-full border rounded-lg p-2 bg-gray-100 text-gray-700 cursor-not-allowed">
-                </div>
-                <div>
-                    <label for="kecamatan" class="block text-sm font-medium mb-1">Kecamatan</label>
-                    <select id="kecamatan" name="kecamatan" required
-                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
-                        <option value="">-- Pilih Kecamatan --</option>
-                        @foreach ($kecamatan as $kcmt)
-                            <option value="{{ $kcmt['id'] }}">{{ $kcmt['name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label for="desa" class="block text-sm font-medium mb-1">Desa</label>
-                    <select id="desa" name="desa" required
-                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
-                        <option value="">-- Pilih Desa --</option>
-                    </select>
-                </div>
-                <div class="md:col-span-2 flex justify-end mt-4">
-                    <button type="button" id="btnCari"
-                        class="bg-blue-600 hover:bg-blue-700 active:scale-95 transform transition duration-200 text-white font-semibold px-6 py-2 rounded-xl shadow">
-                        Cari
-                    </button>
-                </div>
-            </form>
+<h2 class="text-xl font-semibold mb-4 mt-8 text-gray-900 dark:text-gray-100">
+    Pencarian Berdasarkan Wilayah
+</h2>
+
+<form action="/hasil" method="get" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Provinsi -->
+    <div>
+        <label for="provinsi" class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">
+            Provinsi
+        </label>
+        <input
+            type="text"
+            id="provinsi"
+            name="provinsi"
+            value="Jawa Timur"
+            readonly
+            class="w-full border border-gray-300 dark:border-gray-700 
+                   rounded-lg p-2 bg-gray-100 dark:bg-gray-700 
+                   text-gray-800 dark:text-gray-200 cursor-not-allowed"
+        >
+    </div>
+
+    <!-- Kabupaten -->
+    <div>
+        <label for="kabupaten" class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">
+            Kabupaten
+        </label>
+        <input
+            type="text"
+            id="kabupaten"
+            name="kabupaten"
+            value="Banyuwangi"
+            readonly
+            class="w-full border border-gray-300 dark:border-gray-700 
+                   rounded-lg p-2 bg-gray-100 dark:bg-gray-700 
+                   text-gray-800 dark:text-gray-200 cursor-not-allowed"
+        >
+    </div>
+
+    <!-- Kecamatan -->
+    <div>
+        <label for="kecamatan" class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">
+            Kecamatan
+        </label>
+        <select
+            id="kecamatan"
+            name="kecamatan"
+            required
+            class="w-full border border-gray-300 dark:border-gray-700 
+                   rounded-lg p-2 bg-white dark:bg-gray-700 
+                   text-gray-800 dark:text-gray-200 
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+            <option value="">-- Pilih Kecamatan --</option>
+            @foreach ($kecamatan as $kcmt)
+                <option value="{{ $kcmt['id'] }}">{{ $kcmt['name'] }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <!-- Desa -->
+    <div>
+        <label for="desa" class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">
+            Desa
+        </label>
+        <select
+            id="desa"
+            name="desa"
+            required
+            class="w-full border border-gray-300 dark:border-gray-700 
+                   rounded-lg p-2 bg-white dark:bg-gray-700 
+                   text-gray-800 dark:text-gray-200 
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+            <option value="">-- Pilih Desa --</option>
+        </select>
+    </div>
+
+    <!-- Tombol -->
+    <div class="md:col-span-2 flex justify-end mt-4">
+        <button
+            type="button"
+            id="btnCari"
+            class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 
+                   active:scale-95 transform transition duration-200 
+                   text-white font-semibold px-6 py-2 rounded-xl shadow"
+        >
+            Cari
+        </button>
+    </div>
+</form>
+
         </section>
 
 <!-- === BAGIAN PENGUMUMAN === -->
-<section id="info-announcement" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl">
+{{-- <section id="info-announcement" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl"> --}}
+           <section
+    id="info-announcement"
+    class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+           shadow-lg rounded-2xl p-6 transition duration-500
+           hover:shadow-xl dark:hover:shadow-gray-900"
+>
     <div class="flex flex-col md:flex-row md:space-x-6">
-        <!-- Form Pengumuman (50%) -->
+        <!-- Form Pengumuman -->
         <div class="md:w-1/2 flex flex-col">
-            <h2 class="text-lg font-semibold mb-2">Buat Pengumuman</h2>
+            <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                Buat Pengumuman
+            </h2>
 
             <form action="{{ route('admin.announcements.store') }}" method="POST" class="flex flex-col gap-3">
                 @csrf
+
+                <!-- Judul -->
                 <div>
-                    <label class="block text-sm font-medium">Judul</label>
-                    <input type="text" name="title" required class="w-full border p-2 rounded">
+                    <label class="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
+                        Judul
+                    </label>
+                    <input
+                        type="text"
+                        name="title"
+                        required
+                        class="w-full border border-gray-300 dark:border-gray-700 
+                               p-2 rounded bg-gray-100 dark:bg-gray-700 
+                               text-gray-800 dark:text-gray-100 
+                               focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
                 </div>
 
+                <!-- Isi -->
                 <div>
-                    <label class="block text-sm font-medium">Isi Pengumuman</label>
-                    <textarea name="content" rows="3" required class="w-full border p-2 rounded"></textarea>
+                    <label class="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
+                        Isi Pengumuman
+                    </label>
+                    <textarea
+                        name="content"
+                        rows="3"
+                        required
+                        class="w-full border border-gray-300 dark:border-gray-700 
+                               p-2 rounded bg-gray-100 dark:bg-gray-700 
+                               text-gray-800 dark:text-gray-100 
+                               focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    ></textarea>
                 </div>
 
+                <!-- Role -->
                 <div>
-                    <label class="block text-sm font-medium">Role Target</label>
-                    <select name="role" required class="w-full border p-2 rounded">
+                    <label class="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
+                        Role Target
+                    </label>
+                    <select
+                        name="role"
+                        required
+                        class="w-full border border-gray-300 dark:border-gray-700 
+                               p-2 rounded bg-white dark:bg-gray-700 
+                               text-gray-800 dark:text-gray-100 
+                               focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
                         <option value="ppk">PPK</option>
                         <option value="pps">PPS</option>
                         <option value="kpps">KPPS</option>
                     </select>
                 </div>
 
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full md:w-auto">Simpan</button>
+                <button
+                    type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 
+                           text-white px-4 py-2 rounded w-full md:w-auto
+                           transition transform active:scale-95 shadow"
+                >
+                    Simpan
+                </button>
             </form>
         </div>
 
-        <!-- Tabel Pengumuman (50%) -->
+        <!-- Tabel Pengumuman -->
         <div class="md:w-1/2 mt-6 md:mt-0 flex flex-col">
             <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg font-semibold">Daftar Pengumuman</h2>
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    Daftar Pengumuman
+                </h2>
+
                 <!-- Filter Role -->
-                <select id="announcementRoleFilter" class="border p-1 rounded text-sm">
+                <select
+                    id="announcementRoleFilter"
+                    class="border border-gray-300 dark:border-gray-700 
+                           p-1 rounded text-sm 
+                           bg-white dark:bg-gray-700 
+                           text-gray-800 dark:text-gray-100 
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
                     <option value="">Semua Role</option>
                     <option value="ppk">PPK</option>
                     <option value="pps">PPS</option>
@@ -209,26 +329,31 @@
                 </select>
             </div>
 
-            <!-- Container flex untuk stretch tabel -->
-            <div class="flex-1 overflow-y-auto border rounded p-2">
-                <table class="w-full text-sm text-left text-gray-600 border-collapse" id="announcementTable">
-                    <thead class="bg-gray-100">
+            <!-- Container flex untuk tabel -->
+            <div class="flex-1 overflow-y-auto border border-gray-300 dark:border-gray-700 rounded p-2">
+                <table class="w-full text-sm text-left text-gray-800 dark:text-gray-100 border-collapse" id="announcementTable">
+                    <thead class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                         <tr>
-                            <th class="border px-2 py-1">Judul</th>
-                            <th class="border px-2 py-1">Isi</th>
-                            <th class="border px-2 py-1">Role</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-2 py-1">Judul</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-2 py-1">Isi</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-2 py-1">Role</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($announcements as $a)
-                            <tr data-role="{{ $a->role }}">
-                                <td class="border px-2 py-1">{{ $a->title }}</td>
-                                <td class="border px-2 py-1">{{ $a->content }}</td>
-                                <td class="border px-2 py-1">{{ strtoupper($a->role) }}</td>
+                            <tr
+                                data-role="{{ $a->role }}"
+                                class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700"
+                            >
+                                <td class="border border-gray-300 dark:border-gray-600 px-2 py-1">{{ $a->title }}</td>
+                                <td class="border border-gray-300 dark:border-gray-600 px-2 py-1">{{ $a->content }}</td>
+                                <td class="border border-gray-300 dark:border-gray-600 px-2 py-1">{{ strtoupper($a->role) }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center py-2 text-gray-400">Belum ada pengumuman.</td>
+                                <td colspan="3" class="text-center py-2 text-gray-500 dark:text-gray-400">
+                                    Belum ada pengumuman.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -237,6 +362,7 @@
         </div>
     </div>
 </section>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -262,7 +388,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         <!-- === BAGIAN INFORMASI SINGKAT === -->
-        <section id="info-section" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl">
+        {{-- <section id="info-section" class="bg-white shadow-lg rounded-2xl p-6 transition duration-500 hover:shadow-xl"> --}}
+            <section
+                id="info-section"
+                class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 
+                    shadow-lg rounded-2xl p-6 transition duration-500 
+                    hover:shadow-xl dark:hover:shadow-gray-900"
+            >
             <h2 class="text-xl font-semibold mb-4">Informasi Singkat</h2>
             <ul class="space-y-2">
                 <li class="flex justify-between border-b pb-2">
@@ -277,137 +409,195 @@ document.addEventListener('DOMContentLoaded', function() {
         </section>
 
         <!-- === BAGIAN INFORMASI USER === -->
-        <section id="user-section"
-            class="bg-white shadow-lg rounded-2xl p-6 mt-6 transition duration-500 hover:shadow-xl">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 space-y-2 md:space-y-0">
-                <h2 class="text-xl font-semibold">Daftar Pengguna</h2>
+        {{-- <section id="user-section"
+            class="bg-white shadow-lg rounded-2xl p-6 mt-6 transition duration-500 hover:shadow-xl"> --}}
+            <section
+    id="user-section"
+    class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 
+        shadow-lg rounded-2xl p-6 transition duration-500 
+        hover:shadow-xl dark:hover:shadow-gray-900"
+>
+    <!-- Header dan Filter -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 space-y-3 md:space-y-0">
+        <h2 class="text-xl font-semibold">Daftar Pengguna</h2>
 
-                <div class="flex flex-wrap items-center gap-2">
-                    <!-- Filter Role -->
-                    <div class="flex items-center space-x-2">
-                        <label for="filterRole" class="text-sm font-medium text-gray-600">Filter Role:</label>
-                        <select id="filterRole"
-                            class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua</option>
-                            <option value="admin">Admin</option>
-                            <option value="ppk">PPK</option>
-                            <option value="pps">PPS</option>
-                        </select>
-                    </div>
+        <div class="flex flex-wrap items-center gap-3">
+            <!-- Filter Role -->
+            <div class="flex items-center gap-2">
+                <label for="filterRole" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter Role:</label>
+                <select
+                    id="filterRole"
+                    class="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-sm 
+                           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                    <option value="">Semua</option>
+                    <option value="admin">Admin</option>
+                    <option value="ppk">PPK</option>
+                    <option value="pps">PPS</option>
+                </select>
+            </div>
 
-                    <!-- Filter Kecamatan -->
-                    <div class="flex items-center space-x-2">
-                        <label for="filterWilayah" class="text-sm font-medium text-gray-600">Filter Kecamatan:</label>
-                        <select id="filterWilayah"
-                            class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-green-500">
-                            <option value="">Semua Kecamatan</option>
-                            @php
-                                $kecamatanList = collect($users)
-                                    ->map(function ($u) {
-                                        if ($u->role->role === 'ppk' && $u->userable) {
-                                            return $u->userable->kecamatan->name;
-                                        } elseif ($u->role->role === 'pps' && $u->userable) {
-                                            return $u->userable->desa->kecamatan->name;
-                                        }
-                                        return null;
-                                    })
-                                    ->filter()
-                                    ->unique()
-                                    ->sort();
-                            @endphp
+            <!-- Filter Kecamatan -->
+            <div class="flex items-center gap-2">
+                <label for="filterWilayah" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter Kecamatan:</label>
+                <select
+                    id="filterWilayah"
+                    class="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-sm 
+                           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                           focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                >
+                    <option value="">Semua Kecamatan</option>
+                    @php
+                        $kecamatanList = collect($users)
+                            ->map(function ($u) {
+                                if ($u->role->role === 'ppk' && $u->userable) {
+                                    return $u->userable->kecamatan->name;
+                                } elseif ($u->role->role === 'pps' && $u->userable) {
+                                    return $u->userable->desa->kecamatan->name;
+                                }
+                                return null;
+                            })
+                            ->filter()
+                            ->unique()
+                            ->sort();
+                    @endphp
 
-                            @foreach ($kecamatanList as $kec)
-                                <option value="{{ strtolower($kec) }}">{{ $kec }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @foreach ($kecamatanList as $kec)
+                        <option value="{{ strtolower($kec) }}">{{ $kec }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-                    <!-- Tombol Download PDF -->
-                    <button id="downloadPdfBtn"
-                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">
-                        Download PDF
+            <!-- Tombol Download PDF -->
+            <button
+                id="downloadPdfBtn"
+                class="bg-red-500 hover:bg-red-600 active:scale-95 transform transition duration-200 
+                       text-white px-4 py-1.5 rounded-md text-sm font-medium shadow-sm"
+            >
+                Download PDF
+            </button>
+        </div>
+    </div>
+    <!-- Tabel Data -->
+    <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+        <table
+            id="userTable"
+            class="w-full text-sm text-left text-gray-700 dark:text-gray-200 border-collapse"
+        >
+            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
+                <tr>
+                    <th class="px-4 py-2 border-b dark:border-gray-600">No</th>
+                    <th class="px-4 py-2 border-b dark:border-gray-600">Nama</th>
+                    <th class="px-4 py-2 border-b dark:border-gray-600">Username</th>
+                    <th class="px-4 py-2 border-b dark:border-gray-600">Kecamatan</th>
+                    <th class="px-4 py-2 border-b dark:border-gray-600">Role</th>
+                    <th class="px-4 py-2 border-b dark:border-gray-600">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                @foreach ($users as $index => $u)
+                    @php
+                        $role = strtolower($u->role->role);
+                        $kecamatan = '-';
+                        if ($u->role->role === 'ppk' && $u->userable) {
+                            $kecamatan = $u->userable->kecamatan->name;
+                        } elseif ($u->role->role === 'pps' && $u->userable) {
+                            $kecamatan = $u->userable->desa->kecamatan->name;
+                        }
+                    @endphp
+                    <tr
+                        data-role="{{ $role }}"
+                        data-wilayah="{{ strtolower($kecamatan) }}"
+                        data-temp="{{ $u->temporary_password ?? '-' }}"
+                        class="hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                    >
+                        <td class="px-4 py-2 border-b dark:border-gray-600 text-center">{{ $index + 1 }}</td>
+                        <td class="px-4 py-2 border-b dark:border-gray-600">{{ $u->name }}</td>
+                        <td class="px-4 py-2 border-b dark:border-gray-600">{{ $u->username }}</td>
+                        <td class="px-4 py-2 border-b dark:border-gray-600">{{ $kecamatan }}</td>
+                        <td class="px-4 py-2 border-b dark:border-gray-600">{{ strtoupper($u->role->role) }}</td>
+                        <td class="px-4 py-2 border-b dark:border-gray-600">
+                            <button
+                                data-modal-target="editUserModal"
+                                data-modal-toggle="editUserModal"
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded 
+                                       text-sm font-medium editUserBtn transition"
+                                data-id="{{ $u->id }}"
+                                data-name="{{ $u->name }}"
+                            >
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal Edit User -->
+    <div
+        id="editUserModal"
+        tabindex="-1"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+    >
+        <div class="relative w-full max-w-md md:max-w-lg">
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden">
+                <!-- Header -->
+                <div class="flex justify-between items-center p-5 border-b border-gray-200 dark:border-gray-600">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        Edit Nama User
+                    </h3>
+                    <button
+                        type="button"
+                        class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                        data-modal-hide="editUserModal"
+                    >
+                        ✕
                     </button>
                 </div>
-            </div>
 
-            <div class="overflow-x-auto">
-                <table id="userTable"
-                    class="w-full text-sm text-left text-gray-600 border border-gray-200 rounded-lg">
-                    <thead class="text-gray-700 bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 border-b">No</th>
-                            <th class="px-4 py-2 border-b">Nama</th>
-                            <th class="px-4 py-2 border-b">Username</th>
-                            <th class="px-4 py-2 border-b">Kecamatan</th>
-                            <th class="px-4 py-2 border-b">Role</th>
-                            <th class="px-4 py-2 border-b">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                        @foreach ($users as $index => $u)
-                            @php
-                                $role = strtolower($u->role->role);
-                                $kecamatan = '-';
-                                if ($u->role->role === 'ppk' && $u->userable) {
-                                    $kecamatan = $u->userable->kecamatan->name;
-                                } elseif ($u->role->role === 'pps' && $u->userable) {
-                                    $kecamatan = $u->userable->desa->kecamatan->name;
-                                }
-                            @endphp
-                            <tr data-role="{{ $role }}" data-wilayah="{{ strtolower($kecamatan) }}"
-                                data-temp="{{ $u->temporary_password ?? '-' }}">
-                                <td class="px-4 py-2 border-b text-center">{{ $index + 1 }}</td>
-                                <td class="px-4 py-2 border-b">{{ $u->name }}</td>
-                                <td class="px-4 py-2 border-b">{{ $u->username }}</td>
-                                <td class="px-4 py-2 border-b">{{ $kecamatan }}</td>
-                                <td class="px-4 py-2 border-b">{{ strtoupper($u->role->role) }}</td>
-                                <td class="px-4 py-2 border-b">
-                                    <button 
-                                        data-modal-target="editUserModal" 
-                                        data-modal-toggle="editUserModal"
-                                        class="bg-yellow-500 text-white px-3 py-1 rounded editUserBtn" 
-                                        data-id="{{ $u->id }}" 
-                                        data-name="{{ $u->name }}">
-                                        Edit
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <!-- Flowbite Modal Edit Name Responsive -->
-            <div id="editUserModal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full inset-0 h-modal h-full flex items-center justify-center px-4">
-                <div class="relative w-full max-w-md md:max-w-lg h-full md:h-auto mx-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-full h-full md:h-auto">
-                        <!-- Header -->
-                        <div class="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
-                            <h3 class="text-xl font-medium text-gray-900 dark:text-white">Edit Nama User</h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="editUserModal">
-                                ✕
-                            </button>
-                        </div>
+                <!-- Form -->
+                <form
+                    id="editUserForm"
+                    method="POST"
+                    class="p-6 space-y-4"
+                >
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id" id="editUserId">
 
-                        <!-- Form -->
-                        <form id="editUserForm" method="POST" class="p-6 h-full md:h-auto flex flex-col justify-between">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="id" id="editUserId">
-
-                            <div class="mb-4 flex-1 overflow-auto">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama</label>
-                                <input type="text" name="name" id="editUserName" class="w-full p-2 border rounded dark:bg-gray-600 dark:text-white" required>
-                            </div>
-
-                            <div class="flex justify-end mt-2">
-                                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full md:w-auto">Simpan</button>
-                            </div>
-                        </form>
+                    <div>
+                        <label
+                            for="editUserName"
+                            class="block mb-2 text-sm font-medium text-gray-800 dark:text-gray-300"
+                        >
+                            Nama
+                        </label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="editUserName"
+                            required
+                            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded 
+                                   bg-white dark:bg-gray-600 text-gray-900 dark:text-white
+                                   focus:ring-2 focus:ring-blue-500"
+                        >
                     </div>
-                </div>
-            </div>
 
-        </section>
+                    <div class="flex justify-end">
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded 
+                                   w-full md:w-auto transition"
+                        >
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- JS untuk Filter dan Download PDF -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

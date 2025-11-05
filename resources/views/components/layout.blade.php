@@ -4,6 +4,15 @@
       <meta charset="utf-8" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
       <title>Manajemen Aplikasi Penyelenggara Pemilu</title>
+      <script>
+         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+         } else {
+            document.documentElement.classList.remove('dark')
+         }
+      </script>
+
       {{-- Tailwind + Flowbite --}}
       @vite(['resources/css/app.css', 'resources/js/app.js'])
       <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
@@ -45,6 +54,7 @@
       </script>
    </head>
    <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+
       <div class="min-h-screen flex flex-col">
       {{-- HEADER --}}
       <x-header></x-header>
