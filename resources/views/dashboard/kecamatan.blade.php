@@ -199,16 +199,23 @@
 
             {{-- Anggota PPK --}}
             <section class="border-t pt-6">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
+                    <!-- Judul dan Deskripsi -->
                     <div>
-                        <h3 class="text-xl font-bold text-text-light dark:text-text-dark">Anggota PPK</h3>
+                        <h3 class="text-xl font-bold text-text-light dark:text-text-dark">
+                            Anggota PPK
+                        </h3>
                         <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">
                             Daftar semua anggota PPK di Desa ini, termasuk nama dan jabatannya.
                         </p>
                     </div>
-                    {{-- Tombol Modal Tambah Anggota --}}
+
+                    <!-- Tombol Modal Tambah Anggota -->
                     <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                        class="flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
+                        class="flex items-center justify-center sm:justify-start space-x-2 
+                        bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 
+                        rounded-lg text-sm transition duration-200 active:scale-95 
+                        w-full sm:w-auto">
                         <span class="material-icons text-base">add</span>
                         <span>Tambah Anggota</span>
                     </button>
@@ -217,26 +224,30 @@
                 {{-- Modal Form --}}
                 <div id="crud-modal" tabindex="-1" aria-hidden="true"
                     class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
-                    <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg w-full max-w-md">
-                        <div class="flex justify-between items-center border-b p-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 p-4">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Anggota PPK</h3>
                             <button type="button" data-modal-toggle="crud-modal"
-                                class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-300">
+                                class="text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">
                                 ✕
                             </button>
                         </div>
+
+                        <!-- Form -->
                         <form action="{{ route('ppk.store', $kecamatan->id) }}" method="POST" class="p-5 space-y-4">
                             @csrf
                             <div>
-                                <label for="name" class="block mb-2 text-sm font-medium">Nama</label>
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
                                 <input type="text" name="name" id="name"
-                                    class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900"
+                                    class="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-primary focus:border-primary"
                                     placeholder="Nama anggota" required>
                             </div>
+
                             <div>
-                                <label for="job_title" class="block mb-2 text-sm font-medium">Jabatan</label>
+                                <label for="job_title" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
                                 <select name="job_title" id="job_title"
-                                    class="w-full p-2 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary text-gray-900">
+                                    class="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-primary focus:border-primary">
                                     <option value="">-- Pilih --</option>
                                     <option value="PPK 2">PPK 2</option>
                                     <option value="PPK 3">PPK 3</option>
@@ -244,6 +255,7 @@
                                     <option value="PPK 5">PPK 5</option>
                                 </select>
                             </div>
+
                             <button type="submit"
                                 class="w-full text-white bg-primary hover:bg-primary/90 rounded-lg py-2.5 font-medium flex items-center justify-center gap-2">
                                 <span class="material-icons text-sm">add</span>
@@ -252,6 +264,7 @@
                         </form>
                     </div>
                 </div>
+
 
                 {{-- Tabel Anggota --}}
                 <div class="overflow-x-auto mt-4">

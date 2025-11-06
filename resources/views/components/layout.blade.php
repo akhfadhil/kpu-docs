@@ -66,7 +66,7 @@
       <footer class="bg-card-light dark:bg-card-dark mt-12">
          <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <p class="text-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
-               © 2023 PemiluApp. All rights reserved.
+               © 2025 PemiluApp. All rights reserved.
             </p>
          </div>
       </footer>

@@ -99,10 +99,7 @@ class TPSController extends Controller
 
             return redirect()
                 ->back()
-                ->with(
-                    "success",
-                    "TPS & Ketua KPPS berhasil dibuat! Password sementara: <strong>password</strong>",
-                )
+                ->with("success", "TPS & Ketua KPPS berhasil dibuat!")
                 ->with("toast", true);
         } catch (\Exception $e) {
             DB::rollBack();

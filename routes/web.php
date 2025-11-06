@@ -190,7 +190,6 @@ Route::get("/test-500", function () {
 
 // Note:
 // hide id
-// responsive mobile
 // check clean code
 
 // /*

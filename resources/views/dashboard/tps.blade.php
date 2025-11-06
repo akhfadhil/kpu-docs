@@ -59,42 +59,60 @@
 
             {{-- DETAIL TPS --}}
             <section>
-                <h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Detail TPS {{ $tps->tps_code }}
+                <h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">
+                    Detail TPS {{ $tps->tps_code }}
                 </h2>
-                <div class="overflow-hidden rounded-xl border border-border-light dark:border-border-dark">
-                    @if (session('success'))
-                        <div
-                            class="mb-4 rounded-md bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    <table class="w-full text-sm border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+
+                @if (session('success'))
+                    <div
+                        class="mb-4 rounded-lg border border-green-300 dark:border-green-800 
+                            bg-green-50 dark:bg-green-900/30 
+                            text-green-700 dark:text-green-300 
+                            px-4 py-3 text-sm font-medium">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <div class="overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-gray-800">
+                    <table class="w-full text-sm border-collapse">
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                                <td class="w-1/3 px-6 py-4 font-medium text-gray-600 dark:text-gray-400">Alamat</td>
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+                            <!-- Alamat -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                <td class="w-1/3 px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 dark:text-gray-400">
+                                    Alamat
+                                </td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-900 dark:text-gray-100 break-words">
                                     {{ $tps->address }}
                                 </td>
                             </tr>
 
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                                <td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-400">Jumlah Pemilih</td>
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+                            <!-- Jumlah Pemilih -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 dark:text-gray-400">
+                                    Jumlah Pemilih
+                                </td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-900 dark:text-gray-100">
                                     <form action="{{ route('tps.update_voters', $tps->id) }}" method="POST"
-                                        class="flex items-center gap-3">
+                                        class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                                         @csrf
                                         @method('PUT')
-                                        <div class="relative">
-                                            <input type="number" name="number_of_voters"
-                                                value="{{ $tps->number_of_voters }}"
-                                                class="w-28 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/5 text-gray-900 dark:text-gray-100 px-3 py-1.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" />
-                                        </div>
+
+                                        <input type="number" name="number_of_voters"
+                                            value="{{ $tps->number_of_voters }}"
+                                            class="w-full sm:w-28 rounded-lg border border-gray-300 dark:border-gray-600 
+                                                    bg-gray-50 dark:bg-gray-700/40 
+                                                    text-gray-900 dark:text-gray-100 
+                                                    px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                                    outline-none transition" />
+
                                         <button type="submit"
-                                            class="inline-flex items-center gap-1 px-4 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition">
+                                                class="inline-flex items-center justify-center gap-1 
+                                                    px-4 py-2 text-sm font-medium text-white 
+                                                    bg-indigo-600 hover:bg-indigo-500 active:scale-95 
+                                                    rounded-lg shadow-sm transition duration-150">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M5 13l4 4L19 7" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                             <span>Simpan</span>
                                         </button>
@@ -102,9 +120,12 @@
                                 </td>
                             </tr>
 
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                                <td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-400">Ketua KPPS</td>
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+                            <!-- Ketua KPPS -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 dark:text-gray-400">
+                                    Ketua KPPS
+                                </td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-900 dark:text-gray-100">
                                     {{ $tps->ketua_kpps->name }}
                                 </td>
                             </tr>
@@ -112,6 +133,7 @@
                     </table>
                 </div>
             </section>
+
 
             {{-- DOKUMEN C HASIL --}}
             <section>
@@ -238,39 +260,48 @@
 
             {{-- ANGGOTA KPPS --}}
             <section class="border-t border-border-light dark:border-border-dark pt-6">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
                     <div>
                         <h3 class="text-xl font-bold text-text-light dark:text-text-dark">Anggota KPPS</h3>
-                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Daftar anggota KPPS
-                            beserta jabatannya.</p>
+                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                            Daftar semua anggota KPPS beserta jabatannya.
+                        </p>
                     </div>
-                    <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                        class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
-                        <span class="material-icons text-base">add</span> Tambah Anggota
+
+                    {{-- Tombol Modal Tambah Anggota --}}
+                    <button 
+                        data-modal-target="crud-modal" 
+                        data-modal-toggle="crud-modal"
+                        class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
+                        <span class="material-icons text-base">add</span>
+                        <span>Tambah Anggota</span>
                     </button>
                 </div>
+
 
                 {{-- Modal Tambah Anggota --}}
                 <div id="crud-modal" tabindex="-1" aria-hidden="true"
                     class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
-                    <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg w-full max-w-md p-5">
-                        <div class="flex justify-between items-center border-b pb-3">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md p-5">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 pb-3">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Anggota KPPS</h3>
                             <button data-modal-toggle="crud-modal"
-                                class="text-gray-500 hover:text-red-500 transition">✕</button>
+                                class="text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition">✕</button>
                         </div>
-                        <form action="{{ route('kpps.anggota.store', $tps->id) }}" method="POST"
-                            class="mt-4 space-y-4">
+
+                        <!-- Form -->
+                        <form action="{{ route('kpps.anggota.store', $tps->id) }}" method="POST" class="mt-4 space-y-4">
                             @csrf
                             <div>
-                                <label for="name" class="block text-sm font-medium mb-1">Nama</label>
+                                <label for="name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Nama</label>
                                 <input type="text" name="name" id="name" required
-                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-2 focus:ring-primary focus:border-primary">
+                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 focus:ring-primary focus:border-primary">
                             </div>
                             <div>
-                                <label for="job_title" class="block text-sm font-medium mb-1">Jabatan</label>
+                                <label for="job_title" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jabatan</label>
                                 <select name="job_title" id="job_title"
-                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-2 focus:ring-primary focus:border-primary">
+                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 focus:ring-primary focus:border-primary">
                                     <option value="">-- Pilih Jabatan --</option>
                                     @for ($i = 2; $i <= 7; $i++)
                                         <option value="KPPS {{ $i }}">KPPS {{ $i }}</option>
@@ -285,6 +316,7 @@
                         </form>
                     </div>
                 </div>
+
 
                 {{-- TABEL ANGGOTA --}}
                 <div class="overflow-x-auto mt-4">
