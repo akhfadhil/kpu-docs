@@ -52,7 +52,7 @@ class User extends Authenticatable
     public function userable()
     {
         return $this->morphTo();
-    } // anggota_ppk/pps/kpps
+    }
 
     public function uploadedDokumen()
     {

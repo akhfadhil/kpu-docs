@@ -16,10 +16,12 @@
             text-align: center;
             margin-bottom: 15px;
         }
-        
+
         header img {
-            max-width: 60px;   /* lebar maksimal logo */
-            height: auto;       /* tinggi otomatis agar proporsional */
+            max-width: 60px;
+            /* lebar maksimal logo */
+            height: auto;
+            /* tinggi otomatis agar proporsional */
             margin-bottom: 5px;
         }
 

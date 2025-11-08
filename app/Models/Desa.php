@@ -52,5 +52,5 @@ class Desa extends Model
     public function document()
     {
         return $this->morphMany(Document::class, "documentable");
-    } // if desa can upload
+    }
 }

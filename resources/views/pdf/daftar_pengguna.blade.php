@@ -16,10 +16,12 @@
             text-align: center;
             margin-bottom: 15px;
         }
-        
+
         header img {
-            max-width: 60px;   /* lebar maksimal logo */
-            height: auto;       /* tinggi otomatis agar proporsional */
+            max-width: 60px;
+            /* lebar maksimal logo */
+            height: auto;
+            /* tinggi otomatis agar proporsional */
             margin-bottom: 5px;
         }
 
@@ -86,6 +88,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <img src="{{ public_path('img/logo.png') }}" alt="Logo KPU">
@@ -95,46 +98,46 @@
 
     <h3>{{ $judul }}</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th style="width:5%">No</th>
-                <th style="width:25%">Nama</th>
-                <th style="width:20%">Username</th>
-                <th style="width:20%">Temporary Password</th>
-                <th style="width:15%">Role</th>
-                <th style="width:15%">Wilayah</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($users as $i => $u)
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td>{{ $u->name }}</td>
-                    <td>{{ $u->username }}</td>
-                    <td>{{ $u->temporary_password ?? '-' }}</td>
-                    <td>{{ strtoupper($u->role->role) }}</td>
-                    <td>
-                        @if ($u->role->role === 'ppk' && $u->userable)
-                            {{ $u->userable->kecamatan->name }}
-                        @elseif ($u->role->role === 'pps' && $u->userable)
-                            {{ $u->userable->desa->name }} ({{ $u->userable->desa->kecamatan->name }})
-                        @else
-                            -
-                        @endif
-                    </td>
+                    <th style="width:5%">No</th>
+                    <th style="width:25%">Nama</th>
+                    <th style="width:20%">Username</th>
+                    <th style="width:20%">Temporary Password</th>
+                    <th style="width:15%">Role</th>
+                    <th style="width:15%">Wilayah</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div class="footer">
-        <p>
-            Dicetak pada: {{ \Carbon\Carbon::now()->format('d F Y, H:i') }} WIB<br>
-            {{-- <strong>Petugas: {{ auth()->user()->name ?? 'Sistem' }}</strong> --}}
-        </p>
-    </div>
+            </thead>
+            <tbody>
+                @foreach ($users as $i => $u)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $u->name }}</td>
+                        <td>{{ $u->username }}</td>
+                        <td>{{ $u->temporary_password ?? '-' }}</td>
+                        <td>{{ strtoupper($u->role->role) }}</td>
+                        <td>
+                            @if ($u->role->role === 'ppk' && $u->userable)
+                                {{ $u->userable->kecamatan->name }}
+                            @elseif ($u->role->role === 'pps' && $u->userable)
+                                {{ $u->userable->desa->name }} ({{ $u->userable->desa->kecamatan->name }})
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="footer">
+            <p>
+                Dicetak pada: {{ \Carbon\Carbon::now()->format('d F Y, H:i') }} WIB<br>
+                {{-- <strong>Petugas: {{ auth()->user()->name ?? 'Sistem' }}</strong> --}}
+            </p>
+        </div>
 
-    {{-- <div class="signature">
+        {{-- <div class="signature">
         <div>
             <p>Petugas Desa</p>
             <br><br><br>
@@ -142,4 +145,5 @@
         </div>
     </div> --}}
 </body>
+
 </html>

@@ -32,7 +32,16 @@ class TPSController extends Controller
         }
 
         $tps = TPS::with("desa.kecamatan")->findOrFail($tpsId);
-        $anggota = KPPSMember::where("tps_id", $tpsId)->get();
+        $anggota = KPPSMember::where("tps_id", $tpsId)
+            ->get()
+            ->sortBy(function ($item) {
+                if ($item->job_title === "Keamanan") {
+                    return 999; // terakhir
+                }
+                preg_match("/\d+/", $item->job_title, $m);
+                return $m[0] ?? 0;
+            })
+            ->values(); // reset index
         $announcement = Announcement::where("role", "kpps")->latest()->first();
         $breadcrumb = BreadcrumbHelper::build($tps);
 
@@ -139,20 +148,4 @@ class TPSController extends Controller
 
         return $pdf->download($filename);
     }
-
-    // public function store(Request $request, Desa $desa)
-    // {
-    //     try {
-    //         $validated = $request->validate([
-    //             "tps_code" => "required|string|max:50|unique:tps,tps_code",
-    //             "address" => "nullable|string|max:255",
-    //             "kpps_name" => "required|string|max:255",
-    //             "kpps_username" =>
-    //                 "required|string|max:255|unique:users,username",
-    //         ]);
-    //         dd("validate success", $validated);
-    //     } catch (\Illuminate\Validation\ValidationException $e) {
-    //         dd("validate gagal", $e->errors());
-    //     }
-    // }
 }

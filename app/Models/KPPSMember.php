@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class KPPSMember extends Model {
-
+class KPPSMember extends Model
+{
     use HasFactory;
-    protected $table = 'kpps_member';
-    protected $fillable = [
-        'name',
-        'job_title',
-        'tps_id'
-    ];
+    protected $table = "kpps_member";
+    protected $fillable = ["name", "job_title", "tps_id"];
 
-    public function tps() { 
-        return $this->belongsTo(TPS::class, 'tps_id'); 
+    public function tps()
+    {
+        return $this->belongsTo(TPS::class, "tps_id");
     }
-    public function user() { 
-        return $this->morphOne(User::class, 'userable'); 
-    } // optional
+
+    public function user()
+    {
+        return $this->morphOne(User::class, "userable");
+    }
+
     public function document()
     {
         return $this->hasMany(Document::class);

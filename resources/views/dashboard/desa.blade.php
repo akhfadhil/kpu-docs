@@ -7,93 +7,87 @@
     <!-- Konten Utama -->
     <section class="container mx-auto p-6" x-show="show" x-transition.duration.700ms>
         <!-- Breadcrumb -->
-        {{-- <x-breadcrumb :items="[
-            ['label' => 'Provinsi Jawa Timur', 'url' => '/'],
-            ['label' => 'Kabupaten Banyuwangi', 'url' => '#'],
-            ['label' => 'Kecamatan ' . $desa->kecamatan->name, 'url' => '/kecamatan/' . $desa->kecamatan->id],
-            ['label' => 'Desa ' . $desa->name, 'url' => null],
-        ]" /> --}}
-<x-breadcrumb :items="$breadcrumb" />
+        <x-breadcrumb :items="$breadcrumb" />
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 space-y-8">
 
-            {{-- Pengumuman Terbaru --}}
-@if($announcement)
-<section id="announcement-section" class="flex justify-center items-center mt-10">
-    <div class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
+            <!-- Pengumuman Terbaru -->
+            @if ($announcement)
+                <section id="announcement-section" class="flex justify-center items-center mt-10">
+                    <div
+                        class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
                 rounded-2xl p-8 w-full max-w-2xl text-center">
 
-        <!-- 🔔 Label di tengah -->
-        <div class="absolute -top-4 inset-x-0 flex justify-center">
-            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
-                🔔 PENGUMUMAN TERBARU
-            </div>
-        </div>
+                        <!-- 🔔 Label di tengah -->
+                        <div class="absolute -top-4 inset-x-0 flex justify-center">
+                            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
+                                🔔 PENGUMUMAN TERBARU
+                            </div>
+                        </div>
 
-        <!-- Kontainer isi pengumuman -->
-        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
-            <!-- Judul -->
-            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
-                {{ $announcement->title }}
-            </h2>
+                        <!-- Kontainer isi pengumuman -->
+                        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
+                            <!-- Judul -->
+                            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
+                                {{ $announcement->title }}
+                            </h2>
 
-            <!-- Isi pengumuman -->
-            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
-                {{ $announcement->content }}
-            </p>
+                            <!-- Isi pengumuman -->
+                            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
+                                {{ $announcement->content }}
+                            </p>
 
-            <!-- Tanggal -->
-            <p class="text-xs text-gray-500 italic">
-                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
-            </p>
-        </div>
-    </div>
-</section>
-@else
-<section id="announcement-section" class="flex justify-center items-center mt-10">
-    <div class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
-        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
-    </div>
-</section>
-@endif
+                            <!-- Tanggal -->
+                            <p class="text-xs text-gray-500 italic">
+                                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            @else
+                <section id="announcement-section" class="flex justify-center items-center mt-10">
+                    <div
+                        class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
+                        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
+                    </div>
+                </section>
+            @endif
 
-            {{-- Daftar TPS --}}
+            <!-- Daftar TPS -->
             <section class="border-b pb-6">
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
-    <!-- Judul -->
-    <div>
-        <h2 class="text-xl font-bold text-text-light dark:text-text-dark">
-            Daftar TPS di Desa {{ $desa->name }}
-        </h2>
-        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">
-            Daftar seluruh Tempat Pemungutan Suara (TPS) di desa ini.
-        </p>
-    </div>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
+                    <!-- Judul -->
+                    <div>
+                        <h2 class="text-xl font-bold text-text-light dark:text-text-dark">
+                            Daftar TPS di Desa {{ $desa->name }}
+                        </h2>
+                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">
+                            Daftar seluruh Tempat Pemungutan Suara (TPS) di desa ini.
+                        </p>
+                    </div>
 
-    <!-- Tombol Aksi -->
-    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
-        <!-- Tombol Download -->
-        <a href="{{ route('desa.tps.download', $desa->id) }}"
-            class="flex items-center justify-center sm:justify-start space-x-2 bg-green-600 hover:bg-green-700 
+                    <!-- Tombol Aksi -->
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                        <!-- Tombol Download -->
+                        <a href="{{ route('desa.tps.download', $desa->id) }}"
+                            class="flex items-center justify-center sm:justify-start space-x-2 bg-green-600 hover:bg-green-700 
             text-white font-medium py-2 px-4 rounded-lg text-sm transition duration-200 active:scale-95 
             w-full sm:w-auto">
-            <span class="material-icons text-base">download</span>
-            <span>Download Daftar TPS</span>
-        </a>
+                            <span class="material-icons text-base">download</span>
+                            <span>Download Daftar TPS</span>
+                        </a>
 
-        <!-- Tombol Tambah -->
-        <button data-modal-target="tambah-tps-modal" data-modal-toggle="tambah-tps-modal"
-            class="flex items-center justify-center sm:justify-start space-x-2 bg-primary hover:bg-primary/90 
+                        <!-- Tombol Tambah -->
+                        <button data-modal-target="tambah-tps-modal" data-modal-toggle="tambah-tps-modal"
+                            class="flex items-center justify-center sm:justify-start space-x-2 bg-primary hover:bg-primary/90 
             text-white font-medium py-2 px-4 rounded-lg text-sm transition duration-200 active:scale-95 
             w-full sm:w-auto">
-            <span class="material-icons text-base">add</span>
-            <span>Tambah TPS</span>
-        </button>
-    </div>
-</div>
-
-
+                            <span class="material-icons text-base">add</span>
+                            <span>Tambah TPS</span>
+                        </button>
+                    </div>
+                </div>
 
                 @if ($desa->tps->isEmpty())
                     <div
@@ -101,7 +95,8 @@
                             text-gray-500 dark:text-gray-400 
                             py-8 px-4 sm:py-10 border rounded-xl 
                             bg-gray-50 dark:bg-gray-700/40 shadow-sm">
-                        <span class="material-icons text-5xl sm:text-6xl mb-3 text-blue-500 dark:text-blue-400">info</span>
+                        <span
+                            class="material-icons text-5xl sm:text-6xl mb-3 text-blue-500 dark:text-blue-400">info</span>
                         <p class="font-semibold text-base sm:text-lg">
                             Belum ada TPS yang terdaftar di desa ini.
                         </p>
@@ -109,7 +104,6 @@
                             Klik tombol <strong>Tambah TPS</strong> untuk menambahkan data.
                         </p>
                     </div>
-
                 @else
                     <ul class="space-y-3">
                         @foreach ($desa->tps as $tps)
@@ -137,7 +131,8 @@
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
 
                         <!-- Header Modal -->
-                        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-700 p-4">
+                        <div
+                            class="flex justify-between items-center border-b border-gray-200 dark:border-gray-700 p-4">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                 Tambah TPS
                             </h3>
@@ -160,7 +155,8 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- Kode TPS -->
                                     <div>
-                                        <label for="tps_code" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <label for="tps_code"
+                                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                                             Kode TPS
                                         </label>
                                         <select name="tps_code" id="tps_code"
@@ -179,7 +175,8 @@
 
                                     <!-- Alamat TPS -->
                                     <div>
-                                        <label for="address" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <label for="address"
+                                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                                             Alamat TPS
                                         </label>
                                         <input type="text" name="address" id="address"
@@ -217,7 +214,8 @@
                                             class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                                             Jabatan
                                         </label>
-                                        <input type="text" id="kpps_job_title" name="kpps_job_title" value="KPPS 1" readonly
+                                        <input type="text" id="kpps_job_title" name="kpps_job_title" value="KPPS 1"
+                                            readonly
                                             class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg 
                                             bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 cursor-not-allowed">
                                     </div>
@@ -236,10 +234,9 @@
 
                     </div>
                 </div>
-
             </section>
 
-            {{-- Anggota PPS --}}
+            <!-- Anggota PPS -->
             <section class="border-t pt-6">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                     <div>
@@ -262,13 +259,13 @@
                     </button>
                 </div>
 
-
-                {{-- Modal Form Tambah Anggota PPS --}}
+                <!-- Modal Form Tambah Anggota PPS -->
                 <div id="crud-modal" tabindex="-1" aria-hidden="true"
                     class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md">
                         <!-- Header -->
-                        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 p-4">
+                        <div
+                            class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 p-4">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Anggota PPS</h3>
                             <button type="button" data-modal-toggle="crud-modal"
                                 class="text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">✕</button>
@@ -278,14 +275,16 @@
                         <form action="{{ route('pps.store', $desa->id) }}" method="POST" class="p-5 space-y-4">
                             @csrf
                             <div>
-                                <label for="name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
                                 <input type="text" name="name" id="name"
                                     class="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-primary focus:border-primary"
                                     placeholder="Nama anggota" required>
                             </div>
 
                             <div>
-                                <label for="job_title" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
+                                <label for="job_title"
+                                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
                                 <select name="job_title" id="job_title"
                                     class="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-primary focus:border-primary">
                                     <option value="">-- Pilih --</option>
@@ -303,8 +302,7 @@
                     </div>
                 </div>
 
-
-                {{-- Tabel Anggota PPS --}}
+                <!-- Tabel Anggota PPS -->
                 <div class="overflow-x-auto mt-4">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                         <thead class="bg-gray-100 dark:bg-gray-700">
@@ -331,7 +329,6 @@
                                                 data-modal-toggle="editPPSModal">
                                                 Edit
                                             </button>
-
 
                                             <!-- Tombol Hapus -->
                                             <form action="{{ route('pps.anggota.destroy', $p->id) }}" data-confirm
@@ -407,10 +404,12 @@
 
         </div>
 
-
     </section>
+
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- EDIT MODAL & ACTION FORM --}}
+    
+    <!-- EDIT MODAL & ACTION FORM -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const editButtons = document.querySelectorAll('.edit-btn');
@@ -435,7 +434,7 @@
         });
     </script>
 
-    {{-- DELETE CONFIRM --}}
+    <!-- DELETE CONFIRM -->
     <script>
         document.querySelectorAll('form[data-confirm]').forEach(form => {
             form.addEventListener('submit', function(e) {
@@ -454,4 +453,5 @@
             });
         });
     </script>
+    
 </x-layout>

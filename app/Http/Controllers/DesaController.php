@@ -26,7 +26,13 @@ class DesaController extends Controller
 
         // $desa = Desa::find($desaId);
         $desa = Desa::with("tps")->find($desaId);
-        $anggota = PPSMember::where("desa_id", $desa->id)->get();
+        $anggota = PPSMember::where("desa_id", $desa->id)
+            ->get()
+            ->sortBy(function ($item) {
+                preg_match("/\d+/", $item->job_title, $matches);
+                return $matches[0] ?? 0;
+            })
+            ->values(); // reset index biar urut dari 0 lagi
         $announcement = Announcement::where("role", "pps")->latest()->first();
         $breadcrumb = BreadcrumbHelper::build($desa);
 

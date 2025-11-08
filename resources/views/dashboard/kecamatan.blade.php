@@ -5,60 +5,57 @@
     <x-page-header :title="'Kecamatan ' . $kecamatan->name" />
 
     <section class="container mx-auto p-6">
+
         <!-- Breadcrumb -->
-        {{-- <x-breadcrumb :items="[
-            ['label' => 'Provinsi Jawa Timur', 'url' => '/'],
-            ['label' => 'Kabupaten Banyuwangi', 'url' => '#'],
-            ['label' => 'Kecamatan ' . $kecamatan->name, 'url' => '/kecamatan/' . $kecamatan->id],
-        ]" /> --}}
-<x-breadcrumb :items="$breadcrumb" />
+        <x-breadcrumb :items="$breadcrumb" />
 
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 space-y-8">
-{{-- Pengumuman Terbaru --}}
-@if($announcement)
-<section id="announcement-section" class="flex justify-center items-center mt-10">
-    <div class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
+
+            {{-- Pengumuman Terbaru --}}
+            @if ($announcement)
+                <section id="announcement-section" class="flex justify-center items-center mt-10">
+                    <div
+                        class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
                 rounded-2xl p-8 w-full max-w-2xl text-center">
 
-        <!-- 🔔 Label di tengah -->
-        <div class="absolute -top-4 inset-x-0 flex justify-center">
-            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
-                🔔 PENGUMUMAN TERBARU
-            </div>
-        </div>
+                        <!-- 🔔 Label di tengah -->
+                        <div class="absolute -top-4 inset-x-0 flex justify-center">
+                            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
+                                🔔 PENGUMUMAN TERBARU
+                            </div>
+                        </div>
 
-        <!-- Kontainer isi pengumuman -->
-        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
-            <!-- Judul -->
-            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
-                {{ $announcement->title }}
-            </h2>
+                        <!-- Kontainer isi pengumuman -->
+                        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
+                            <!-- Judul -->
+                            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
+                                {{ $announcement->title }}
+                            </h2>
 
-            <!-- Isi pengumuman -->
-            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
-                {{ $announcement->content }}
-            </p>
+                            <!-- Isi pengumuman -->
+                            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
+                                {{ $announcement->content }}
+                            </p>
 
-            <!-- Tanggal -->
-            <p class="text-xs text-gray-500 italic">
-                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
-            </p>
-        </div>
-    </div>
-</section>
-@else
-<section id="announcement-section" class="flex justify-center items-center mt-10">
-    <div class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
-        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
-    </div>
-</section>
-@endif
+                            <!-- Tanggal -->
+                            <p class="text-xs text-gray-500 italic">
+                                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            @else
+                <section id="announcement-section" class="flex justify-center items-center mt-10">
+                    <div
+                        class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
+                        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
+                    </div>
+                </section>
+            @endif
 
-
-
-            {{-- Dokumen D Hasil Kecamatan --}}
+            <!-- Dokumen D Hasil Kecamatan -->
             <section>
                 <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Dokumen D Hasil</h3>
 
@@ -104,7 +101,7 @@
                 </div>
             </section>
 
-            {{-- MODAL PDF --}}
+            <!-- Modal PDF lihat dokumen -->
             <div id="pdfModal" tabindex="-1" aria-hidden="true"
                 class="hidden fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40 transition-opacity duration-300">
                 <div class="relative w-full max-w-5xl mx-4 sm:mx-auto transform transition-all scale-95 opacity-0"
@@ -134,51 +131,8 @@
                     </div>
                 </div>
             </div>
-            <script>
-                document.querySelectorAll('.pdf-view-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const pdfUrl = btn.getAttribute('data-pdf');
-                        const modal = document.getElementById('pdfModal');
-                        const container = document.getElementById('pdfModalContainer');
-                        const frame = document.getElementById('pdfFrame');
 
-                        // Set source PDF
-                        frame.src = pdfUrl;
-
-                        // Tampilkan modal dengan animasi fade-in
-                        modal.classList.remove('hidden');
-                        setTimeout(() => {
-                            container.classList.remove('opacity-0', 'scale-95');
-                            container.classList.add('opacity-100', 'scale-100');
-                        }, 10);
-                    });
-                });
-
-                // Tutup modal saat klik luar atau tombol close
-                document.querySelectorAll('[data-modal-hide="pdfModal"]').forEach(btn => {
-                    btn.addEventListener('click', closeModal);
-                });
-
-                function closeModal() {
-                    const modal = document.getElementById('pdfModal');
-                    const container = document.getElementById('pdfModalContainer');
-                    const frame = document.getElementById('pdfFrame');
-
-                    container.classList.add('opacity-0', 'scale-95');
-                    container.classList.remove('opacity-100', 'scale-100');
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        frame.src = ''; // kosongkan agar tidak tetap memuat
-                    }, 200);
-                }
-
-                // Tutup modal saat klik di luar konten
-                document.getElementById('pdfModal').addEventListener('click', (e) => {
-                    if (e.target.id === 'pdfModal') closeModal();
-                });
-            </script>
-
-            {{-- Daftar Desa --}}
+            <!-- Daftar Desa -->
             <section class="border-t pt-6">
                 <h2 class="text-xl font-bold mb-4 text-text-light dark:text-text-dark">
                     Daftar Desa & Kelurahan di Kecamatan {{ $kecamatan->name }}
@@ -197,7 +151,7 @@
                 </ul>
             </section>
 
-            {{-- Anggota PPK --}}
+            <!-- Anggota PPK -->
             <section class="border-t pt-6">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
                     <!-- Judul dan Deskripsi -->
@@ -221,12 +175,13 @@
                     </button>
                 </div>
 
-                {{-- Modal Form --}}
+                <!-- Modal Form Tambah Anggota -->
                 <div id="crud-modal" tabindex="-1" aria-hidden="true"
                     class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md">
                         <!-- Header -->
-                        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 p-4">
+                        <div
+                            class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 p-4">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Anggota PPK</h3>
                             <button type="button" data-modal-toggle="crud-modal"
                                 class="text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">
@@ -238,14 +193,16 @@
                         <form action="{{ route('ppk.store', $kecamatan->id) }}" method="POST" class="p-5 space-y-4">
                             @csrf
                             <div>
-                                <label for="name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
                                 <input type="text" name="name" id="name"
                                     class="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-primary focus:border-primary"
                                     placeholder="Nama anggota" required>
                             </div>
 
                             <div>
-                                <label for="job_title" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
+                                <label for="job_title"
+                                    class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
                                 <select name="job_title" id="job_title"
                                     class="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-primary focus:border-primary">
                                     <option value="">-- Pilih --</option>
@@ -266,7 +223,7 @@
                 </div>
 
 
-                {{-- Tabel Anggota --}}
+                <!-- Tabel Anggota -->
                 <div class="overflow-x-auto mt-4">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                         <thead class="bg-gray-100 dark:bg-gray-700">
@@ -373,8 +330,11 @@
         </div>
 
     </section>
+
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- EDIT MODAL & ACTION FORM --}}
+
+    <!-- EDIT MODAL & ACTION FORM -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const editButtons = document.querySelectorAll('.edit-btn');
@@ -399,7 +359,7 @@
         });
     </script>
 
-    {{-- DELETE CONFIRM --}}
+    <!-- DELETE CONFIRM -->
     <script>
         document.querySelectorAll('form[data-confirm]').forEach(form => {
             form.addEventListener('submit', function(e) {
@@ -418,4 +378,50 @@
             });
         });
     </script>
+
+    <!-- Script Modal PDF -->
+    <script>
+        document.querySelectorAll('.pdf-view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pdfUrl = btn.getAttribute('data-pdf');
+                const modal = document.getElementById('pdfModal');
+                const container = document.getElementById('pdfModalContainer');
+                const frame = document.getElementById('pdfFrame');
+
+                // Set source PDF
+                frame.src = pdfUrl;
+
+                // Tampilkan modal dengan animasi fade-in
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    container.classList.remove('opacity-0', 'scale-95');
+                    container.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            });
+        });
+
+        // Tutup modal saat klik luar atau tombol close
+        document.querySelectorAll('[data-modal-hide="pdfModal"]').forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+
+        function closeModal() {
+            const modal = document.getElementById('pdfModal');
+            const container = document.getElementById('pdfModalContainer');
+            const frame = document.getElementById('pdfFrame');
+
+            container.classList.add('opacity-0', 'scale-95');
+            container.classList.remove('opacity-100', 'scale-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                frame.src = ''; // kosongkan agar tidak tetap memuat
+            }, 200);
+        }
+
+        // Tutup modal saat klik di luar konten
+        document.getElementById('pdfModal').addEventListener('click', (e) => {
+            if (e.target.id === 'pdfModal') closeModal();
+        });
+    </script>
+    
 </x-layout>

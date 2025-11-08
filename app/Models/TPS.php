@@ -16,24 +16,6 @@ class TPS extends Model
         "number_of_voters",
     ];
 
-    // protected static function booted()
-    // {
-    //     static::created(function ($tps) {
-    //         $kpps = \App\Models\KPPSMember::create([
-    //             'name' => 'KPPS ' . $tps->tps_code,
-    //             'job_title' => 'Ketua KPPS',
-    //             'tps_id' => $tps->id,
-    //         ]);
-
-    //         $kpps->user()->create([
-    //             'name' => $kpps->name,
-    //             'username' => 'kpps' . $tps->id,
-    //             'email' => 'kpps' . $tps->id . '@example.com',
-    //             'password' => bcrypt('password'),
-    //             'role_id' => \App\Models\Role::where('role', 'kpps')->first()->id,
-    //         ]);
-    //     });
-    // }
     public function desa()
     {
         return $this->belongsTo(Desa::class);

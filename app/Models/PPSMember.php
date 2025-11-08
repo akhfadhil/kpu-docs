@@ -15,10 +15,12 @@ class PPSMember extends Model
     {
         return $this->belongsTo(Desa::class);
     }
+
     public function user()
     {
         return $this->morphOne(User::class, "userable");
-    } // optional
+    }
+
     public function document()
     {
         return $this->hasMany(Document::class);

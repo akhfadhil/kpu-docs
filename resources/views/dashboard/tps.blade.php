@@ -1,84 +1,72 @@
 <x-layout>
 
-    <x-page-header :title="$tps->tps_code . ' ' .$tps->desa->name" />
+    <!-- Title header -->
+    <x-page-header :title="$tps->tps_code . ' ' . $tps->desa->name" />
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-4">
-        {{-- breadcrumb --}}
-        {{-- <x-breadcrumb :items="[
-            ['label' => 'Provinsi Jawa Timur', 'url' => '#'],
-            ['label' => 'Kabupaten Banyuwangi', 'url' => '#'],
-            ['label' => 'Kecamatan ' . $tps->desa->kecamatan->name, 'url' => '#'],
-            ['label' => 'Desa ' . $tps->desa->name, 'url' => '#'],
-            ['label' => $tps->tps_code, 'url' => null],
-        ]" /> --}}
-<x-breadcrumb :items="$breadcrumb" />
+    <!-- Konten Utama -->
+    <section class="container mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-4">
+        {{-- Breadcrumb --}}
+        <x-breadcrumb :items="$breadcrumb" />
 
         <!-- Main Content -->
         <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 sm:p-8 space-y-10">
 
-                        {{-- Pengumuman Terbaru --}}
-@if($announcement)
-<section id="announcement-section" class="flex justify-center items-center mt-10">
-    <div class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
+            <!-- Pengumuman Terbaru -->
+            @if ($announcement)
+                <section id="announcement-section" class="flex justify-center items-center mt-10">
+                    <div
+                        class="relative bg-gradient-to-r from-red-600 to-orange-500 shadow-2xl 
                 rounded-2xl p-8 w-full max-w-2xl text-center">
 
-        <!-- 🔔 Label di tengah -->
-        <div class="absolute -top-4 inset-x-0 flex justify-center">
-            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
-                🔔 PENGUMUMAN TERBARU
-            </div>
-        </div>
+                        <!-- 🔔 Label di tengah -->
+                        <div class="absolute -top-4 inset-x-0 flex justify-center">
+                            <div class="bg-white text-red-600 font-bold text-xs px-4 py-1 rounded-full shadow-md">
+                                🔔 PENGUMUMAN TERBARU
+                            </div>
+                        </div>
 
-        <!-- Kontainer isi pengumuman -->
-        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
-            <!-- Judul -->
-            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
-                {{ $announcement->title }}
-            </h2>
+                        <!-- Kontainer isi pengumuman -->
+                        <div class="bg-white/95 rounded-2xl p-6 shadow-lg">
+                            <!-- Judul -->
+                            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">
+                                {{ $announcement->title }}
+                            </h2>
 
-            <!-- Isi pengumuman -->
-            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
-                {{ $announcement->content }}
-            </p>
+                            <!-- Isi pengumuman -->
+                            <p class="text-sm md:text-base leading-relaxed text-gray-700 mb-4">
+                                {{ $announcement->content }}
+                            </p>
 
-            <!-- Tanggal -->
-            <p class="text-xs text-gray-500 italic">
-                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
-            </p>
-        </div>
-    </div>
-</section>
-@else
-<section id="announcement-section" class="flex justify-center items-center mt-10">
-    <div class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
-        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
-    </div>
-</section>
-@endif
+                            <!-- Tanggal -->
+                            <p class="text-xs text-gray-500 italic">
+                                Diumumkan pada {{ $announcement->created_at->format('d M Y, H:i') }}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            @else
+                <section id="announcement-section" class="flex justify-center items-center mt-10">
+                    <div
+                        class="bg-gray-100 border border-gray-300 rounded-xl shadow-md p-6 text-center w-full max-w-lg">
+                        <p class="text-gray-500">Belum ada pengumuman untuk Anda.</p>
+                    </div>
+                </section>
+            @endif
 
-
-            {{-- DETAIL TPS --}}
+            <!-- DETAIL TPS -->
             <section>
                 <h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">
-                    Detail TPS {{ $tps->tps_code }}
+                    Detail {{ $tps->tps_code }}
                 </h2>
 
-                @if (session('success'))
-                    <div
-                        class="mb-4 rounded-lg border border-green-300 dark:border-green-800 
-                            bg-green-50 dark:bg-green-900/30 
-                            text-green-700 dark:text-green-300 
-                            px-4 py-3 text-sm font-medium">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <div class="overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-gray-800">
+                <div
+                    class="overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-gray-800">
                     <table class="w-full text-sm border-collapse">
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             <!-- Alamat -->
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                                <td class="w-1/3 px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 dark:text-gray-400">
+                                <td
+                                    class="w-1/3 px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 dark:text-gray-400">
                                     Alamat
                                 </td>
                                 <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-900 dark:text-gray-100 break-words">
@@ -106,13 +94,14 @@
                                                     outline-none transition" />
 
                                         <button type="submit"
-                                                class="inline-flex items-center justify-center gap-1 
+                                            class="inline-flex items-center justify-center gap-1 
                                                     px-4 py-2 text-sm font-medium text-white 
                                                     bg-indigo-600 hover:bg-indigo-500 active:scale-95 
                                                     rounded-lg shadow-sm transition duration-150">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M5 13l4 4L19 7" />
                                             </svg>
                                             <span>Simpan</span>
                                         </button>
@@ -126,7 +115,7 @@
                                     Ketua KPPS
                                 </td>
                                 <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-900 dark:text-gray-100">
-                                    {{ $tps->ketua_kpps->name }}
+                                    {{ $tps->ketua_kpps->name ?? '-' }}
                                 </td>
                             </tr>
                         </tbody>
@@ -134,8 +123,7 @@
                 </div>
             </section>
 
-
-            {{-- DOKUMEN C HASIL --}}
+            <!-- DOKUMEN C HASIL -->
             <section>
                 <h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Dokumen C Hasil</h3>
 
@@ -150,7 +138,7 @@
                         ];
                         $kecamatan = $tps->desa->kecamatan->name ?? 'kecamatan';
                         $desa = $tps->desa->name ?? 'desa';
-                        $tps_folder = 'tps ' . $tps->tps_code;
+                        $tps_folder = $tps->tps_code;
                     @endphp
 
                     @foreach ($docs as $title => $filename)
@@ -183,7 +171,7 @@
                 </div>
             </section>
 
-            {{-- MODAL PDF --}}
+            <!-- MODAL PDF -->
             <div id="pdfModal" tabindex="-1" aria-hidden="true"
                 class="hidden fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40 transition-opacity duration-300">
                 <div class="relative w-full max-w-5xl mx-4 sm:mx-auto transform transition-all scale-95 opacity-0"
@@ -214,51 +202,7 @@
                 </div>
             </div>
 
-            <script>
-                document.querySelectorAll('.pdf-view-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const pdfUrl = btn.getAttribute('data-pdf');
-                        const modal = document.getElementById('pdfModal');
-                        const container = document.getElementById('pdfModalContainer');
-                        const frame = document.getElementById('pdfFrame');
-
-                        // Set source PDF
-                        frame.src = pdfUrl;
-
-                        // Tampilkan modal dengan animasi fade-in
-                        modal.classList.remove('hidden');
-                        setTimeout(() => {
-                            container.classList.remove('opacity-0', 'scale-95');
-                            container.classList.add('opacity-100', 'scale-100');
-                        }, 10);
-                    });
-                });
-
-                // Tutup modal saat klik luar atau tombol close
-                document.querySelectorAll('[data-modal-hide="pdfModal"]').forEach(btn => {
-                    btn.addEventListener('click', closeModal);
-                });
-
-                function closeModal() {
-                    const modal = document.getElementById('pdfModal');
-                    const container = document.getElementById('pdfModalContainer');
-                    const frame = document.getElementById('pdfFrame');
-
-                    container.classList.add('opacity-0', 'scale-95');
-                    container.classList.remove('opacity-100', 'scale-100');
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        frame.src = ''; // kosongkan agar tidak tetap memuat
-                    }, 200);
-                }
-
-                // Tutup modal saat klik di luar konten
-                document.getElementById('pdfModal').addEventListener('click', (e) => {
-                    if (e.target.id === 'pdfModal') closeModal();
-                });
-            </script>
-
-            {{-- ANGGOTA KPPS --}}
+            <!-- ANGGOTA KPPS -->
             <section class="border-t border-border-light dark:border-border-dark pt-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
                     <div>
@@ -268,38 +212,39 @@
                         </p>
                     </div>
 
-                    {{-- Tombol Modal Tambah Anggota --}}
-                    <button 
-                        data-modal-target="crud-modal" 
-                        data-modal-toggle="crud-modal"
+                    <!-- Tombol Modal Tambah Anggota -->
+                    <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                         class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-sm transition">
                         <span class="material-icons text-base">add</span>
                         <span>Tambah Anggota</span>
                     </button>
                 </div>
 
-
-                {{-- Modal Tambah Anggota --}}
+                <!-- Modal Tambah Anggota -->
                 <div id="crud-modal" tabindex="-1" aria-hidden="true"
                     class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md p-5">
                         <!-- Header -->
-                        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 pb-3">
+                        <div
+                            class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 pb-3">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Anggota KPPS</h3>
                             <button data-modal-toggle="crud-modal"
                                 class="text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition">✕</button>
                         </div>
 
                         <!-- Form -->
-                        <form action="{{ route('kpps.anggota.store', $tps->id) }}" method="POST" class="mt-4 space-y-4">
+                        <form action="{{ route('kpps.anggota.store', $tps->id) }}" method="POST"
+                            class="mt-4 space-y-4">
                             @csrf
                             <div>
-                                <label for="name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Nama</label>
+                                <label for="name"
+                                    class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Nama</label>
                                 <input type="text" name="name" id="name" required
                                     class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 focus:ring-primary focus:border-primary">
                             </div>
                             <div>
-                                <label for="job_title" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jabatan</label>
+                                <label for="job_title"
+                                    class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jabatan</label>
                                 <select name="job_title" id="job_title"
                                     class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 focus:ring-primary focus:border-primary">
                                     <option value="">-- Pilih Jabatan --</option>
@@ -317,8 +262,7 @@
                     </div>
                 </div>
 
-
-                {{-- TABEL ANGGOTA --}}
+                <!-- TABEL ANGGOTA -->
                 <div class="overflow-x-auto mt-4">
                     <table class="min-w-full divide-y divide-border-light dark:divide-border-dark">
                         <thead class="bg-gray-100 dark:bg-gray-700/60">
@@ -369,7 +313,7 @@
                                                     class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
                                                     Edit Anggota KPPS</h3>
 
-                                                <form id="editKPPSForm" method="POST">
+                                                <form id="editKPPSForm" method="POST" action="{{ route('kpps.anggota.update', $p->id)  }}">
                                                     @csrf
                                                     @method('PUT')
 
@@ -419,13 +363,15 @@
                     </table>
                 </div>
             </section>
+
         </div>
 
+    </section>
 
-
-    </div>
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- EDIT MODAL & ACTION FORM --}}
+
+    <!-- EDIT MODAL & ACTION FORM -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const editButtons = document.querySelectorAll('.edit-btn');
@@ -450,7 +396,7 @@
         });
     </script>
 
-    {{-- DELETE CONFIRM --}}
+    <!-- DELETE CONFIRM -->
     <script>
         document.querySelectorAll('form[data-confirm]').forEach(form => {
             form.addEventListener('submit', function(e) {
@@ -467,6 +413,51 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <!-- PDF MODAL -->
+    <script>
+        document.querySelectorAll('.pdf-view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pdfUrl = btn.getAttribute('data-pdf');
+                const modal = document.getElementById('pdfModal');
+                const container = document.getElementById('pdfModalContainer');
+                const frame = document.getElementById('pdfFrame');
+
+                // Set source PDF
+                frame.src = pdfUrl;
+
+                // Tampilkan modal dengan animasi fade-in
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    container.classList.remove('opacity-0', 'scale-95');
+                    container.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            });
+        });
+
+        // Tutup modal saat klik luar atau tombol close
+        document.querySelectorAll('[data-modal-hide="pdfModal"]').forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+
+        function closeModal() {
+            const modal = document.getElementById('pdfModal');
+            const container = document.getElementById('pdfModalContainer');
+            const frame = document.getElementById('pdfFrame');
+
+            container.classList.add('opacity-0', 'scale-95');
+            container.classList.remove('opacity-100', 'scale-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                frame.src = ''; // kosongkan agar tidak tetap memuat
+            }, 200);
+        }
+
+        // Tutup modal saat klik di luar konten
+        document.getElementById('pdfModal').addEventListener('click', (e) => {
+            if (e.target.id === 'pdfModal') closeModal();
         });
     </script>
 

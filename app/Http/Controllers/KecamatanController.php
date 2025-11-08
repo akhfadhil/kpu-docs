@@ -29,7 +29,14 @@ class KecamatanController extends Controller
         }
 
         $kecamatan = Kecamatan::with("desa")->findOrFail($id);
-        $anggota = PPKMember::where("kecamatan_id", $kecamatan->id)->get();
+        $anggota = PPKMember::where("kecamatan_id", $kecamatan->id)
+            ->get()
+            ->sortBy(function ($item) {
+                // Ambil angka dari job_title (misal "PPK 3" -> 3)
+                preg_match("/\d+/", $item->job_title, $matches);
+                return $matches[0] ?? 0; // kalau gak ada angka, jadikan 0
+            })
+            ->values(); // reset index biar urut dari 0 lagi
         $announcement = Announcement::where("role", "ppk")->latest()->first();
         $breadcrumb = BreadcrumbHelper::build($kecamatan);
 

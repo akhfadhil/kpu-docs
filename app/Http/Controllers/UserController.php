@@ -95,7 +95,8 @@ class UserController extends Controller
             $judul = "Daftar PPK";
             $fileName = "daftar-ppk.pdf";
         } elseif ($kecamatan) {
-            $judul = "Daftar Pengguna Kecamatan " . $kecamatan;
+            $judul =
+                "Daftar Pengguna Kecamatan " . ucwords(strtolower($kecamatan));
             $fileName = "daftar-pengguna-" . Str::slug($kecamatan) . ".pdf";
         } else {
             $judul = "Daftar Pengguna";

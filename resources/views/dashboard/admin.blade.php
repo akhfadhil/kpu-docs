@@ -57,7 +57,7 @@
                 @endforeach
             </div>
 
-            {{-- MODAL PDF --}}
+            {{-- Modal PDF Dokumen --}}
             <div id="pdfModal" tabindex="-1" aria-hidden="true"
                 class="hidden fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40 transition-opacity duration-300">
                 <div class="relative w-full max-w-5xl mx-4 sm:mx-auto transform transition-all scale-95 opacity-0"
@@ -84,49 +84,6 @@
                     </div>
                 </div>
             </div>
-
-            <script>
-                // Buka modal PDF
-                document.querySelectorAll('.pdf-view-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const pdfUrl = btn.getAttribute('data-pdf');
-                        const modal = document.getElementById('pdfModal');
-                        const container = document.getElementById('pdfModalContainer');
-                        const frame = document.getElementById('pdfFrame');
-
-                        frame.src = pdfUrl;
-                        modal.classList.remove('hidden');
-
-                        setTimeout(() => {
-                            container.classList.remove('opacity-0', 'scale-95');
-                            container.classList.add('opacity-100', 'scale-100');
-                        }, 50);
-                    });
-                });
-
-                // Tutup modal
-                document.querySelectorAll('[data-modal-hide="pdfModal"]').forEach(btn => {
-                    btn.addEventListener('click', closeModal);
-                });
-
-                function closeModal() {
-                    const modal = document.getElementById('pdfModal');
-                    const container = document.getElementById('pdfModalContainer');
-                    const frame = document.getElementById('pdfFrame');
-
-                    container.classList.add('opacity-0', 'scale-95');
-                    container.classList.remove('opacity-100', 'scale-100');
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        frame.src = '';
-                    }, 200);
-                }
-
-                // Klik luar modal
-                document.getElementById('pdfModal').addEventListener('click', (e) => {
-                    if (e.target.id === 'pdfModal') closeModal();
-                });
-            </script>
 
             <!-- Form pencarian wilayah -->
             <h2 class="text-xl font-semibold mb-4 mt-8 text-gray-900 dark:text-gray-100">
@@ -196,7 +153,6 @@
                         Cari
                     </button>
                 </div>
-
             </form>
 
         </section>
@@ -323,26 +279,6 @@
             </div>
         </section>
 
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const roleFilter = document.getElementById('announcementRoleFilter');
-                const tableRows = document.querySelectorAll('#announcementTable tbody tr');
-
-                roleFilter.addEventListener('change', function() {
-                    const selectedRole = this.value;
-                    tableRows.forEach(row => {
-                        const rowRole = row.getAttribute('data-role');
-                        if (!selectedRole || rowRole === selectedRole) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        </script>
-
         <!-- === BAGIAN INFORMASI SINGKAT === -->
         <section id="info-section"
             class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 
@@ -454,6 +390,10 @@
                             @php
                                 $role = strtolower($u->role->role);
                                 $kecamatan = '-';
+                                // Jika role adalah 'kpps', lewati user ini
+                                if ($role === 'kpps') {
+                                    continue;
+                                }
                                 if ($u->role->role === 'ppk' && $u->userable) {
                                     $kecamatan = $u->userable->kecamatan->name;
                                 } elseif ($u->role->role === 'pps' && $u->userable) {
@@ -483,6 +423,10 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="flex justify-center gap-2 mt-4"></div>
+
             <!-- Modal Edit User -->
             <div id="editUserModal" tabindex="-1"
                 class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
@@ -529,178 +473,48 @@
                 </div>
             </div>
         </section>
-
-        <!-- JS untuk Filter dan Download PDF -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const roleFilter = document.getElementById('filterRole');
-                const wilayahFilter = document.getElementById('filterWilayah');
-                const rows = document.querySelectorAll('#userTableBody tr');
-
-                function applyFilters() {
-                    const selectedRole = roleFilter.value.toLowerCase();
-                    const selectedWilayah = wilayahFilter.value.toLowerCase();
-
-                    let visibleCount = 0;
-                    rows.forEach(row => {
-                        const rowRole = row.getAttribute('data-role');
-                        const rowWilayah = row.getAttribute('data-wilayah');
-
-                        const matchRole = !selectedRole || rowRole === selectedRole;
-                        const matchWilayah = !selectedWilayah || rowWilayah.includes(selectedWilayah);
-
-                        if (matchRole && matchWilayah) {
-                            row.style.display = '';
-                            visibleCount++;
-                            row.querySelector('td').textContent = visibleCount; // update nomor urut
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                }
-
-                roleFilter.addEventListener('change', applyFilters);
-                wilayahFilter.addEventListener('change', applyFilters);
-            });
-        </script>
-        <script>
-            document.getElementById('downloadPdfBtn').addEventListener('click', function() {
-                const role = document.getElementById('filterRole').value;
-                const kecamatan = document.getElementById('filterWilayah') ? document.getElementById('filterWilayah')
-                    .value : '';
-                let url = `{{ route('users.download.pdf') }}?role=${role}&kecamatan=${kecamatan}`;
-                window.location.href = url;
-            });
-        </script>
-
-        {{-- JS EDIT NAMA --}}
-        <script>
-            document.querySelectorAll('.editUserBtn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.dataset.id;
-                    const name = this.dataset.name;
-                    document.getElementById('editUserId').value = id;
-                    document.getElementById('editUserName').value = name;
-
-                    // Update form action
-                    const form = document.getElementById('editUserForm');
-                    form.action = `/users/${id}`;
-                });
-            });
-        </script>
-
-
-
+        
     </section>
-
-    <!-- === SCRIPT UNTUK FILTER DAN PAGINATION === -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const filterSelect = document.getElementById("filterRole");
-            const rows = Array.from(document.querySelectorAll("#userTableBody tr"));
-            const pagination = document.getElementById("pagination");
-            const rowsPerPage = 25;
-            let currentPage = 1;
-
-            // Fungsi render tabel sesuai filter + pagination
-            function renderTable() {
-                const filter = filterSelect.value.toLowerCase();
-                const filteredRows = rows.filter(row =>
-                    !filter || row.dataset.role.includes(filter)
-                );
-
-                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
-                const start = (currentPage - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-
-                rows.forEach(row => row.style.display = "none");
-                filteredRows.slice(start, end).forEach(row => row.style.display = "");
-
-                renderPagination(totalPages);
-            }
-
-            // Fungsi render pagination button
-            function renderPagination(totalPages) {
-                pagination.innerHTML = "";
-                if (totalPages <= 1) return;
-
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = document.createElement("button");
-                    btn.textContent = i;
-                    btn.className =
-                        "px-3 py-1 border rounded-md text-sm " +
-                        (i === currentPage ?
-                            "bg-blue-500 text-white border-blue-500" :
-                            "bg-white text-gray-700 border-gray-300 hover:bg-gray-100");
-                    btn.addEventListener("click", function() {
-                        currentPage = i;
-                        renderTable();
-                        scrollToTableTop();
-                    });
-                    pagination.appendChild(btn);
-                }
-            }
-
-            // Fungsi scroll ke atas tabel saat ganti halaman
-            function scrollToTableTop() {
-                document.getElementById("user-section").scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-
-            // Event saat filter diganti
-            filterSelect.addEventListener("change", function() {
-                currentPage = 1;
-                renderTable();
-            });
-
-            // Render awal
-            renderTable();
-        });
-    </script>
 
     <!-- Script dropdown desa -->
     <script>
-        document.getElementById('kecamatan').addEventListener('change', function() {
+        document.getElementById("kecamatan").addEventListener("change", function () {
             const kecamatanId = this.value;
-            const desaDropdown = document.getElementById('desa');
+            const desaDropdown = document.getElementById("desa");
             desaDropdown.innerHTML = '<option value="">-- Pilih Desa --</option>';
 
             if (kecamatanId) {
                 fetch(`/get-desa-by-kecamatan/${kecamatanId}`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
+                    .then((response) => {
+                        if (!response.ok)
+                            throw new Error("Network response was not ok");
                         return response.json();
                     })
-                    .then(data => {
-                        data.forEach(desa => {
-                            const option = document.createElement('option');
+                    .then((data) => {
+                        data.forEach((desa) => {
+                            const option = document.createElement("option");
                             option.value = desa.id;
                             option.textContent = desa.name;
                             desaDropdown.appendChild(option);
                         });
                     })
-                    .catch(error => console.error('Error fetching villages:', error));
+                    .catch((error) => console.error("Error fetching villages:", error));
             }
         });
     </script>
 
-    <!-- Script redirect -->
+    <!-- Script Download PDF User -->
     <script>
-        document.getElementById('btnCari').addEventListener('click', function() {
-            const kecamatanId = document.getElementById('kecamatan').value;
-            const desaId = document.getElementById('desa').value;
-
-            if (desaId) {
-                window.location.href = `/desa/${desaId}`;
-            } else if (kecamatanId) {
-                window.location.href = `/kecamatan/${kecamatanId}`;
-            } else {
-                alert('Silakan pilih kecamatan terlebih dahulu.');
-            }
-        });
+        document
+            .getElementById("downloadPdfBtn")
+            .addEventListener("click", function () {
+                const role = document.getElementById("filterRole").value;
+                const kecamatan = document.getElementById("filterWilayah")
+                    ? document.getElementById("filterWilayah").value
+                    : "";
+                let url = `{{ route('users.download.pdf') }}?role=${role}&kecamatan=${kecamatan}`;
+                window.location.href = url;
+            });
     </script>
 
 </x-layout>
