@@ -15,24 +15,30 @@ class Kecamatan extends Model
     protected static function booted()
     {
         static::created(function ($kecamatan) {
-            // Buat anggota PPK
-            $ppk = \App\Models\PPKMember::create([
-                "name" => "PPK " . $kecamatan->name,
-                "job_title" => "PPK 1",
-                "kecamatan_id" => $kecamatan->id,
-            ]);
+            $roleId = \App\Models\Role::where("role", "ppk")->first()->id;
 
-            $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
+            // Buat 5 anggota PPK + usernya
+            for ($i = 1; $i <= 5; $i++) {
+                // Buat anggota PPK
+                $ppk = \App\Models\PPKMember::create([
+                    "name" => "PPK " . $kecamatan->name . " " . $i,
+                    "job_title" => "PPK " . $i,
+                    "kecamatan_id" => $kecamatan->id,
+                ]);
 
-            // Buat user untuk PPK
-            $ppk->user()->create([
-                "name" => $ppk->name,
-                "username" => "ppk-" . Str::slug($kecamatan->name),
-                "password" => bcrypt($randomPassword),
-                "temporary_password" => $randomPassword,
-                "role_id" => \App\Models\Role::where("role", "ppk")->first()
-                    ->id,
-            ]);
+                // Generate password random
+                $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
+
+                // Buat user
+                $ppk->user()->create([
+                    "name" => $ppk->name,
+                    "username" =>
+                        "ppk-" . Str::slug($kecamatan->name) . "-" . $i,
+                    "password" => bcrypt($randomPassword),
+                    "temporary_password" => $randomPassword,
+                    "role_id" => $roleId,
+                ]);
+            }
         });
     }
 

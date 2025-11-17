@@ -190,7 +190,6 @@ Route::get("/test-500", function () {
 
 // Note:
 // check clean code
-// user ppk 5
 // user pps 3
 // user kpps 2
 // delete tabel anggota kpps
