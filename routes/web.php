@@ -190,7 +190,7 @@ Route::get("/test-500", function () {
 
 // Note:
 // check clean code
-// user pps 3
+// pagination
 // user kpps 2
 // delete tabel anggota kpps
 // only pps can tambah tps

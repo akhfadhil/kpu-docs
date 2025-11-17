@@ -15,22 +15,29 @@ class Desa extends Model
     protected static function booted()
     {
         static::created(function ($desa) {
-            $pps = \App\Models\PPSMember::create([
-                "name" => "PPS " . $desa->name,
-                "job_title" => "PPS 1",
-                "desa_id" => $desa->id,
-            ]);
+            $roleId = \App\Models\Role::where("role", "pps")->first()->id;
 
-            $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
+            // Buat 3 anggota PPS + user-nya
+            for ($i = 1; $i <= 3; $i++) {
+                // Buat PPSMember
+                $pps = \App\Models\PPSMember::create([
+                    "name" => "PPS " . $desa->name . " " . $i,
+                    "job_title" => "PPS " . $i,
+                    "desa_id" => $desa->id,
+                ]);
 
-            $pps->user()->create([
-                "name" => $pps->name,
-                "username" => "pps-" . Str::slug($desa->name),
-                "password" => bcrypt($randomPassword),
-                "temporary_password" => $randomPassword,
-                "role_id" => \App\Models\Role::where("role", "pps")->first()
-                    ->id,
-            ]);
+                // Generate password random
+                $randomPassword = Str::upper(Str::random(4)) . rand(10, 99);
+
+                // Buat User terkait
+                $pps->user()->create([
+                    "name" => $pps->name,
+                    "username" => "pps-" . Str::slug($desa->name) . "-" . $i,
+                    "password" => bcrypt($randomPassword),
+                    "temporary_password" => $randomPassword,
+                    "role_id" => $roleId,
+                ]);
+            }
         });
     }
 
