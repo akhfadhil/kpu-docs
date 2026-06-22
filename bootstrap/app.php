@@ -37,8 +37,8 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
         // Tangani error umum (500, runtime error, dll)
-        $exceptions->render(function (Throwable $e, $request) {
-            return response()->view("errors.500", [], 500);
-        });
+        // $exceptions->render(function (Throwable $e, $request) {
+        //     return response()->view("errors.500", [], 500);
+        // });
     })
     ->create();
